@@ -53,10 +53,10 @@ const Bars = () => {
             >
                 <h1
                     className='font-bold capitalize text-[#344767]'
-                >website views</h1>
+                >Purchases in week</h1>
                 <span
                     className=' font-extralight'
-                >Last Campaign Performance</span>
+                >Last Purchases in this week</span>
             </div>
         </div>
     );

@@ -6,7 +6,7 @@ function App() {
 
   return (
     <div
-      className="min-h-screen w-full pt-[100px] md:px-10"
+      className="min-h-screen w-full pt-[100px] md:px-10 pb-11"
     >
 
       <Header />

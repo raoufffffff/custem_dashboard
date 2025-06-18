@@ -6,7 +6,7 @@ const ordersData = [
     { name: 'Jun', confirmed: 100, cancelled: 25 },
     { name: 'Jul', confirmed: 150, cancelled: 40 },
     { name: 'Aug', confirmed: 200, cancelled: 70 },
-    { name: 'Sep', confirmed: 250, cancelled: 30 },
+    { name: 'Sep', confirmed: 0, cancelled: 0 },
     { name: 'Oct', confirmed: 200, cancelled: 20 },
     { name: 'Nov', confirmed: 300, cancelled: 25 },
     { name: 'Dec', confirmed: 200, cancelled: 60 },

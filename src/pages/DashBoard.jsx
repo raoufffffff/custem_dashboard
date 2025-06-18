@@ -3,6 +3,8 @@ import { CalendarCheck, MessageCircleX, Package, RefreshCw } from 'lucide-react'
 import Bars from '../compunent/DashBoard/Bar'
 import Lines from '../compunent/DashBoard/Lines'
 import OrderLines from '../compunent/DashBoard/Pie'
+import LastOrders from '../compunent/DashBoard/LastOrders'
+import ItemList from '../compunent/DashBoard/ItemList'
 
 
 
@@ -51,7 +53,12 @@ const DashBoard = () => {
                 <Lines />
                 <OrderLines />
             </div>
-
+            <div
+                className='flex flex-wrap justify-around items-center'
+            >
+                <ItemList />
+                <LastOrders />
+            </div>
         </div>
     )
 }

@@ -59,10 +59,10 @@ const Lines = () => (
         >
             <h1
                 className='font-bold capitalize text-[#344767]'
-            >website views</h1>
+            >Purchases in months</h1>
             <span
                 className=' font-extralight'
-            >Last Campaign Performance</span>
+            >Last Purchases in 12 months </span>
         </div>
     </div>
 );
