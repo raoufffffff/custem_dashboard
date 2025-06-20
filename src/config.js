@@ -2,7 +2,7 @@ import firebase from "firebase/compat/app";
 import 'firebase/compat/storage'
 
 const firebaseConfig = {
-    apiKey:"hf",
+    apiKey: "AIzaSyAKrXRVwXXE2NQ_iuI-y3S9A6NZTgl9WTk",
     authDomain: "tawssilatrest.firebaseapp.com",
     projectId: "tawssilatrest",
     storageBucket: "tawssilatrest.appspot.com",
