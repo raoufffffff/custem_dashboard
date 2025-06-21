@@ -80,8 +80,8 @@ const DashBoard = () => {
             <div
                 className='flex flex-wrap justify-around items-center'
             >
-                <ItemList />
-                <LastOrders />
+                <ItemList order={order} />
+                <LastOrders order={order} />
             </div>
         </div>
     )

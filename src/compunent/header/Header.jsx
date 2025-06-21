@@ -2,6 +2,7 @@ import { Home, User, Bell, Menu } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from "motion/react"
 import Sidebar from './Sidebar';
+import { Link } from 'react-router-dom';
 export default function Header() {
     const [backgroundStyle, setBackgroundStyle] = useState('bg-[#f0f2f5]');
     const [show, setshow] = useState(false)
@@ -12,7 +13,7 @@ export default function Header() {
             if (scrollY === 0) {
                 setBackgroundStyle('bg-[#f0f2f5]');
             } else {
-                setBackgroundStyle('bg-white/80 backdrop-blur-3xl shadow');
+                setBackgroundStyle('bg-white/90  backdrop-blur-xs shadow');
             }
         };
 
@@ -27,14 +28,16 @@ export default function Header() {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                className={`fixed w-full md:w-11/12  top-5 left-[50%] -translate-x-[50%] px-6 py-4 md:px-4 md:py-2 rounded-2xl flex items-center justify-between transition-colors duration-300 z-50  ${backgroundStyle}`}
+                className={`fixed w-full  md:w-11/12  top-5 left-[50%] -translate-x-[50%] px-6 py-4 md:px-4 md:py-2 rounded-2xl flex items-center justify-between transition-colors duration-300 z-50  ${backgroundStyle}`}
             >
                 {/* Breadcrumb and title */}
                 <div className="flex items-center  space-x-2">
                     <Home className="text-gray-500 w-4 h-4" />
                     <span className="text-sm text-gray-500">/</span>
 
-                    <h1 className="text-lg font-semibold ml-2">Dashboard</h1>
+                    <Link
+                        to={'/'}
+                        className="text-lg text-blue-500 font-semibold ml-2">Dashboard</Link>
                 </div>
 
                 {/* Search and icons */}
