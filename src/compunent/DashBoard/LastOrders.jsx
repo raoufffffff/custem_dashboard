@@ -12,7 +12,7 @@ export default function LastOrders({ order = [] }) {
 
 
     return (
-        <div className="w-11/12 md:w-4/12 my-3 lg:h-[525px] py-5 px-10 bg-white rounded-xl shadow-md">
+        <div className="w-11/12 md:w-4/12 my-3  py-5 px-10 bg-white rounded-xl shadow-md">
             <h2 className="text-lg capitalize font-semibold text-gray-800 mb-5">
                 last 10 orders
             </h2>

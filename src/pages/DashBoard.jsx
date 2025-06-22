@@ -38,7 +38,7 @@ const DashBoard = () => {
             className='pt-5'
         >
             <div
-                className='flex   justify-center flex-wrap items-center'
+                className='flex   justify-center flex-wrap items-start'
             >
                 <StatCard
                     title='order'

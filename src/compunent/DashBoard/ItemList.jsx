@@ -50,7 +50,7 @@ const ProjectsOverview = ({ order = [] }) => {
     const uniqueItems = getUniqueId();
 
     return (
-        <div className="w-full p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+        <div className="w-11/12 md:w-7/12 p-6 bg-white rounded-xl shadow-sm border border-gray-100">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
                 <div className="mb-4 sm:mb-0">
