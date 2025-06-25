@@ -7,22 +7,44 @@ import Order from './pages/Order.jsx';
 import DashBoard from './pages/DashBoard.jsx';
 import AddItems from './pages/AddItems.jsx';
 import Items from './pages/Items.jsx';
+import ProtectedRoute from './layout/ProtectedRoute .jsx';
+import Login from './pages/Login.jsx';
+import Sinin from './pages/Sinin.jsx';
+import { Toaster } from 'react-hot-toast';
+
+
 
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route index element={<DashBoard />} />
-      <Route path='Orders' element={<Order />} />
-      <Route path='AddItems' element={<AddItems />} />
-      <Route path='Items' element={<Items />} />
-    </Route>
+    <>
+
+      <Route path="/" element={<App />}>
+        <Route index element={
+          <ProtectedRoute><DashBoard /></ProtectedRoute>
+        } />
+        <Route path="Orders" element={
+          <ProtectedRoute><Order /></ProtectedRoute>
+        } />
+        <Route path="AddItems" element={
+          <ProtectedRoute><AddItems /></ProtectedRoute>
+        } />
+        <Route path="Items" element={
+          <ProtectedRoute><Items /></ProtectedRoute>
+        } />
+      </Route>
+      <Route path="login" element={<Login />} />
+      <Route path="sinin" element={<Sinin />} />
+    </>
   )
 );
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <RouterProvider router={router} />
+    <Toaster position="top-center" reverseOrder={false} />
+
   </StrictMode>
 );
