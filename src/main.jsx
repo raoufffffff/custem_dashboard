@@ -11,6 +11,7 @@ import ProtectedRoute from './layout/ProtectedRoute .jsx';
 import Login from './pages/Login.jsx';
 import Sinin from './pages/Sinin.jsx';
 import { Toaster } from 'react-hot-toast';
+import Notifications from './pages/Notifications.jsx';
 
 
 
@@ -21,9 +22,10 @@ const router = createBrowserRouter(
     <>
 
       <Route path="/" element={<App />}>
-        <Route index element={
-          <ProtectedRoute><DashBoard /></ProtectedRoute>
-        } />
+        <Route index
+          element={
+            <ProtectedRoute><DashBoard /></ProtectedRoute>
+          } />
         <Route path="Orders" element={
           <ProtectedRoute><Order /></ProtectedRoute>
         } />
@@ -32,6 +34,9 @@ const router = createBrowserRouter(
         } />
         <Route path="Items" element={
           <ProtectedRoute><Items /></ProtectedRoute>
+        } />
+        <Route path="Notifications" element={
+          <ProtectedRoute><Notifications /></ProtectedRoute>
         } />
       </Route>
       <Route path="login" element={<Login />} />

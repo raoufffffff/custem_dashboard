@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { format } from 'date-fns';
-const OrdersTable = ({ orders, emptyMessage }) => (
+const OrdersTable = ({ orders, emptyMessage, loading }) => (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -15,7 +15,30 @@ const OrdersTable = ({ orders, emptyMessage }) => (
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                    {orders.length > 0 ? (
+                    {loading ? (
+                        Array.from({ length: 5 }).map((_, i) => (
+                            <tr key={i} className="animate-pulse">
+                                <td className="px-6 py-4">
+                                    <div className="h-4 bg-gray-200 rounded w-24"></div>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <div className="h-4 bg-gray-200 rounded w-32"></div>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <div className="h-4 bg-gray-200 rounded w-20"></div>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <div className="h-4 bg-gray-200 rounded w-28"></div>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <div className="h-4 bg-gray-200 rounded w-16"></div>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <div className="h-4 bg-gray-200 rounded w-20"></div>
+                                </td>
+                            </tr>
+                        ))
+                    ) : orders.length > 0 ? (
                         orders.map((item, index) => (
                             <OrderRow key={item._id} order={item} index={index} />
                         ))
@@ -27,6 +50,7 @@ const OrdersTable = ({ orders, emptyMessage }) => (
                         </tr>
                     )}
                 </tbody>
+
             </table>
         </div>
     </div>

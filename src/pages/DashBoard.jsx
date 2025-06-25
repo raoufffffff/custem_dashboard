@@ -5,34 +5,16 @@ import Lines from '../compunent/DashBoard/Lines'
 import OrderLines from '../compunent/DashBoard/Pie'
 import LastOrders from '../compunent/DashBoard/LastOrders'
 import ItemList from '../compunent/DashBoard/ItemList'
-import { useEffect, useState } from 'react'
 import DashboardSkeleton from '../compunent/dashbourdloading/DashBoardLoading'
-import axios from 'axios'
-
-
+import useOrders from '../hooks/useOrders'
 
 const DashBoard = () => {
-    const [order, setorder] = useState([])
-    const [loading, setloading] = useState(true)
-    useEffect(() => {
-        const getorder = async () => {
-            try {
-                await axios.get(`https://true-fit-dz-api.vercel.app/order`)
-                    .then(res => {
-                        setorder(res.data.result)
-                        setloading(false)
-                    })
-            } catch (error) {
-                console.log(error);
+    const { orders, loading } = useOrders();
 
-            }
-        }
-        getorder()
-    }, [])
+    const panddingOrder = orders.filter(e => e.status == "pending")
+    const CancelledOrder = orders.filter(e => e.status == "cancelled")
+    const ConfirmedOrder = orders.filter(e => e.status == "confirmed")
     if (loading) return <DashboardSkeleton />
-    const panddingOrder = order.filter(e => e.status == "pending")
-    const CancelledOrder = order.filter(e => e.status == "cancelled")
-    const ConfirmedOrder = order.filter(e => e.status == "confirmed")
     return (
         <div
             className='pt-5'
@@ -42,7 +24,7 @@ const DashBoard = () => {
             >
                 <StatCard
                     title='order'
-                    order={order}
+                    order={orders}
                     color='bg-yellow-500'
                     shadow='shadow-yellow-500'
                     icon={<Package className='h-6 w-6'
@@ -73,15 +55,15 @@ const DashBoard = () => {
                 className='flex flex-wrap  mt-5 justify-around items-center'
             >
 
-                <Bars order={order} />
-                <Lines order={order} />
+                <Bars order={orders} />
+                <Lines order={orders} />
                 <OrderLines ConfirmedOrder={ConfirmedOrder} CancelledOrder={CancelledOrder} />
             </div>
             <div
                 className='flex flex-wrap justify-around items-center'
             >
-                <ItemList order={order} />
-                <LastOrders order={order} />
+                <ItemList order={orders} />
+                <LastOrders order={orders} />
             </div>
         </div>
     )

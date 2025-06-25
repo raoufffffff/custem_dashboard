@@ -10,7 +10,10 @@ import {
 import { NavLink } from 'react-router-dom';
 import { motion } from "motion/react"
 
-export default function Sidebar({ hide }) {
+export default function Sidebar({ hide, AlartNotification, setNotificationsToDefult, NotificationsCurrentNumber }) {
+    const logout = () => {
+        localStorage.clear()
+    }
     return (
         <motion.aside
             initial={{ x: -1000 }}
@@ -35,12 +38,14 @@ export default function Sidebar({ hide }) {
                 <nav className="mt-4 px-2 space-y-1 text-sm">
                     <NavItem hide={hide} icon={<LayoutDashboard />} label="Dashboard" to="/" />
                     <NavItem hide={hide} icon={<Table />} label="Orders" to="/orders" />
-                    <NavItem hide={hide} icon={<Bell />} label="Notifications" to="/notifications" />
+                    <NavItem hide={hide} icon={<Bell />} label="Notifications" alart={AlartNotification} to="/notifications" numbernot={NotificationsCurrentNumber} onClick={setNotificationsToDefult} />
                     <NavItem hide={hide} icon={<User />} label="Profile" to="/profile" />
                     <NavItem hide={hide} icon={<Package2 />} label="Items" to="/items" />
                     <NavItem hide={hide} icon={<PackagePlus />} label="Add Items" to="/AddItems" />
                     <NavItem hide={hide} icon={<Code />} label="modefi website" to="/items/new" />
-                    <NavItem hide={hide} icon={<LogOut />} label="Log Out" to="/items/new" />
+                    <NavItem
+                        onClick={logout}
+                        hide={hide} icon={<LogOut />} label="Log Out" to="/login" />
                 </nav>
             </div>
 
@@ -56,11 +61,16 @@ export default function Sidebar({ hide }) {
 }
 
 // Reusable Nav Item Component with React Router
-function NavItem({ icon, label, to, hide }) {
+function NavItem({ icon, label, to, hide, alart, numbernot, onClick }) {
     return (
         <NavLink
+
             to={to}
-            onClick={hide}
+            onClick={() => {
+                hide()
+                onClick()
+            }
+            }
             className={({ isActive }) =>
                 `flex items-center px-4 py-2 rounded-lg cursor-pointer transition
                 ${isActive ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`
@@ -68,6 +78,9 @@ function NavItem({ icon, label, to, hide }) {
         >
             <div className="w-5 h-5 mr-3">{icon}</div>
             <span>{label}</span>
+            {alart && <span
+                className='ml-auto text-blue-600 bg-white py-1 px-2 rounded-full text-[8px]'
+            >{numbernot}</span>}
         </NavLink>
     );
 }

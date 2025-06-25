@@ -68,10 +68,30 @@ const OrderPage = () => {
         >
             {/* Stats Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <CustomStateCard label="Total Orders" value={stats.total} color="gray" />
-                <CustomStateCard label="Confirmed" value={stats.confirmed} color="green" />
-                <CustomStateCard label="Pending" value={stats.pending} color="yellow" />
-                <CustomStateCard label="Cancelled" value={stats.cancelled} color="red" />
+                <CustomStateCard
+                    loading={loading}
+                    label="Total Orders"
+                    value={stats.total}
+                    color="gray"
+                />
+                <CustomStateCard
+                    loading={loading}
+                    label="Confirmed"
+                    value={stats.confirmed}
+                    color="green"
+                />
+                <CustomStateCard
+                    loading={loading}
+                    label="Pending"
+                    value={stats.pending}
+                    color="yellow"
+                />
+                <CustomStateCard
+                    loading={loading}
+                    label="Cancelled"
+                    value={stats.cancelled}
+                    color="red"
+                />
             </div>
 
             {/* Action Buttons */}
