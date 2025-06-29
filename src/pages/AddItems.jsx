@@ -1,78 +1,54 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import TextStyle from '@tiptap/extension-text-style';
-import Color from '@tiptap/extension-color';
-import Underline from '@tiptap/extension-underline';
-import ListItem from '@tiptap/extension-list-item';
-import { firebase } from '../config'
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useUser from '../hooks/useUser';
+import { Loader2 } from 'lucide-react';
+import handleImageUpload from '../utility/UploadImages';
+import { submitNewItem } from '../utility/itemHelper';
 const AddItems = () => {
     const router = useNavigate()
+    const { _id, loading, Categories } = useUser()
     const [formData, setFormData] = useState({
         name: '',
-        price: '',
-        discountPrice: '',
-        pixel: '',
+        price: 0,
+        sTitel: '',
+        type: ""
     });
-    console.log(formData);
+
 
     const [images, setImages] = useState([]);
     const [uploading, setUploading] = useState(false);
 
     // Tiptap Editor Setup
-    const editor = useEditor({
-        extensions: [
-            StarterKit,
-            TextStyle,
-            Color,
-            Underline,
-            ListItem,
-        ],
-        content: '',
-        onUpdate: ({ editor }) => {
-            // Update formData.description when editor content changes
-            setFormData(prev => ({
-                ...prev,
-                des: editor.getHTML(),
-            }));
-        },
-    });
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-[200px]">
+                <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
+            </div>
+        );
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleImageUpload = async (event) => {
+
+    const ImageUpload = async (event) => {
         const file = event.target.files[0];
         if (!file || images.length >= 5) return;
-
+        setUploading(true);
         try {
-            setUploading(true);
+            const res = await handleImageUpload(file)
+            setImages((prev) => [...prev, res]);
 
-            // Create a storage reference
-            const storageRef = firebase.storage().ref().child(`images/${Date.now()}-${file.name}`);
-
-            // Upload the file directly (no need to convert to blob or use fetch)
-            const snapshot = await storageRef.put(file);
-
-            // Get the publicly accessible URL
-            const downloadURL = await snapshot.ref.getDownloadURL();
-
-            console.log('Image uploaded and accessible at:', downloadURL);
-
-            // Add the image URL to state
-            setImages((prev) => [...prev, downloadURL]);
         } catch (err) {
             console.error('Upload error:', err);
+
         } finally {
             setUploading(false);
         }
-    };
-
+    }
 
     const removeImage = (url) => {
         setImages((prev) => prev.filter((img) => img !== url));
@@ -80,14 +56,14 @@ const AddItems = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const form = { ...formData, imgs: images, userId: _id }
         try {
-            await axios.post(`https://true-fit-dz-api.vercel.app/item`, { ...formData, imgs: images })
-                .then(() => {
-                    router('/')
-                })
+            const res = await submitNewItem(form)
+            if (res) {
+                router('/')
+            }
         } catch (error) {
             console.log(error);
-
         }
     };
 
@@ -141,66 +117,20 @@ const AddItems = () => {
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
                         />
                     </motion.div>
+                    <motion.div whileHover={{ scale: 1.01 }}>
+                        <textarea
+                            type="text"
+                            name="sTitel"
+                            placeholder="Description"
+                            value={formData.sTitel}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                        />
+                    </motion.div>
                 </div>
 
-                <motion.div whileHover={{ scale: 1.01 }}>
-                    <input
-                        type="number"
-                        name="pixel"
-                        placeholder="Pixel (optional)"
-                        value={formData.pixel}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
-                    />
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.01 }}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
 
-                    {/* Tiptap Toolbar */}
-                    {editor && (
-                        <div className="flex flex-wrap gap-1 mb-2 border-b pb-2">
-                            <button
-                                type="button"
-                                onClick={() => editor.chain().focus().toggleBold().run()}
-                                className={`p-2 rounded ${editor.isActive('bold') ? 'bg-blue-100' : 'hover:bg-gray-100'}`}
-                            >
-                                <strong>B</strong>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => editor.chain().focus().toggleItalic().run()}
-                                className={`p-2 rounded ${editor.isActive('italic') ? 'bg-blue-100' : 'hover:bg-gray-100'}`}
-                            >
-                                <em>I</em>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => editor.chain().focus().toggleUnderline().run()}
-                                className={`p-2 rounded ${editor.isActive('underline') ? 'bg-blue-100' : 'hover:bg-gray-100'}`}
-                            >
-                                <u>U</u>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => editor.chain().focus().toggleBulletList().run()}
-                                className={`p-2 rounded ${editor.isActive('bulletList') ? 'bg-blue-100' : 'hover:bg-gray-100'}`}
-                            >
-                                • List
-                            </button>
-                            <input
-                                type="color"
-                                onChange={e => editor.chain().focus().setColor(e.target.value).run()}
-                                className="w-8 h-8 cursor-pointer"
-                                value={editor.getAttributes('textStyle').color || '#000000'}
-                            />
-                        </div>
-                    )}
 
-                    {/* Tiptap Editor */}
-                    <div className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all min-h-[120px]">
-                        <EditorContent editor={editor} />
-                    </div>
-                </motion.div>
                 <motion.div whileHover={{ scale: 1.01 }}>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                         Upload Images (max 5)
@@ -214,7 +144,7 @@ const AddItems = () => {
                         <input
                             type="file"
                             accept="image/*"
-                            onChange={handleImageUpload}
+                            onChange={ImageUpload}
                             className="hidden"
                         />
                     </motion.label>

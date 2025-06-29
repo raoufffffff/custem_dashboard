@@ -2,13 +2,13 @@ import firebase from "firebase/compat/app";
 import 'firebase/compat/storage'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAKrXRVwXXE2NQ_iuI-y3S9A6NZTgl9WTk",
-    authDomain: "tawssilatrest.firebaseapp.com",
-    projectId: "tawssilatrest",
-    storageBucket: "tawssilatrest.appspot.com",
-    messagingSenderId: "695856286760",
-    appId: "1:695856286760:web:698d0c4c4300211de5791d",
-    measurementId: "G-QG1QTWXWQY"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 if (!firebase.apps.length) {

@@ -7,10 +7,10 @@ import {
     Code,
     LogOut,
 } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { motion } from "motion/react"
 
-export default function Sidebar({ hide, AlartNotification, setNotificationsToDefult, NotificationsCurrentNumber }) {
+export default function Sidebar({ hide, AlartNotification, setNotificationsToDefult, NotificationsCurrentNumber, website }) {
     const logout = () => {
         localStorage.clear()
     }
@@ -51,11 +51,21 @@ export default function Sidebar({ hide, AlartNotification, setNotificationsToDef
 
             {/* Upgrade Button */}
 
-            <div className="p-4">
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md text-sm">
+            {website.link ? <div className="p-4">
+                <Link
+                    target='_blank'
+                    to={`https://${website.link}`}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md text-sm uppercase">
                     VISIT YOUR WEBSITE
-                </button>
-            </div>
+                </Link>
+            </div> : <div className="p-4">
+                <Link
+                    onClick={hide}
+                    to={'/create-website'}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md text-sm uppercase">
+                    Create your website
+                </Link>
+            </div>}
         </motion.aside>
     );
 }

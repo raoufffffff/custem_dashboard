@@ -8,6 +8,7 @@ export default function Header() {
     const location = useLocation()
     const pageName = location.pathname.replace("/", "");
     const {
+        website,
         AlartNotification,
         NotificationsCurrentNumber,
         setNotificationsToDefult
@@ -84,6 +85,7 @@ export default function Header() {
                 {show && <Sidebar
                     setNotificationsToDefult={setNotificationsToDefult}
                     hide={hide}
+                    website={website}
                     NotificationsCurrentNumber={NotificationsCurrentNumber}
                     AlartNotification={AlartNotification}
                 />}

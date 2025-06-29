@@ -1,14 +1,15 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Trash2, Plus, Loader2, ChartNoAxesCombined, Pen } from "lucide-react";
 import { Link } from "react-router-dom";
+import useItem from "../hooks/useItem";
 
 const Items = () => {
-    const [loading, setLoading] = useState(true);
+    const { Items, loading, fetchItems } = useItem()
+
     const [showPixelModal, setShowPixelModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [items, setItems] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
     const [pixelValue, setPixelValue] = useState("");
     const [loadingStates, setLoadingStates] = useState({
@@ -16,22 +17,7 @@ const Items = () => {
         delete: false
     });
 
-    const getItems = async () => {
-        try {
-            const res = await axios.get(`https://true-fit-dz-api.vercel.app/item`);
-            if (res.data.good) {
-                setItems(res.data.result);
-                setLoading(false);
-            }
-        } catch (error) {
-            console.log("Error fetching items:", error);
-            setLoading(false);
-        }
-    };
 
-    useEffect(() => {
-        getItems();
-    }, []);
 
     const handleDeleteClick = (id) => {
         setSelectedItem(id);
@@ -42,7 +28,7 @@ const Items = () => {
         try {
             setLoadingStates(prev => ({ ...prev, delete: true }));
             await axios.delete(`https://true-fit-dz-api.vercel.app/item/${selectedItem}`);
-            await getItems();
+            await fetchItems();
             setShowDeleteModal(false);
         } catch (error) {
             console.log("Error deleting item:", error);
@@ -68,9 +54,7 @@ const Items = () => {
             await axios.put(`https://true-fit-dz-api.vercel.app/item/${selectedItem}`, {
                 Fpixal: pixelValue
             });
-            setItems(items.map(item =>
-                item._id === selectedItem ? { ...item, Fpixal: pixelValue } : item
-            ));
+            fetchItems()
             handleCloseModal();
         } catch (error) {
             console.log(error);
@@ -88,9 +72,7 @@ const Items = () => {
                 best: !currentStatus
             });
 
-            setItems(items.map(item =>
-                item._id === id ? { ...item, best: !currentStatus } : item
-            ));
+            fetchItems()
         } catch (error) {
             console.log("Error updating show status:", error);
         } finally {
@@ -138,7 +120,7 @@ const Items = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {items.map((item, index) => (
+                        {Items.map((item, index) => (
                             <motion.tr
                                 key={item._id}
                                 initial={{ opacity: 0, x: -20 }}

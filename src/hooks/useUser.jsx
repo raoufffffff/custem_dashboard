@@ -43,6 +43,9 @@ const useUser = () => {
         }
     }
     let {
+        _id = '',
+        Categories = [],
+        website = {},
         name = '',
         email = '',
         phone = '',
@@ -53,6 +56,8 @@ const useUser = () => {
     } = user || {};
 
     return {
+        Categories,
+        _id,
         name,
         email,
         phone,
@@ -62,7 +67,8 @@ const useUser = () => {
         NotificationsCurrentNumber,
         loading,
         error,
-        setNotificationsToDefult
+        setNotificationsToDefult,
+        website
     };
 };
 
