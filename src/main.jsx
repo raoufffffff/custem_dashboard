@@ -13,7 +13,7 @@ import Sinin from './pages/Sinin.jsx';
 import { Toaster } from 'react-hot-toast';
 import Notifications from './pages/Notifications.jsx';
 import CreateWebsite from './pages/CreateWebsite.jsx';
-import ModifyWebsite from './pages/ModifyWebsite.JSX';
+import ModifyWebsite from './pages/ModifyWebsite.jsx';
 
 
 
