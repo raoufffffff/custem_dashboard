@@ -42,6 +42,28 @@ const useUser = () => {
             setError(error.response?.data?.message || error.message || "Failed to fetch user");
         }
     }
+
+    const handleUpdateCategory = async (nerCategories) => {
+        setLoading(true)
+        try {
+            const localUser = localStorage.getItem("user");
+            if (!localUser) throw new Error("User not found in localStorage");
+
+            const userId = JSON.parse(localUser)._id;
+            await axios.put(`https://true-fit-dz-api.vercel.app/user/${userId}`,
+                {
+                    Categories: [...user.Categories, nerCategories]
+                }
+            ).then(() => {
+                fetchUser()
+            })
+        } catch (error) {
+            setError(error.response?.data?.message || error.message || "Failed to fetch user");
+        } finally {
+            setLoading(false)
+        }
+    }
+
     let {
         _id = '',
         Categories = [],
@@ -68,6 +90,7 @@ const useUser = () => {
         loading,
         error,
         setNotificationsToDefult,
+        handleUpdateCategory,
         website
     };
 };

@@ -5,6 +5,8 @@ import useUser from '../hooks/useUser';
 import { Loader2 } from 'lucide-react';
 import handleImageUpload from '../utility/UploadImages';
 import { submitNewItem } from '../utility/itemHelper';
+import InputImg from '../CustomUi/InputImg';
+import CustomImg from '../CustomUi/CustomImg';
 const AddItems = () => {
     const router = useNavigate()
     const { _id, loading, Categories } = useUser()
@@ -39,7 +41,7 @@ const AddItems = () => {
         if (!file || images.length >= 5) return;
         setUploading(true);
         try {
-            const res = await handleImageUpload(file)
+            const res = await handleImageUpload(event)
             setImages((prev) => [...prev, res]);
 
         } catch (err) {
@@ -131,63 +133,15 @@ const AddItems = () => {
 
 
 
-                <motion.div whileHover={{ scale: 1.01 }}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Upload Images (max 5)
-                    </label>
-                    <motion.label
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition-colors"
-                    >
-                        Choose File
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={ImageUpload}
-                            className="hidden"
-                        />
-                    </motion.label>
-                    {uploading && (
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="text-xs text-gray-500 mt-1"
-                        >
-                            Uploading...
-                        </motion.p>
-                    )}
-                </motion.div>
+                {images.length < 5 && <InputImg uploading={uploading} ImageUpload={ImageUpload} />}
 
                 <motion.div
                     layout
                     className="flex flex-wrap gap-3 mt-3"
                 >
-                    {images.map((url, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            transition={{ duration: 0.2 }}
-                            className="relative w-24 h-24"
-                        >
-                            <img
-                                src={url}
-                                alt="uploaded"
-                                className="w-full h-full object-cover rounded-lg shadow-sm"
-                            />
-                            <motion.button
-                                type="button"
-                                onClick={() => removeImage(url)}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow-md"
-                            >
-                                ×
-                            </motion.button>
-                        </motion.div>
-                    ))}
+
+                    <CustomImg logo={images} removeImage={removeImage} />
+
                 </motion.div>
 
                 <motion.button

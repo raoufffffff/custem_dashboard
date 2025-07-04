@@ -42,7 +42,7 @@ export default function Sidebar({ hide, AlartNotification, setNotificationsToDef
                     <NavItem hide={hide} icon={<User />} label="Profile" to="/profile" />
                     <NavItem hide={hide} icon={<Package2 />} label="Items" to="/items" />
                     <NavItem hide={hide} icon={<PackagePlus />} label="Add Items" to="/AddItems" />
-                    <NavItem hide={hide} icon={<Code />} label="modefi website" to="/items/new" />
+                    <NavItem hide={hide} icon={<Code />} label="modify website" to="/modify-website" />
                     <NavItem
                         onClick={logout}
                         hide={hide} icon={<LogOut />} label="Log Out" to="/login" />

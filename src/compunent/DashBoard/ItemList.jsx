@@ -5,6 +5,7 @@ import {
     ThumbsDown,
     Info
 } from "lucide-react";
+import CustomImg from "../../CustomUi/CustomImg";
 
 const ProjectsOverview = ({ order = [] }) => {
     const myorder = order.map(e => e.item);
@@ -102,11 +103,8 @@ const ProjectsOverview = ({ order = [] }) => {
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             <div className="flex-shrink-0 h-10 w-10">
-                                                <img
-                                                    className="h-10 w-10 rounded-full object-cover"
-                                                    src={item.img}
-                                                    alt={item.name}
-                                                />
+                                                <CustomImg tabel={true} logo={[item.img]} />
+
                                             </div>
                                             <div className="ml-4">
                                                 <div className="text-sm font-medium text-gray-900">{item.name}</div>

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Trash2, Plus, Loader2, ChartNoAxesCombined, Pen } from "lucide-react";
 import { Link } from "react-router-dom";
 import useItem from "../hooks/useItem";
+import CustomImg from "../CustomUi/CustomImg";
 
 const Items = () => {
     const { Items, loading, fetchItems } = useItem()
@@ -148,16 +149,7 @@ const Items = () => {
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <motion.img
-                                        whileHover={{ scale: 1.1 }}
-                                        src={
-                                            item.imgs && item.imgs[0]
-                                                ? item.imgs[0]
-                                                : "https://via.placeholder.com/50"
-                                        }
-                                        alt={item.name}
-                                        className="w-12 h-12 object-cover rounded"
-                                    />
+                                    <CustomImg tabel logo={[item.imgs[0]]} />
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.name}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">DZD {item.price}</td>

@@ -1,21 +1,18 @@
-import { firebase } from '../config'
+import axios from "axios";
 
 
-const handleImageUpload = async (file) => {
 
-
+const handleImageUpload = async (e) => {
+    const apiKey = import.meta.env.VITE_IMGBB_API_KEY;
+    const imageData = e.target.files[0]; // This could be the image file or a URL
+    const formData = new FormData();
+    formData.append('image', imageData);
+    formData.append('key', apiKey);
     try {
-
+        let downloadURL = ""
+        const res = await axios.post('https://api.imgbb.com/1/upload', formData)
         // Create a storage reference
-        const storageRef = firebase.storage().ref().child(`images/${Date.now()}-${file.name}`);
-
-        // Upload the file directly (no need to convert to blob or use fetch)
-        const snapshot = await storageRef.put(file);
-
-        // Get the publicly accessible URL
-        const downloadURL = await snapshot.ref.getDownloadURL();
-
-        console.log('Image uploaded and accessible at:', downloadURL);
+        downloadURL = res.data.data.url
 
         // Add the image URL to state
         return downloadURL

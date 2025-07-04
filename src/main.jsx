@@ -13,6 +13,7 @@ import Sinin from './pages/Sinin.jsx';
 import { Toaster } from 'react-hot-toast';
 import Notifications from './pages/Notifications.jsx';
 import CreateWebsite from './pages/CreateWebsite.jsx';
+import ModifyWebsite from './pages/ModifyWebsite.JSX';
 
 
 
@@ -41,6 +42,9 @@ const router = createBrowserRouter(
         } />
         <Route path="create-website" element={
           <ProtectedRoute><CreateWebsite /></ProtectedRoute>
+        } />
+        <Route path="modify-website" element={
+          <ProtectedRoute><ModifyWebsite /></ProtectedRoute>
         } />
       </Route>
       <Route path="login" element={<Login />} />

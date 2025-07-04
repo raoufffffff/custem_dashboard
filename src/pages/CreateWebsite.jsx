@@ -4,11 +4,11 @@ import handleImageUpload from '../utility/UploadImages';
 import useUser from '../hooks/useUser';
 import { Loader2, X, Upload, Check } from 'lucide-react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import InputImg from '../CustomUi/InputImg';
+import CustomImg from '../CustomUi/CustomImg';
 
 const CreateWebsite = () => {
     const { _id, loading, email } = useUser()
-    const router = useNavigate()
 
     const [formData, setFormData] = useState({
         name: '',
@@ -34,16 +34,9 @@ const CreateWebsite = () => {
     const ImageUpload = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
-
-        // Validate image size
-        if (file.size > 2 * 1024 * 1024) { // 2MB limit
-            setCreationStatus(p => ({ ...p, error: "Image size should be less than 2MB" }));
-            return;
-        }
-
         setUploading(true);
         try {
-            const res = await handleImageUpload(file)
+            const res = await handleImageUpload(event)
             setFormData((prev) => ({ ...prev, logo: res }));
         } catch {
             setCreationStatus(p => ({ ...p, error: 'Failed to upload image' }));
@@ -332,62 +325,17 @@ const CreateWebsite = () => {
                         </div>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            شعار الموقع
-                        </label>
-                        <div className="flex items-center space-x-4">
-                            <motion.label
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                className={`flex-1 flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer ${uploading ? 'border-blue-300 bg-blue-50' : 'border-gray-300 hover:border-blue-400'
-                                    }`}
-                            >
-                                <div className="text-center">
-                                    {uploading ? (
-                                        <Loader2 className="animate-spin h-5 w-5 text-blue-500 mx-auto" />
-                                    ) : (
-                                        <>
-                                            <Upload className="h-5 w-5 text-gray-400 mx-auto mb-1" />
-                                            <p className="text-sm text-gray-600">
-                                                {formData.logo ? 'تغيير الصورة' : 'اختر صورة'}
-                                            </p>
-                                            <p className="text-xs text-gray-500 mt-1">PNG, JPG (حد أقصى 2MB)</p>
-                                        </>
-                                    )}
-                                </div>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={ImageUpload}
-                                    className="hidden"
-                                    disabled={uploading}
-                                />
-                            </motion.label>
+                    {formData.logo ? <CustomImg logo={[formData.logo]} removeImage={removeImage} /> :
+                        (
+                            <InputImg
+                                uploading={uploading}
+                                logo={formData.logo}
+                                ImageUpload={ImageUpload}
+                                removeImage={removeImage}
 
-                            {formData.logo && (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    className="relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200"
-                                >
-                                    <img
-                                        src={formData.logo}
-                                        alt="Uploaded logo"
-                                        className="w-full h-full object-contain"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={removeImage}
-                                        className="absolute top-1 right-1 bg-white rounded-full p-0.5 shadow-sm hover:bg-gray-100"
-                                    >
-                                        <X className="h-4 w-4 text-gray-600" />
-                                    </button>
-                                </motion.div>
-                            )}
-                        </div>
-                    </div>
-
+                            />
+                        )
+                    }
                     <div className="pt-4">
                         <motion.button
                             type="submit"
