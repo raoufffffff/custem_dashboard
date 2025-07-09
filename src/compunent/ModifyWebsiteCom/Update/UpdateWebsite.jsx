@@ -1,36 +1,32 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import handleImageUpload from '../utility/UploadImages';
-import useUser from '../hooks/useUser';
-import { Loader2, X, Upload, Check, ChevronRight } from 'lucide-react';
-import axios from 'axios';
-import InputImg from '../CustomUi/InputImg';
-import CustomImg from '../CustomUi/CustomImg';
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { Loader2, X, Check, ChevronRight } from 'lucide-react'
+import axios from 'axios'
 
-const CreateWebsite = () => {
-    const { _id, loading, email } = useUser()
+import { Link } from 'react-router-dom'
+import CustomImg from '../../../CustomUi/CustomImg'
+import InputImg from '../../../CustomUi/InputImg'
+import handleImageUpload from '../../../utility/UploadImages'
 
-    const [formData, setFormData] = useState({
-        name: '',
-        store_name: '',
-        logo: '',
-        main_color: '#3b82f6',
-        phone: '',
-        facebook: '',
-        instgarm: '',
-        tiktok: '',
-    });
+const UpdateWebsite = ({ website }) => {
 
-    const [uploading, setUploading] = useState(false);
-    const [creationStatus, setCreationStatus] = useState({
+    const [newWebsiteStyle, setNewWebsiteStyle] = useState({
+        store_name: website.websiteStyle.store_name || '',
+        logo: website.websiteStyle.logo || '',
+        main_color: website.websiteStyle.main_color || '',
+        phone: website.websiteStyle.phone || '',
+        facebook: website.websiteStyle.facebook || '',
+        instgarm: website.websiteStyle.instgarm || '',
+        tiktok: website.websiteStyle.tiktok || '',
+    })
+
+    const [uploading, setUploading] = useState(false)
+    const [updateStatus, setUpdateStatus] = useState({
         loading: false,
         error: "",
-        success: false,
-        link: ""
-    });
+        success: false
+    })
 
-    const [domainAvailable, setDomainAvailable] = useState(null);
 
     const ImageUpload = async (event) => {
         const file = event.target.files[0];
@@ -38,89 +34,51 @@ const CreateWebsite = () => {
         setUploading(true);
         try {
             const res = await handleImageUpload(event)
-            setFormData((prev) => ({ ...prev, logo: res }));
+            setNewWebsiteStyle((prev) => ({ ...prev, logo: res }));
         } catch {
-            setCreationStatus(p => ({ ...p, error: 'Failed to upload image' }));
+            console.log("err");
+
         } finally {
             setUploading(false);
         }
     }
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-white">
-                <Loader2 className="animate-spin h-12 w-12 text-blue-500" />
-            </div>
-        );
-    }
+    const removeImage = () => setNewWebsiteStyle(prev => ({ ...prev, logo: "" }))
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const checkDomainAvailability = async () => {
-        if (formData.name.length === 0) return;
-        try {
-            const response = await axios.put(`https://true-fit-dz-api.vercel.app/user/check/domain`, { name: `${formData.name}-dznm` });
-            setDomainAvailable(response.data.available);
-        } catch {
-            setDomainAvailable(false);
-        }
-    };
+        const { name, value } = e.target
+        setNewWebsiteStyle(prev => ({ ...prev, [name]: value }))
+    }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setCreationStatus({ loading: true, error: "", success: false });
+        e.preventDefault()
+        setUpdateStatus({ loading: true, error: "", success: false })
 
-        if (!/^[a-z0-9-]+$/.test(formData.name)) {
-            setCreationStatus({
-                loading: false,
-                error: "Domain can only contain lowercase letters, numbers, and hyphens",
-                success: false
-            });
-            return;
-        }
-        if (!domainAvailable) {
-            setCreationStatus({
-                loading: false,
-                error: "هذا النطاق غير متاح",
-                success: false
-            });
-            return;
-        }
-
-        const data = { ...formData, id: _id, email: email }
         try {
-            const response = await axios.post(`https://next-website-server.vercel.app/create-template`, data);
-            await new Promise(resolve => setTimeout(resolve, 8000));
-
-            setCreationStatus({ loading: false, error: "", success: true, link: response.data.link });
-
+            // Replace with your actual API endpoint
+            await axios.put(`https://next-website-server.vercel.app/update-template`, { ...newWebsiteStyle, name: website.repoName, email: website.websiteStyle.email })
+            setUpdateStatus({ loading: false, error: "", success: true })
         } catch (err) {
-            const errorMessage = err.response?.data?.message ||
-                (err.response?.status === 409 ? "This domain is already taken" :
-                    "Failed to create website. Please try again.");
-            setCreationStatus({
+            const errorMessage = err.response?.data?.message || "Failed to update website. Please try again."
+            setUpdateStatus({
                 loading: false,
                 error: errorMessage,
-                success: false,
-                link: ""
-            });
+                success: false
+            })
         }
-    };
+    }
 
-    const removeImage = () => setFormData((prev) => ({ ...prev, logo: "" }));
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl mx-auto">
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">Create Your Website</h1>
-                    <p className="mt-2 text-gray-600">Fill in the details below to launch your online presence</p>
+                    <h1 className="text-3xl font-bold text-gray-900">Update Your Website</h1>
+                    <p className="mt-2 text-gray-600">Modify your website details below</p>
                 </div>
 
-                {creationStatus.error && (
+                {updateStatus.error && (
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -130,10 +88,10 @@ const CreateWebsite = () => {
                         <div className="mx-4 flex items-center rounded-lg bg-red-50 p-4 text-red-700 shadow-lg ring-1 ring-red-100">
                             <X className="h-5 w-5 flex-shrink-0" />
                             <div className="ml-3 flex-1">
-                                <p className="text-sm font-medium">{creationStatus.error}</p>
+                                <p className="text-sm font-medium">{updateStatus.error}</p>
                             </div>
                             <button
-                                onClick={() => setCreationStatus(p => ({ ...p, error: "" }))}
+                                onClick={() => setUpdateStatus(p => ({ ...p, error: "" }))}
                                 className="ml-2 text-red-500 hover:text-red-700"
                             >
                                 <X className="h-5 w-5" />
@@ -142,12 +100,13 @@ const CreateWebsite = () => {
                     </motion.div>
                 )}
 
-                {creationStatus.success && (
+                {updateStatus.success && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
+                        onClick={() => setUpdateStatus({ ...updateStatus, success: false })}
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -161,29 +120,14 @@ const CreateWebsite = () => {
                                 </div>
                                 <div className="ml-4">
                                     <h3 className="text-lg font-medium text-gray-900">
-                                        Website Created Successfully!
+                                        Website Updated Successfully!
                                     </h3>
                                     <div className="mt-2 text-sm text-gray-500">
-                                        <p>Redirecting to your new website...</p>
+                                        <p>Your changes have been saved.</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="mt-5 flex justify-between">
-                                <a
-                                    href={`https://${creationStatus.link}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center rounded-md bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
-                                >
-                                    Visit Website Now <ChevronRight className="ml-1 h-4 w-4" />
-                                </a>
-                                <Link
-                                    to={'/'}
-                                    className="rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
-                                >
-                                    Close
-                                </Link>
-                            </div>
+
                         </motion.div>
                     </motion.div>
                 )}
@@ -191,42 +135,6 @@ const CreateWebsite = () => {
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <form onSubmit={handleSubmit} className="p-6 sm:p-8">
                         <div className="space-y-6">
-                            {/* Domain Section */}
-                            <div className="space-y-2">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Domain Name <span className="text-red-500">*</span>
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span className="text-gray-500">https://</span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        className={`block w-full pl-16 pr-28 border ${domainAvailable === true ? 'border-green-500' : domainAvailable === false ? 'border-red-500' : 'border-gray-300'} rounded-lg py-2.5 px-3 focus:outline-none focus:ring-2 ${domainAvailable === true ? 'focus:ring-green-500 focus:border-green-500' : domainAvailable === false ? 'focus:ring-red-500 focus:border-red-500' : 'focus:ring-blue-500 focus:border-blue-500'} transition-all`}
-                                        placeholder="yourbusiness"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        onBlur={checkDomainAvailability}
-                                        required
-                                        minLength={3}
-                                        maxLength={30}
-                                    />
-                                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <span className="text-gray-500">-dznm.vacel.com</span>
-                                    </div>
-                                </div>
-                                {formData.name.length > 0 && (
-                                    <p className={`text-xs mt-1 ${domainAvailable === true ? 'text-green-600' :
-                                        domainAvailable === false ? 'text-red-600' : 'text-gray-500'
-                                        }`}>
-                                        {domainAvailable === true ? 'Domain is available' :
-                                            domainAvailable === false ? 'Domain is not available' :
-                                                'Checking domain availability...'}
-                                    </p>
-                                )}
-                            </div>
-
                             {/* Store Info Section */}
                             <div className="grid grid-cols-1 gap-6">
                                 <div>
@@ -238,7 +146,7 @@ const CreateWebsite = () => {
                                         name="store_name"
                                         className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2.5 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                         placeholder="My Awesome Store"
-                                        value={formData.store_name}
+                                        value={newWebsiteStyle.store_name}
                                         onChange={handleChange}
                                         required
                                     />
@@ -256,7 +164,7 @@ const CreateWebsite = () => {
                                         name="phone"
                                         className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2.5 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                         placeholder="0676..."
-                                        value={formData.phone}
+                                        value={newWebsiteStyle.phone}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -271,16 +179,17 @@ const CreateWebsite = () => {
                                                 type="color"
                                                 name="main_color"
                                                 className="w-12 h-12 border border-gray-300 rounded-lg cursor-pointer appearance-none bg-transparent"
-                                                value={formData.main_color}
+                                                value={newWebsiteStyle.main_color}
                                                 onChange={handleChange}
                                             />
+
                                             <div
                                                 className="absolute inset-0 rounded-lg border border-gray-300 pointer-events-none"
-                                                style={{ background: formData.main_color }}
+                                                style={{ background: newWebsiteStyle.main_color }}
                                             />
                                         </div>
                                         <span className="text-sm font-medium text-gray-700 bg-gray-100 px-3 py-2 rounded-lg">
-                                            {formData.main_color}
+                                            {newWebsiteStyle.main_color}
                                         </span>
                                     </div>
                                 </div>
@@ -299,7 +208,7 @@ const CreateWebsite = () => {
                                         name="facebook"
                                         className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2.5 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                         placeholder="https://facebook.com/yourpage"
-                                        value={formData.facebook}
+                                        value={newWebsiteStyle.facebook}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -313,7 +222,7 @@ const CreateWebsite = () => {
                                         name="instgarm"
                                         className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2.5 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                         placeholder="https://instagram.com/yourprofile"
-                                        value={formData.instgarm}
+                                        value={newWebsiteStyle.instgarm}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -327,7 +236,7 @@ const CreateWebsite = () => {
                                         name="tiktok"
                                         className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2.5 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                         placeholder="https://tiktok.com/@yourusername"
-                                        value={formData.tiktok}
+                                        value={newWebsiteStyle.tiktok}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -338,12 +247,12 @@ const CreateWebsite = () => {
                                 <label className="block text-sm font-medium text-gray-700">
                                     Store Logo
                                 </label>
-                                {formData.logo ? (
-                                    <CustomImg logo={[formData.logo]} removeImage={removeImage} />
+                                {newWebsiteStyle.logo ? (
+                                    <CustomImg logo={[newWebsiteStyle.logo]} removeImage={removeImage} />
                                 ) : (
                                     <InputImg
-                                        ImageUpload={ImageUpload}
                                         uploading={uploading}
+                                        ImageUpload={ImageUpload}
                                     />
                                 )}
                             </div>
@@ -352,19 +261,19 @@ const CreateWebsite = () => {
                             <div className="pt-4">
                                 <motion.button
                                     type="submit"
-                                    disabled={creationStatus.loading}
+                                    disabled={updateStatus.loading}
                                     whileHover={{ scale: 1.01 }}
                                     whileTap={{ scale: 0.99 }}
-                                    className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${creationStatus.loading ? 'opacity-80 cursor-not-allowed' : ''
+                                    className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${updateStatus.loading ? 'opacity-80 cursor-not-allowed' : ''
                                         }`}
                                 >
-                                    {creationStatus.loading ? (
+                                    {updateStatus.loading ? (
                                         <>
                                             <Loader2 className="animate-spin h-5 w-5 mr-2" />
-                                            Creating Website...
+                                            Updating Website...
                                         </>
                                     ) : (
-                                        'Create Website'
+                                        'Update Website'
                                     )}
                                 </motion.button>
                             </div>
@@ -373,7 +282,7 @@ const CreateWebsite = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default CreateWebsite;
+export default UpdateWebsite

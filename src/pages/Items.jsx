@@ -1,16 +1,19 @@
 import axios from "axios";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Trash2, Plus, Loader2, ChartNoAxesCombined, Pen } from "lucide-react";
+import { Trash2, Plus, Loader2, ChartNoAxesCombined, Pen, Save } from "lucide-react";
 import { Link } from "react-router-dom";
 import useItem from "../hooks/useItem";
 import CustomImg from "../CustomUi/CustomImg";
+import useUser from "../hooks/useUser";
 
 const Items = () => {
     const { Items, loading, fetchItems } = useItem()
-
+    const { _id, website } = useUser()
     const [showPixelModal, setShowPixelModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [Update, setUpdate] = useState(false);
+    const [Ucan, setUcan] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [pixelValue, setPixelValue] = useState("");
     const [loadingStates, setLoadingStates] = useState({
@@ -27,6 +30,7 @@ const Items = () => {
 
     const confirmDelete = async () => {
         try {
+            setUcan(true)
             setLoadingStates(prev => ({ ...prev, delete: true }));
             await axios.delete(`https://true-fit-dz-api.vercel.app/item/${selectedItem}`);
             await fetchItems();
@@ -52,6 +56,7 @@ const Items = () => {
 
     const handlePixelSubmit = async () => {
         try {
+            setUcan(true)
             await axios.put(`https://true-fit-dz-api.vercel.app/item/${selectedItem}`, {
                 Fpixal: pixelValue
             });
@@ -63,6 +68,7 @@ const Items = () => {
     };
 
     const toggleShowStatus = async (id, currentStatus) => {
+        setUcan(true)
         try {
             setLoadingStates(prev => ({
                 ...prev,
@@ -83,8 +89,23 @@ const Items = () => {
             }));
         }
     };
+    const UpdateWebsete = async () => {
+        setUpdate(true)
+        setUcan(false)
+        try {
+            const res = await axios.put(`https://next-website-server.vercel.app/update-item`, {
+                id: _id,
+                name: website.repoName
+            })
+            if (res.data.success) {
+                setUpdate(false)
+            }
+        } catch (error) {
+            console.log(error);
 
-    if (loading) {
+        }
+    }
+    if (loading || Update) {
         return (
             <div className="flex justify-center items-center min-h-[200px]">
                 <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
@@ -106,7 +127,19 @@ const Items = () => {
             >
                 Your Store Items
             </motion.h1>
-
+            {Ucan && (
+                <motion.button
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    onClick={UpdateWebsete}
+                    className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                >
+                    <Save className="h-5 w-5" />
+                    <span>Save to Website</span>
+                </motion.button>
+            )}
             <div className="overflow-x-scroll rounded-xl shadow-lg border border-gray-200">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-blue-500 text-white">

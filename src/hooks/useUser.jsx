@@ -20,8 +20,6 @@ const useUser = () => {
         }
     };
     useEffect(() => {
-
-
         fetchUser();
     }, []);
     const setNotificationsToDefult = async () => {
@@ -43,16 +41,18 @@ const useUser = () => {
         }
     }
 
-    const handleUpdateCategory = async (nerCategories) => {
+    const handleUpdateCategory = async (nerCategories, repo) => {
         setLoading(true)
         try {
             const localUser = localStorage.getItem("user");
             if (!localUser) throw new Error("User not found in localStorage");
 
             const userId = JSON.parse(localUser)._id;
-            await axios.put(`https://true-fit-dz-api.vercel.app/user/${userId}`,
+            await axios.put(`https://next-website-server.vercel.app/update-Category`,
                 {
-                    Categories: [...user.Categories, nerCategories]
+                    id: userId,
+                    Categories: nerCategories,
+                    name: repo
                 }
             ).then(() => {
                 fetchUser()
