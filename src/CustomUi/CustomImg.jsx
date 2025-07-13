@@ -11,7 +11,7 @@ const CustomImg = ({ logo = [], removeImage, tabel = false, category = false }) 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className={`${category ? "w-full h-full" : tabel ? "h-10 w-10 rounded-full object-cover" : "relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200"} `}
+                        className={`${category ? "w-full h-full" : tabel ? "h-10 w-10  object-cover rounded-full" : "relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200"} `}
                     >
                         <img src={e} alt={i} />
                         {removeImage && <button

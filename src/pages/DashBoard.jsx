@@ -9,11 +9,9 @@ import DashboardSkeleton from '../compunent/dashbourdloading/DashBoardLoading'
 import useOrders from '../hooks/useOrders'
 
 const DashBoard = () => {
-    const { orders, loading } = useOrders();
+    const { orders, loading, panddingOrder, CancelledOrder, ConfirmedOrder } = useOrders();
 
-    const panddingOrder = orders.filter(e => e.status == "pending")
-    const CancelledOrder = orders.filter(e => e.status == "cancelled")
-    const ConfirmedOrder = orders.filter(e => e.status == "confirmed")
+
     if (loading) return <DashboardSkeleton />
     return (
         <div

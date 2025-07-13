@@ -29,6 +29,7 @@ const CreateWebsite = () => {
         success: false,
         link: ""
     });
+    console.log(_id);
 
     const [domainAvailable, setDomainAvailable] = useState(null);
 

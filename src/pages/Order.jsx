@@ -18,7 +18,7 @@ const OrderPage = () => {
     const [searchOpen, setSearchOpen] = useState(false);
 
     // Data hooks
-    const { orders, loading } = useOrders();
+    const { orders, loading, edite } = useOrders();
     const {
         filteredOrders,
         filters,
@@ -26,13 +26,12 @@ const OrderPage = () => {
         clearFilters,
     } = useOrderFilters(orders);
     const { visibleItems, hasMore, loadMore } = usePagination(filteredOrders);
-
     // Derived values
     const stats = {
         total: filteredOrders.length,
         confirmed: filteredOrders.filter(o => o.status === 'confirmed').length,
-        pending: filteredOrders.filter(o => o.status === 'pending').length,
-        cancelled: filteredOrders.filter(o => o.status === 'cancelled').length
+        pending: filteredOrders.filter(e => (["pending", "Connection failed 1", "Connection failed 2"].includes(e.status))).length,
+        cancelled: filteredOrders.filter(e => (["cancelled", "failed"].includes(e.status))).length
     };
     const getUniqueItems = () => {
         const uniqueItems = [];
@@ -59,6 +58,7 @@ const OrderPage = () => {
 
         setSearchOpen(!searchOpen)
     }
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -125,6 +125,7 @@ const OrderPage = () => {
 
             {/* Orders Table */}
             <OrdersTable
+                edite={edite}
                 orders={visibleItems}
                 loading={loading}
                 emptyMessage="No orders found matching your criteria"

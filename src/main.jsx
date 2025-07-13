@@ -14,6 +14,7 @@ import { Toaster } from 'react-hot-toast';
 import Notifications from './pages/Notifications.jsx';
 import CreateWebsite from './pages/CreateWebsite.jsx';
 import ModifyWebsite from './pages/ModifyWebsite.jsx';
+import CurrensOrder from './pages/CurrensOrder.jsx';
 
 
 
@@ -30,6 +31,9 @@ const router = createBrowserRouter(
           } />
         <Route path="Orders" element={
           <ProtectedRoute><Order /></ProtectedRoute>
+        } />
+        <Route path="CurrensOrder" element={
+          <ProtectedRoute><CurrensOrder /></ProtectedRoute>
         } />
         <Route path="AddItems" element={
           <ProtectedRoute><AddItems /></ProtectedRoute>
