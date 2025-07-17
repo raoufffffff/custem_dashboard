@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import states from "../../../../e-commers_tem/src/constans/states";
-import etat from "../../../../e-commers_tem/src/constans/etat";
 import useItem from '../../hooks/useItem';
 import axios from 'axios';
+import etat from '../../constanst/etat';
+import states from '../../constanst/states';
 
 const EditeOrder = ({ hide, id, editefull }) => {
     const { Items } = useItem();

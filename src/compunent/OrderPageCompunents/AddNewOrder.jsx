@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import useItem from "../../hooks/useItem";
-import states from "../../../../e-commers_tem/src/constans/states";
-import etat from "../../../../e-commers_tem/src/constans/etat";
+import etat from '../../constanst/etat';
+import states from '../../constanst/states';
 
 const AddNewOrder = ({ hide, fetchOrders }) => {
     const { Items, loading } = useItem();
