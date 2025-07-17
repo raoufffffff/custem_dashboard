@@ -75,9 +75,11 @@ const useUser = () => {
         Notifications = [],
         AlartNotification = false,
         NotificationsCurrentNumber = 0,
+        companyLiv = {}
     } = user || {};
 
     return {
+        companyLiv,
         Categories,
         _id,
         name,
@@ -91,7 +93,8 @@ const useUser = () => {
         error,
         setNotificationsToDefult,
         handleUpdateCategory,
-        website
+        website,
+        fetchUser
     };
 };
 

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { format } from 'date-fns';
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import {
     CheckCircle,
     Clock,
@@ -15,12 +15,11 @@ import {
     Truck
 } from 'lucide-react';
 
-const OrderRow = ({ order, index, edite }) => {
+const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders }) => {
     const [myorder, setMyOrder] = useState(order);
     const [showStatusDropdown, setShowStatusDropdown] = useState(false);
     const [showNote, setShowNote] = useState({ show: false, status: "" });
     const [note, setNote] = useState(order?.note || "");
-    const dropdownRef = useRef(null);
 
     const statusOptions = [
         'confirmed',
@@ -59,25 +58,6 @@ const OrderRow = ({ order, index, edite }) => {
         edite(order._id, newStatus, note);
     };
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setShowStatusDropdown(false);
-            }
-        };
-
-        if (showStatusDropdown) {
-            document.addEventListener('mousedown', handleClickOutside);
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.body.style.overflow = '';
-        };
-    }, [showStatusDropdown]);
 
     return (
         <motion.tr
@@ -89,7 +69,7 @@ const OrderRow = ({ order, index, edite }) => {
             {showStatusDropdown && (
                 <>
                     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 backdrop-blur-sm" />
-                    <div ref={dropdownRef} className="fixed inset-0 flex items-center justify-center z-[51]">
+                    <div className="fixed inset-0 flex items-center justify-center z-[51]">
                         <div className="bg-white rounded-lg shadow-xl w-full max-w-sm mx-4 max-h-[80vh] overflow-y-auto">
                             <div className="p-4 border-b border-gray-200 sticky top-0 bg-white z-10">
                                 <h3 className="text-lg font-medium text-gray-900">Change Order Status</h3>
@@ -134,7 +114,7 @@ const OrderRow = ({ order, index, edite }) => {
             )}
             <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">#{order._id.slice(-6)}</td>
 
-            <td className="px-6 py-4 whitespace-nowrap">
+            <td className="px-6 py-4 whitespace-nowrap border-l-2 border-l-[#fff] overflow-hidden">
                 <div className="flex items-center">
                     <img
                         className="h-10 w-10 rounded-full object-cover"
@@ -148,26 +128,26 @@ const OrderRow = ({ order, index, edite }) => {
                 </div>
             </td>
 
-            <td className="px-6 py-4 whitespace-nowrap">
+            <td className="px-6 py-4 whitespace-nowrap  border-l-2 border-l-[#fff]">
                 <div className="text-sm text-gray-900">{myorder.name}</div>
                 <div className="text-sm text-gray-500">{myorder.phone}</div>
             </td>
 
-            <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+            <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap  border-l-2 border-l-[#fff]">
                 {myorder.state}<br />{myorder.city}
             </td>
 
-            <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+            <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap  border-l-2 border-l-[#fff]">
                 <span className="flex items-center">
                     {myorder.home ? <>home <Home size={20} className="mx-3" /></> : <>brue <Store size={20} className="mx-3" /></>}
                 </span>
             </td>
 
-            <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+            <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap  border-l-2 border-l-[#fff]">
                 {format(new Date(myorder.date), 'MMM dd, yyyy')}
             </td>
 
-            <td onClick={() => setShowStatusDropdown(true)} className="px-6 py-4 relative whitespace-nowrap cursor-pointer">
+            <td onClick={() => setShowStatusDropdown(true)} className="px-6 py-4 relative whitespace-nowrap cursor-pointer  border-l-2 border-l-[#fff]">
                 <div className={`px-2 inline-flex items-center text-xs font-semibold rounded-full ${statusColors[myorder.status]?.badge || 'bg-gray-100 text-gray-800'}`}>
                     {statusIcons[myorder.status] || <Circle className="w-4 h-4 mr-2" />}
                     {myorder.status}
@@ -176,25 +156,33 @@ const OrderRow = ({ order, index, edite }) => {
 
             </td>
 
-            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">DZD {myorder.price + myorder.ride}</td>
-            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">DZD {myorder.price}</td>
-            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">DZD {myorder.ride}</td>
-            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{myorder.not || "no note"}</td>
+            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap  border-l-2 border-l-[#fff]">DZD {myorder.price + myorder.ride}</td>
+            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap  border-l-2 border-l-[#fff]">DZD {myorder.price}</td>
+            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap  border-l-2 border-l-[#fff]">DZD {myorder.ride}</td>
+            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap  border-l-2 border-l-[#fff]">{myorder.not || "no note"}</td>
 
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900  border-l-2 border-l-[#fff] ">
                 <div className="flex">
                     <Pencil
                         onClick={() => setShowNote({ show: true, status: myorder.status })}
                         className="text-yellow-950 mx-2 cursor-pointer hover:scale-105"
                     />
                     <NotebookPen
-                        onClick={() => console.log("NotebookPen")}
+                        onClick={() => EdetAllOrder(myorder._id)}
                         className="text-blue-950 mx-2 cursor-pointer hover:scale-105"
                     />
-                    <Truck
-                        onClick={() => console.log("Truck clicked")}
-                        className="text-green-950 mx-2 cursor-pointer hover:scale-105"
-                    />
+                    {myorder.status === "confirmed" && (
+                        <Truck
+                            onClick={() => {
+                                sendtoLiv([order]);
+                                setTimeout(() => {
+                                    fetchOrders();
+                                }, 5000); // Waits 5 seconds before refreshing
+                            }}
+                            className="text-green-950 mx-2 cursor-pointer hover:scale-105 transition-transform duration-200"
+                        />
+                    )}
+
                 </div>
             </td>
 

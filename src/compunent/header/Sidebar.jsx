@@ -8,18 +8,22 @@ import {
     LogOut,
     ChevronDown,
     ChevronUp,
-    Package,
     PackageCheck,
+    Truck,
+    Package,
 } from 'lucide-react';
 import { NavLink, Link } from 'react-router-dom';
 import { motion } from "motion/react"
 import { useState } from 'react';
 
-export default function Sidebar({ hide, AlartNotification, setNotificationsToDefult, NotificationsCurrentNumber, website }) {
+export default function Sidebar({ hide, AlartNotification, setNotificationsToDefult, NotificationsCurrentNumber, website, companyLiv }) {
     const logout = () => {
         localStorage.clear()
     }
-    const [show, setshow] = useState(false)
+    const [show, setshow] = useState({
+        order: false,
+        liv: false
+    })
     return (
         <motion.aside
             initial={{ x: -1000 }}
@@ -48,7 +52,7 @@ export default function Sidebar({ hide, AlartNotification, setNotificationsToDef
                     <div
 
                         onClick={() => {
-                            setshow(p => !p)
+                            setshow({ order: !show.order, liv: false })
                         }
                         }
                         className={
@@ -59,15 +63,38 @@ export default function Sidebar({ hide, AlartNotification, setNotificationsToDef
                         <div className="w-5 h-5 mr-3 flex justify-between"><Table /></div>
                         <span>orders</span>
 
-                        {show ? <ChevronUp className='ml-auto' />
+                        {show.order ? <ChevronUp className='ml-auto' />
                             : <ChevronDown className='ml-auto' />}
                     </div>
-                    {show &&
+                    {show.order &&
                         <>
-                            <NavItem hide={hide} icon={<Package />} label="Current Orders" side={true} to="/CurrensOrder" />
+                            {companyLiv.name && <NavItem hide={hide} icon={<Truck />} label="Truck Orders" side={true} to="/TruckOrder" />}
                             <NavItem hide={hide} icon={<PackageCheck />} label="All Orders" side={true} to="/orders" />
 
 
+                        </>
+
+                    }
+                    <div
+
+                        onClick={() => {
+                            setshow({ order: false, liv: !show.liv })
+                        }
+                        }
+                        className={
+                            `flex items-center px-4 py-2 rounded-lg cursor-pointer transition
+                text-gray-300 hover:bg-gray-700 hover:text-white`
+                        }
+                    >
+                        <div className="w-5 h-5 mr-3 flex justify-between"><Package /></div>
+                        <span>livraison company</span>
+
+                        {show.liv ? <ChevronUp className='ml-auto' />
+                            : <ChevronDown className='ml-auto' />}
+                    </div>
+                    {show.liv &&
+                        <>
+                            <NavItem hide={hide} icon={<Truck />} label="delevry Company" side={true} to="/LivCompany" />
                         </>
 
                     }

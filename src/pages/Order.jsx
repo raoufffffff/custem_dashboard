@@ -10,15 +10,21 @@ import SearchPanel from "../compunent/OrderPageCompunents/SearchPanel";
 import OrdersTable from "../compunent/OrderPageCompunents/OrdersTable";
 import DatePickerModal from "../compunent/OrderPageCompunents/DatePickerModal";
 import LoadMoreButton from "../compunent/OrderPageCompunents/LoadMoreButton";
+import { useSearchParams } from "react-router-dom";
+import AddNewOrder from "../compunent/OrderPageCompunents/AddNewOrder";
+import EditeOrder from "../compunent/OrderPageCompunents/EditeOrder";
+import UseLivOrder from "../hooks/UseLivOrder";
 
 const OrderPage = () => {
     // State for UI controls
     const [showDate, setShowDate] = useState(false);
     const [filterOpen, setFilterOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
-
+    const [searchParams, setsearchParams] = useSearchParams()
     // Data hooks
-    const { orders, loading, edite } = useOrders();
+    const { sendtoLiv } = UseLivOrder()
+
+    const { orders, loading, edite, fetchOrders, editefull } = useOrders();
     const {
         filteredOrders,
         filters,
@@ -58,7 +64,25 @@ const OrderPage = () => {
 
         setSearchOpen(!searchOpen)
     }
-
+    const addNewOrder = () => {
+        setsearchParams((searchParams) => {
+            searchParams.set("new", "true");
+            return searchParams;
+        })
+    }
+    const EdetAllOrder = (id) => {
+        setsearchParams((searchParams) => {
+            searchParams.set("edite", id);
+            return searchParams;
+        })
+    }
+    const hide = () => {
+        setsearchParams((searchParams) => {
+            searchParams.delete("new");
+            searchParams.delete("edite");
+            return searchParams;
+        })
+    }
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -66,6 +90,8 @@ const OrderPage = () => {
             transition={{ duration: 0.3 }}
             className="p-6 max-w-7xl mx-auto"
         >
+            {searchParams.get("new") && <AddNewOrder fetchOrders={fetchOrders} hide={hide} />}
+            {searchParams.get("edite") && <EditeOrder id={searchParams.get("edite")} editefull={editefull} hide={hide} />}
             {/* Stats Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <CustomStateCard
@@ -97,6 +123,7 @@ const OrderPage = () => {
             {/* Action Buttons */}
 
             <FilterButtons
+                AddNewOrder={addNewOrder}
                 filterOpen={filterOpen}
                 filteredOrders={filteredOrders}
                 searchOpen={searchOpen}
@@ -125,9 +152,12 @@ const OrderPage = () => {
 
             {/* Orders Table */}
             <OrdersTable
+                EdetAllOrder={EdetAllOrder}
                 edite={edite}
                 orders={visibleItems}
                 loading={loading}
+                sendtoLiv={sendtoLiv}
+                fetchOrders={fetchOrders}
                 emptyMessage="No orders found matching your criteria"
             />
 

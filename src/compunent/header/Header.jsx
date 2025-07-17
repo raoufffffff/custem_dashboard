@@ -11,7 +11,8 @@ export default function Header() {
         website,
         AlartNotification,
         NotificationsCurrentNumber,
-        setNotificationsToDefult
+        setNotificationsToDefult,
+        companyLiv
     } = useUser()
     const [backgroundStyle, setBackgroundStyle] = useState('bg-[#f0f2f5]');
     const [show, setshow] = useState(false)
@@ -85,6 +86,7 @@ export default function Header() {
                 {show && <Sidebar
                     setNotificationsToDefult={setNotificationsToDefult}
                     hide={hide}
+                    companyLiv={companyLiv}
                     website={website}
                     NotificationsCurrentNumber={NotificationsCurrentNumber}
                     AlartNotification={AlartNotification}
