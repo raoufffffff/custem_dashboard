@@ -123,6 +123,7 @@ const OrderPage = () => {
             {/* Action Buttons */}
 
             <FilterButtons
+                add
                 AddNewOrder={addNewOrder}
                 filterOpen={filterOpen}
                 filteredOrders={filteredOrders}

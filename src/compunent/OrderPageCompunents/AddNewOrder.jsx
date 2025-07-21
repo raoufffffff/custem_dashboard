@@ -55,9 +55,9 @@ const AddNewOrder = ({ hide, fetchOrders }) => {
     };
     const handleSelectState = (e) => {
         const selectedId = e.target.value;
-        console.log(selectedId);
-        const citys = etat.filter(e => e.state_code == selectedId)
+        console.log(selectedId, "helo");
         const selectedState = states.find(i => i.id == selectedId);
+        const citys = etat.filter(e => e.state_code == selectedState.code)
         setNewOrder({ ...NewOrder, state: selectedState.name, stateNumber: selectedState.code });
         setCityOption(citys)
     };
@@ -67,7 +67,6 @@ const AddNewOrder = ({ hide, fetchOrders }) => {
         const citys = etat.find(e => e.idd == selectedId)
         setNewOrder({ ...NewOrder, city: citys.name });
     };
-    console.log(item, NewOrder);
 
     return (
         <>

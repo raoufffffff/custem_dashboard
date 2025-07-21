@@ -11,6 +11,7 @@ import {
     PackageCheck,
     Truck,
     Package,
+    CircleDollarSign,
 } from 'lucide-react';
 import { NavLink, Link } from 'react-router-dom';
 import { motion } from "motion/react"
@@ -95,6 +96,7 @@ export default function Sidebar({ hide, AlartNotification, setNotificationsToDef
                     {show.liv &&
                         <>
                             <NavItem hide={hide} icon={<Truck />} label="delevry Company" side={true} to="/LivCompany" />
+                            <NavItem hide={hide} icon={<CircleDollarSign />} label="Delivery Price" side={true} to="/LivrisionPrice" />
                         </>
 
                     }

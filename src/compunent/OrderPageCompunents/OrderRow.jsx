@@ -8,11 +8,11 @@ import {
     WifiOff,
     AlertCircle,
     Circle,
-    Home,
-    Store,
     Pencil,
     NotebookPen,
-    Truck
+    Truck,
+    Building2,
+    HomeIcon
 } from 'lucide-react';
 
 const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders }) => {
@@ -40,12 +40,12 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders })
     };
 
     const statusColors = {
-        confirmed: { bg: 'bg-green-50 hover:bg-green-100', badge: 'bg-green-100 text-green-800' },
-        pending: { bg: 'bg-yellow-50 hover:bg-yellow-100', badge: 'bg-yellow-100 text-yellow-800' },
-        cancelled: { bg: 'bg-red-50 hover:bg-red-100', badge: 'bg-red-100 text-red-800' },
-        'Connection failed 1': { bg: 'bg-purple-50 hover:bg-purple-100', badge: 'bg-purple-100 text-purple-800' },
-        'Connection failed 2': { bg: 'bg-purple-50 hover:bg-purple-100', badge: 'bg-purple-100 text-purple-800' },
-        failed: { bg: 'bg-red-50 hover:bg-red-100', badge: 'bg-red-100 text-red-800' }
+        confirmed: { bg: 'bg-green-500', badge: 'bg-green-100 text-green-800' },
+        pending: { bg: 'bg-yellow-500', badge: 'bg-yellow-100 text-yellow-800' },
+        cancelled: { bg: 'bg-red-500', badge: 'bg-red-100 text-red-800' },
+        'Connection failed 1': { bg: 'bg-purple-500', badge: 'bg-purple-100 text-purple-800' },
+        'Connection failed 2': { bg: 'bg-purple-500', badge: 'bg-purple-100 text-purple-800' },
+        failed: { bg: 'bg-red-500', badge: 'bg-red-100 text-red-800' }
     };
 
     const handleStatusChange = (newStatus) => {
@@ -58,27 +58,26 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders })
         edite(order._id, newStatus, note);
     };
 
-
     return (
         <motion.tr
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
-            className={`hover:bg-opacity-80 ${statusColors[myorder.status]?.bg || 'bg-gray-50 hover:bg-gray-100'}`}
+            className="bg-white shadow-sm hover:shadow-md transition-shadow rounded-xl"
         >
             {showStatusDropdown && (
                 <>
                     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 backdrop-blur-sm" />
                     <div className="fixed inset-0 flex items-center justify-center z-[51]">
-                        <div className="bg-white rounded-lg shadow-xl w-full max-w-sm mx-4 max-h-[80vh] overflow-y-auto">
+                        <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm mx-4 max-h-[80vh] overflow-y-auto">
                             <div className="p-4 border-b border-gray-200 sticky top-0 bg-white z-10">
-                                <h3 className="text-lg font-medium text-gray-900">Change Order Status</h3>
+                                <h3 className="text-lg font-semibold text-gray-900">Change Order Status</h3>
                             </div>
                             <div className="p-4 space-y-2">
                                 {statusOptions.map(option => (
                                     <div
                                         key={option}
-                                        className={`px-4 py-3 text-sm cursor-pointer rounded hover:bg-gray-100 flex items-center justify-between transition-colors ${myorder.status === option ? 'bg-gray-100 font-medium' : ''}`}
+                                        className={`px-4 py-3 text-sm cursor-pointer rounded-lg hover:bg-gray-100 flex items-center justify-between transition-colors ${myorder.status === option ? 'bg-gray-100 font-semibold' : ''}`}
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             handleStatusChange(option);
@@ -112,64 +111,64 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders })
                     </div>
                 </>
             )}
+
+            <td className={`w-2 ${statusColors[myorder.status]?.bg}`} />
             <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">#{order._id.slice(-6)}</td>
 
-            <td className="px-6 py-4 whitespace-nowrap border-l-2 border-l-[#fff] overflow-hidden">
+            <td className="px-6 py-4 whitespace-nowrap border-l-2 border-l-white overflow-hidden">
                 <div className="flex items-center">
                     <img
-                        className="h-10 w-10 rounded-full object-cover"
+                        className="h-10 w-10 rounded-full object-cover shadow-md"
                         src={myorder.item.imgs[0]}
                         alt={myorder.item.name}
                     />
                     <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{myorder.item.name}</div>
-                        <div className="text-sm text-gray-500">Size: {myorder.size}</div>
+                        <div className="text-sm font-semibold text-gray-900">{myorder.item.name}</div>
+                        <div className="text-xs text-gray-500">Size: {myorder.size}</div>
                     </div>
                 </div>
             </td>
 
-            <td className="px-6 py-4 whitespace-nowrap  border-l-2 border-l-[#fff]">
-                <div className="text-sm text-gray-900">{myorder.name}</div>
-                <div className="text-sm text-gray-500">{myorder.phone}</div>
+            <td className="px-6 py-4 whitespace-nowrap border-l-2 border-l-white">
+                <div className="text-sm text-gray-900 font-medium">{myorder.name}</div>
+                <div className="text-xs text-gray-500">{myorder.phone}</div>
             </td>
 
-            <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap  border-l-2 border-l-[#fff]">
+            <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap border-l-2 border-l-white">
                 {myorder.state}<br />{myorder.city}
             </td>
 
-            <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap  border-l-2 border-l-[#fff]">
+            <td className="px-6 py-4 text-sm text-gray-600 whitespace-nowrap border-l-2 border-l-white">
                 <span className="flex items-center">
-                    {myorder.home ? <>home <Home size={20} className="mx-3" /></> : <>brue <Store size={20} className="mx-3" /></>}
+                    {myorder.home ? <>Home <HomeIcon size={20} className="ml-2" /></> : <>Office <Building2 size={20} className="ml-2" /></>}
                 </span>
             </td>
 
-            <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap  border-l-2 border-l-[#fff]">
+            <td className="px-6 py-4 text-xs text-gray-500 whitespace-nowrap border-l-2 border-l-white">
                 {format(new Date(myorder.date), 'MMM dd, yyyy')}
             </td>
 
-            <td onClick={() => setShowStatusDropdown(true)} className="px-6 py-4 relative whitespace-nowrap cursor-pointer  border-l-2 border-l-[#fff]">
+            <td onClick={() => setShowStatusDropdown(true)} className="px-6 py-4 relative whitespace-nowrap cursor-pointer border-l-2 border-l-white">
                 <div className={`px-2 inline-flex items-center text-xs font-semibold rounded-full ${statusColors[myorder.status]?.badge || 'bg-gray-100 text-gray-800'}`}>
                     {statusIcons[myorder.status] || <Circle className="w-4 h-4 mr-2" />}
                     {myorder.status}
                 </div>
-
-
             </td>
 
-            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap  border-l-2 border-l-[#fff]">DZD {myorder.price + myorder.ride}</td>
-            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap  border-l-2 border-l-[#fff]">DZD {myorder.price}</td>
-            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap  border-l-2 border-l-[#fff]">DZD {myorder.ride}</td>
-            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap  border-l-2 border-l-[#fff]">{myorder.not || "no note"}</td>
+            <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap border-l-2 border-l-white">DZD {myorder.price + myorder.ride}</td>
+            <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap border-l-2 border-l-white">DZD {myorder.price}</td>
+            <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap border-l-2 border-l-white">DZD {myorder.ride}</td>
+            <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap border-l-2 border-l-white">{myorder.note || "No note"}</td>
 
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900  border-l-2 border-l-[#fff] ">
-                <div className="flex">
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-l-2 border-l-white">
+                <div className="flex space-x-2">
                     <Pencil
                         onClick={() => setShowNote({ show: true, status: myorder.status })}
-                        className="text-yellow-950 mx-2 cursor-pointer hover:scale-105"
+                        className="text-yellow-600 cursor-pointer hover:scale-110 transition-transform"
                     />
                     <NotebookPen
                         onClick={() => EdetAllOrder(myorder._id)}
-                        className="text-blue-950 mx-2 cursor-pointer hover:scale-105"
+                        className="text-blue-600 cursor-pointer hover:scale-110 transition-transform"
                     />
                     {myorder.status === "confirmed" && (
                         <Truck
@@ -177,12 +176,11 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders })
                                 sendtoLiv([order]);
                                 setTimeout(() => {
                                     fetchOrders();
-                                }, 5000); // Waits 5 seconds before refreshing
+                                }, 5000);
                             }}
-                            className="text-green-950 mx-2 cursor-pointer hover:scale-105 transition-transform duration-200"
+                            className="text-green-600 cursor-pointer hover:scale-110 transition-transform"
                         />
                     )}
-
                 </div>
             </td>
 

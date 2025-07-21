@@ -16,6 +16,7 @@ import CreateWebsite from './pages/CreateWebsite.jsx';
 import ModifyWebsite from './pages/ModifyWebsite.jsx';
 import TruckOrder from './pages/TruckOrder.jsx';
 import LivCompany from './pages/LivCompany.jsx';
+import LivrisionPrice from './pages/LivrisionPrice.jsx';
 
 
 
@@ -53,6 +54,9 @@ const router = createBrowserRouter(
         } />
         <Route path="LivCompany" element={
           <ProtectedRoute><LivCompany /></ProtectedRoute>
+        } />
+        <Route path="LivrisionPrice" element={
+          <ProtectedRoute><LivrisionPrice /></ProtectedRoute>
         } />
       </Route>
       <Route path="login" element={<Login />} />

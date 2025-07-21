@@ -11,6 +11,7 @@ import handleImageUpload from '../../../utility/UploadImages'
 const UpdateWebsite = ({ website }) => {
 
     const [newWebsiteStyle, setNewWebsiteStyle] = useState({
+        id: JSON.parse(localStorage.getItem("user"))._id,
         store_name: website.websiteStyle.store_name || '',
         logo: website.websiteStyle.logo || '',
         main_color: website.websiteStyle.main_color || '',

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { format } from 'date-fns';
 import { FiX, FiCalendar } from 'react-icons/fi';
 
-const FilterPanel = ({ filters, setFilters, uniqueItems, clearFilters, onDateClick }) => (
+const FilterPanel = ({ filters, setFilters, uniqueItems, clearFilters, onDateClick, Situation, getUniqueStatus }) => (
     <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -31,9 +31,9 @@ const FilterPanel = ({ filters, setFilters, uniqueItems, clearFilters, onDateCli
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                     <option value="all">All Statuses</option>
-                    <option value="pending">Pending</option>
-                    <option value="cancelled">Cancelled</option>
-                    <option value="confirmed">Confirmed</option>
+                    {getUniqueStatus().map(r => (
+                        <option value={r}>{r}</option>
+                    ))}
                 </select>
             </div>
 

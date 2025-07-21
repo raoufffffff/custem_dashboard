@@ -1,6 +1,7 @@
 import { Loader2 } from "lucide-react";
 import useUser from "../hooks/useUser";
 import DelevryComapnesContainer from "../compunent/LivCompanyCompunents/DelevryComapnesContainer";
+import AlgeriaMap from '../compunent/LivCompanyCompunents/AlgeriaMap '
 const LivCompany = () => {
     const { fetchUser, loading, companyLiv } = useUser()
     if (loading) {
@@ -14,7 +15,7 @@ const LivCompany = () => {
         <div
             className="w-full"
         >
-            {companyLiv.name ? `good ${companyLiv.name}` : <DelevryComapnesContainer fetchUser={fetchUser} />}
+            {companyLiv.name ? <AlgeriaMap /> : <DelevryComapnesContainer fetchUser={fetchUser} />}
         </div>
     );
 };
