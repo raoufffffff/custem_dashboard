@@ -39,10 +39,6 @@ const AlgeriaMap = () => {
     };
 
 
-
-    console.log(getUniqueWilaya());
-
-
     return (
         <div>
             <WilayaTable data={getUniqueWilaya()} />

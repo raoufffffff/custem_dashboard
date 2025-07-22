@@ -25,6 +25,10 @@ const TruckOrderRow = ({ order, Items, index }) => {
                 return "bg-blue-100";
             case "Livrée":
                 return "bg-green-100";
+            case "Appel sans Réponse 2":
+                return "bg-blue-100";
+            case "Retour Livreur":
+                return "bg-red-100";
             case "Retour Navette":
                 return "bg-red-100";
             case "Livrée [ Recouvert ]":

@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 
 const useOrders = () => {
     const [orders, setOrders] = useState([]);
+    const [Allorders, setAllOrders] = useState([]);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -12,7 +13,9 @@ const useOrders = () => {
         try {
             const userId = JSON.parse(localStorage.getItem("user"))._id;
             const res = await axios.get(`https://true-fit-dz-api.vercel.app/order/my/${userId}`);
-            const sortedOrders = res.data.result.reverse().filter(e => !e.SendTo); // Newest first
+            const sortedOrders = res.data.result.reverse().filter(e => !e.SendTo);
+            // Newest first
+            setAllOrders(res.data.result.reverse())
             setOrders(sortedOrders);
         } catch (err) {
             setError(err.response?.data?.message || "Failed to fetch orders");
@@ -52,9 +55,9 @@ const useOrders = () => {
         }
     }
     const CancelledOrder = orders.filter(e => (["cancelled", "failed"].includes(e.status)))
-    const ConfirmedOrder = orders.filter(e => e.status == "confirmed")
+    const ConfirmedOrder = Allorders.filter(e => e.status == "confirmed")
     const panddingOrder = orders.filter(e => (["pending", "Connection failed 1", "Connection failed 2"].includes(e.status)))
-    return { orders, loading, error, panddingOrder, CancelledOrder, ConfirmedOrder, fetchOrders, edite, editefull };
+    return { orders, loading, error, panddingOrder, CancelledOrder, ConfirmedOrder, fetchOrders, edite, editefull, Allorders };
 };
 
 export default useOrders;

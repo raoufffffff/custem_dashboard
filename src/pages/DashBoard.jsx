@@ -9,7 +9,7 @@ import DashboardSkeleton from '../compunent/dashbourdloading/DashBoardLoading'
 import useOrders from '../hooks/useOrders'
 
 const DashBoard = () => {
-    const { orders, loading, panddingOrder, CancelledOrder, ConfirmedOrder } = useOrders();
+    const { Allorders, loading, panddingOrder, CancelledOrder, ConfirmedOrder } = useOrders();
 
 
     if (loading) return <DashboardSkeleton />
@@ -22,7 +22,7 @@ const DashBoard = () => {
             >
                 <StatCard
                     title='order'
-                    order={orders}
+                    order={Allorders}
                     color='bg-yellow-500'
                     shadow='shadow-yellow-500'
                     icon={<Package className='h-6 w-6'
@@ -53,15 +53,15 @@ const DashBoard = () => {
                 className='flex flex-wrap  mt-5 justify-around items-center'
             >
 
-                <Bars order={orders} />
-                <Lines order={orders} />
+                <Bars order={Allorders} />
+                <Lines order={Allorders} />
                 <OrderLines ConfirmedOrder={ConfirmedOrder} CancelledOrder={CancelledOrder} />
             </div>
             <div
                 className='flex flex-wrap justify-around items-center'
             >
-                <ItemList order={orders} />
-                <LastOrders order={orders} />
+                <ItemList order={Allorders} />
+                <LastOrders order={Allorders} />
             </div>
         </div>
     )

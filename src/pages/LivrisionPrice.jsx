@@ -38,7 +38,7 @@ const LivrisionPrice = () => {
     const handleInputChange = (id, field, value) => {
         setLiv((prev) =>
             prev.map((item) =>
-                item.id === id ? { ...item, [field]: value } : item
+                item.id === id ? { ...item, [field]: +value } : item
             )
         );
         setUcan(true)

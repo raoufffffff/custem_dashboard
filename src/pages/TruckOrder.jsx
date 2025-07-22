@@ -42,10 +42,12 @@ const TruckOrder = () => {
             "SD - En Attente du Client",
             "SD - Appel sans Réponse 1",
             "SD - Appel sans Réponse 2",
-            "SD - Appel sans Réponse 3"
+            "SD - Appel sans Réponse 3",
+            "Appel sans Réponse 2"
         ].includes(situation)) return "pending";
 
         if ([
+            "Retour Livreur",
             "Retour de Dispatche",
             "Retour Client",
             "Retour Navette"
