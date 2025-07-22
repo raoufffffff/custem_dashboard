@@ -19,6 +19,7 @@ const UpdateWebsite = ({ website }) => {
         facebook: website.websiteStyle.facebook || '',
         instgarm: website.websiteStyle.instgarm || '',
         tiktok: website.websiteStyle.tiktok || '',
+        tiktokP: website.websiteStyle.tiktokP || ''
     })
 
     const [uploading, setUploading] = useState(false)
@@ -153,7 +154,22 @@ const UpdateWebsite = ({ website }) => {
                                     />
                                 </div>
                             </div>
-
+                            <div className="grid grid-cols-1 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        TikTok pixel
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="tiktokP"
+                                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2.5 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                        placeholder="My Awesome Store"
+                                        value={newWebsiteStyle.tiktokP}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            </div>
                             {/* Contact & Color Section */}
                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                 <div>

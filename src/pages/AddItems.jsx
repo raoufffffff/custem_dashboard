@@ -14,7 +14,8 @@ const AddItems = () => {
         name: '',
         price: 0,
         sTitel: '',
-        type: ""
+        type: "",
+        lanImg: ""
     });
 
 
@@ -35,6 +36,19 @@ const AddItems = () => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    const LanImageUpload = async (event) => {
+
+        setUploading(true);
+        try {
+            const res = await handleImageUpload(event)
+            setFormData({ ...formData, lanImg: res })
+        } catch (err) {
+            console.error('Upload error:', err);
+
+        } finally {
+            setUploading(false);
+        }
+    }
 
     const ImageUpload = async (event) => {
         const file = event.target.files[0];
@@ -109,16 +123,15 @@ const AddItems = () => {
                         />
                     </motion.div>
 
-                    <motion.div whileHover={{ scale: 1.01 }}>
-                        <input
-                            type="number"
-                            name="discountPrice"
-                            placeholder="Discount Price"
-                            value={formData.discountPrice}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
-                        />
-                    </motion.div>
+                    {!formData.lanImg && <InputImg label='landing img' uploading={uploading} ImageUpload={LanImageUpload} />}
+                    {formData.lanImg && <motion.div
+                        layout
+                        className="flex flex-wrap gap-3 mt-3"
+                    >
+
+                        <CustomImg logo={[formData.lanImg]} removeImage={removeImage} />
+
+                    </motion.div>}
                     <motion.div whileHover={{ scale: 1.01 }}>
                         <textarea
                             type="text"
@@ -133,7 +146,7 @@ const AddItems = () => {
 
 
 
-                {images.length < 5 && <InputImg uploading={uploading} ImageUpload={ImageUpload} />}
+                {images.length < 5 && <InputImg label='item imgs' uploading={uploading} ImageUpload={ImageUpload} />}
 
                 <motion.div
                     layout

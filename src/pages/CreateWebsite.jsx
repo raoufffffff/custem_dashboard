@@ -20,6 +20,7 @@ const CreateWebsite = () => {
         facebook: '',
         instgarm: '',
         tiktok: '',
+        tiktokP: ""
     });
 
     const [uploading, setUploading] = useState(false);
@@ -63,7 +64,7 @@ const CreateWebsite = () => {
     const checkDomainAvailability = async () => {
         if (formData.name.length === 0) return;
         try {
-            const response = await axios.put(`https://true-fit-dz-api.vercel.app/user/check/domain`, { name: `${formData.name}-dznm` });
+            const response = await axios.put(`https://true-fit-dz-api.vercel.app/user/check/domain`, { name: `${formData.name}-dzcommerce` });
             setDomainAvailable(response.data.available);
         } catch {
             setDomainAvailable(false);
@@ -214,7 +215,7 @@ const CreateWebsite = () => {
                                         maxLength={30}
                                     />
                                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <span className="text-gray-500">-dznm.vacel.com</span>
+                                        <span className="text-gray-500">.vacel.com</span>
                                     </div>
                                 </div>
                                 {formData.name.length > 0 && (

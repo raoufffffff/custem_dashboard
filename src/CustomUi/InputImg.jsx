@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import { Loader2, X, Upload } from 'lucide-react';
 
-const InputImg = ({ uploading, ImageUpload }) => {
+const InputImg = ({ uploading, ImageUpload, label = "شعار الموقع" }) => {
     return (
         <div
         >
             <label className="block text-sm font-medium text-gray-700 mb-2">
-                شعار الموقع
+                {label}
             </label>
 
 
