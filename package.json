@@ -25,6 +25,7 @@
     "@tiptap/starter-kit": "^2.14.0",
     "algeria-map-ts": "^0.1.5",
     "axios": "^1.10.0",
+    "browser-image-compression": "^2.0.2",
     "date-fns": "^4.1.0",
     "firebase": "^11.9.1",
     "framer-motion": "^12.18.1",

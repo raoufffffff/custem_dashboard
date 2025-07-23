@@ -1,23 +1,30 @@
-import axios from "axios";
-
-
-
+import imageCompression from 'browser-image-compression';
+import axios from 'axios'
 const handleImageUpload = async (e) => {
     const apiKey = import.meta.env.VITE_IMGBB_API_KEY;
-    const imageData = e.target.files[0]; // This could be the image file or a URL
-    const formData = new FormData();
-    formData.append('image', imageData);
-    formData.append('key', apiKey);
-    try {
-        let downloadURL = ""
-        const res = await axios.post('https://api.imgbb.com/1/upload', formData)
-        // Create a storage reference
-        downloadURL = res.data.data.url
+    const originalFile = e.target.files[0];
 
-        // Add the image URL to state
-        return downloadURL
+    // Optimization options
+    const options = {
+        maxSizeMB: 0.5,          // Target file size (0.5MB)
+        maxWidthOrHeight: 1200,  // Maximum dimension
+        useWebWorker: true,      // For better performance
+        fileType: 'image/webp',  // Output format
+        initialQuality: 0.75     // Quality (0.6-0.8 is usually good)
+    };
+
+    try {
+        const optimizedFile = await imageCompression(originalFile, options);
+
+        const formData = new FormData();
+        formData.append('image', optimizedFile);
+        formData.append('key', apiKey);
+
+        const res = await axios.post('https://api.imgbb.com/1/upload', formData);
+        return res.data.data.url;
     } catch (err) {
         console.error('Upload error:', err);
+        throw err;
     }
 };
 

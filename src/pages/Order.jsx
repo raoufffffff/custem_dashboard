@@ -83,6 +83,16 @@ const OrderPage = () => {
             return searchParams;
         })
     }
+    const getUniqueStatus = () => {
+        return [
+            'confirmed',
+            'pending',
+            'cancelled',
+            'Connection failed 1',
+            'Connection failed 2',
+            'failed'
+        ]
+    }
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -136,6 +146,7 @@ const OrderPage = () => {
             {/* Filter Panels */}
             {filterOpen && (
                 <FilterPanel
+                    getUniqueStatus={getUniqueStatus}
                     filters={filters}
                     setFilters={setFilters}
                     uniqueItems={getUniqueItems()}

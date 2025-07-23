@@ -1,16 +1,20 @@
 import axios from "axios";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Trash2, Plus, Loader2, ChartNoAxesCombined, Pen, Save } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Trash2, Plus, Loader2, Pen, Save } from "lucide-react";
 import useItem from "../hooks/useItem";
 import CustomImg from "../CustomUi/CustomImg";
 import useUser from "../hooks/useUser";
+import EditeItems from "../compunent/itemsPage/EditeItems";
 
 const Items = () => {
     const { Items, loading, fetchItems } = useItem()
     const { _id, website } = useUser()
     const [showPixelModal, setShowPixelModal] = useState(false);
+    const [showediteModal, setShowediteModal] = useState({
+        show: false,
+        item: {}
+    });
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [Update, setUpdate] = useState(false);
     const [Ucan, setUcan] = useState(false);
@@ -66,7 +70,21 @@ const Items = () => {
             console.log(error);
         }
     };
-
+    const hendelEdite = async (id, data) => {
+        setUcan(true)
+        try {
+            await axios.put(`https://true-fit-dz-api.vercel.app/item/${id}`, data);
+            hide()
+            fetchItems()
+        } catch (error) {
+            console.log("Error updating show status:", error);
+        } finally {
+            setLoadingStates(prev => ({
+                ...prev,
+                toggle: { ...prev.toggle, [id]: false }
+            }));
+        }
+    }
     const toggleShowStatus = async (id, currentStatus) => {
         setUcan(true)
         try {
@@ -112,7 +130,11 @@ const Items = () => {
             </div>
         );
     }
-
+    const hide = () => {
+        setShowDeleteModal(false)
+        setShowediteModal({ item: {}, show: false })
+        setShowPixelModal(false)
+    }
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -204,18 +226,15 @@ const Items = () => {
                                             <Plus className="h-4 w-4" />
                                             <span>Pixel</span>
                                         </button>
-                                        <Link
-                                            className="p-2 text-green-500 hover:text-green-700 rounded-full hover:bg-green-100"
-                                            aria-label="hello"
-                                            to={'/'}
-                                        >                         <ChartNoAxesCombined className="h-5 w-5" />
-                                        </Link>
-                                        <Link
-                                            className="p-2 text-blue-500 hover:text-blue-700 rounded-full hover:bg-blue-100"
-                                            aria-label="hello"
-                                            to={'/'}
-                                        >                         <Pen className="h-5 w-5" />
-                                        </Link>
+                                        <button
+                                            onClick={() =>
+                                                setShowediteModal({
+                                                    show: true,
+                                                    item: item
+                                                })}
+                                            className="flex items-center gap-1 px-3 py-1 text-blue-600 hover:bg-blue-200 transition-colors rounded-full cursor-pointer"
+                                        >                 <Pen className="h-5 w-5" />
+                                        </button>
                                     </div>
                                 </td>
                             </motion.tr>
@@ -224,9 +243,12 @@ const Items = () => {
                 </table>
             </div>
 
+            {/* Pixel edite */}
+            {showediteModal.show && <EditeItems item={showediteModal.item} hide={hide} hendelEdite={hendelEdite} />}
+
             {/* Pixel Modal */}
             {showPixelModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-[#000c] bg-opacity-50 flex items-center justify-center z-50">
                     <motion.div
                         initial={{ scale: 0.9 }}
                         animate={{ scale: 1 }}
@@ -266,7 +288,7 @@ const Items = () => {
 
             {/* Delete Confirmation Modal */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-[#000c] bg-opacity-50 flex items-center justify-center z-50">
                     <motion.div
                         initial={{ scale: 0.9 }}
                         animate={{ scale: 1 }}

@@ -9,7 +9,6 @@ const useOrders = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const fetchOrders = async () => {
-        setLoading(true);
         try {
             const userId = JSON.parse(localStorage.getItem("user"))._id;
             const res = await axios.get(`https://true-fit-dz-api.vercel.app/order/my/${userId}`);
@@ -31,8 +30,8 @@ const useOrders = () => {
         try {
             const res = await axios.put(`https://true-fit-dz-api.vercel.app/order/${a}`, { status: b, not: c })
             if (res.data.good) {
-                toast.success("تم تسجيل الدخول بنجاح ✅");
-                // fetchOrders()
+                toast.success("تم   بنجاح ✅");
+                fetchOrders()
             }
         } catch {
             toast.error("يرجى ملء جميع الحقول", {
