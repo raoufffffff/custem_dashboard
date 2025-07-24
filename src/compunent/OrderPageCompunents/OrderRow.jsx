@@ -153,7 +153,11 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
                 </td>
 
                 <td className="px-6 py-4 text-xs text-gray-500 whitespace-nowrap border-l-2 border-l-white">
-                    {format(new Date(myorder.date), 'MMM dd, yyyy')}
+                    {format(new Date(myorder.date), 'MMM dd, yyyy ')}
+                    {format(new Date(myorder.date), ' HH:mm')}
+                </td>
+                <td className="px-6 py-4 text-xs text-gray-500 whitespace-nowrap border-l-2 border-l-white">
+                    {format(new Date(myorder.date), ' HH:mm')}
                 </td>
 
                 <td onClick={() => setShowStatusDropdown(true)} className="px-6 py-4 relative whitespace-nowrap cursor-pointer border-l-2 border-l-white">
