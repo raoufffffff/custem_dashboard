@@ -39,6 +39,19 @@ const useOrders = () => {
             });
         }
     }
+    const deleteOrder = async (a) => {
+        try {
+            const res = await axios.delete(`https://true-fit-dz-api.vercel.app/order/${a}`)
+            if (res.data.good) {
+                toast.success("تم   بنجاح ✅");
+                fetchOrders()
+            }
+        } catch {
+            toast.error("يرجى ملء جميع الحقول", {
+                style: { border: "1px solid #ef4444" }, // red-500
+            });
+        }
+    }
     const editefull = async (a, b) => {
         try {
             const res = await axios.put(`https://true-fit-dz-api.vercel.app/order/${a}`, b)
@@ -56,7 +69,7 @@ const useOrders = () => {
     const CancelledOrder = orders.filter(e => (["cancelled", "failed"].includes(e.status)))
     const ConfirmedOrder = Allorders.filter(e => e.status == "confirmed")
     const panddingOrder = orders.filter(e => (["pending", "Connection failed 1", "Connection failed 2"].includes(e.status)))
-    return { orders, loading, error, panddingOrder, CancelledOrder, ConfirmedOrder, fetchOrders, edite, editefull, Allorders };
+    return { orders, loading, error, panddingOrder, CancelledOrder, ConfirmedOrder, fetchOrders, edite, editefull, Allorders, deleteOrder };
 };
 
 export default useOrders;

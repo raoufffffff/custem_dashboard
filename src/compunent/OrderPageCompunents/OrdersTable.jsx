@@ -1,6 +1,6 @@
 import OrderRow from "./OrderRow";
 
-const OrdersTable = ({ orders, emptyMessage, loading, edite, ucan, EdetAllOrder, sendtoLiv, fetchOrders }) => (
+const OrdersTable = ({ orders, emptyMessage, loading, edite, ucan, EdetAllOrder, sendtoLiv, fetchOrders, deleteOrder }) => (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -51,6 +51,7 @@ const OrdersTable = ({ orders, emptyMessage, loading, edite, ucan, EdetAllOrder,
                     ) : orders.length > 0 ? (
                         orders.map((item, index) => (
                             <OrderRow
+                                deleteOrder={deleteOrder}
                                 fetchOrders={fetchOrders}
                                 sendtoLiv={sendtoLiv}
                                 EdetAllOrder={EdetAllOrder}

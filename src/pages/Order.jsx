@@ -24,7 +24,7 @@ const OrderPage = () => {
     // Data hooks
     const { sendtoLiv } = UseLivOrder()
 
-    const { orders, loading, edite, fetchOrders, editefull } = useOrders();
+    const { orders, loading, edite, fetchOrders, editefull, deleteOrder } = useOrders();
     const {
         filteredOrders,
         filters,
@@ -164,6 +164,7 @@ const OrderPage = () => {
 
             {/* Orders Table */}
             <OrdersTable
+                deleteOrder={deleteOrder}
                 EdetAllOrder={EdetAllOrder}
                 edite={edite}
                 orders={visibleItems}
