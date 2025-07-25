@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { format } from 'date-fns';
+import { format, differenceInMinutes, differenceInHours, differenceInDays, differenceInWeeks, differenceInMonths, differenceInYears } from 'date-fns';
 import { useState } from "react";
 import {
     CheckCircle,
@@ -13,7 +13,7 @@ import {
     Truck,
     Building2,
     HomeIcon,
-    Trash
+    Trash,
 } from 'lucide-react';
 import ShowNoteC from "./OrderRow/showNote";
 import ShowdeleteC from "./OrderRow/ShowdeleteC";
@@ -63,6 +63,28 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
         setMyOrder(updatedOrder);
         setShowStatusDropdown(false);
         edite(order._id, newStatus, note);
+    };
+    const getSocialTime = (date) => {
+        const now = new Date();
+        const past = new Date(date);
+
+        const minutes = differenceInMinutes(now, past);
+        if (minutes < 60) return `${minutes}m`;
+
+        const hours = differenceInHours(now, past);
+        if (hours < 24) return `${hours}h`;
+
+        const days = differenceInDays(now, past);
+        if (days < 7) return `${days}d`;
+
+        const weeks = differenceInWeeks(now, past);
+        if (weeks < 4) return `${weeks}w`;
+
+        const months = differenceInMonths(now, past);
+        if (months < 12) return `${months}mo`;
+
+        const years = differenceInYears(now, past);
+        return `${years}y`;
     };
 
     return (
@@ -157,7 +179,8 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
                     {format(new Date(myorder.date), ' HH:mm')}
                 </td>
                 <td className="px-6 py-4 text-xs text-gray-500 whitespace-nowrap border-l-2 border-l-white">
-                    {format(new Date(myorder.date), ' HH:mm')}
+                    {getSocialTime(myorder.date)}
+                    {/* {minutesPassed} */}
                 </td>
 
                 <td onClick={() => setShowStatusDropdown(true)} className="px-6 py-4 relative whitespace-nowrap cursor-pointer border-l-2 border-l-white">
