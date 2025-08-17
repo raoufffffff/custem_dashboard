@@ -1,158 +1,180 @@
 import {
-    LayoutDashboard, Table,
-    Bell,
-    Package2,
-    PackagePlus,
-    CircleX,
-    Code,
-    LogOut,
+    Home,
+    Store,
+    Box,
+    Package,
+    Tag,
+    Layers,
+    Truck,
+    Megaphone,
     ChevronDown,
     ChevronUp,
-    PackageCheck,
-    Truck,
-    Package,
-    CircleDollarSign,
 } from 'lucide-react';
-import { NavLink, Link } from 'react-router-dom';
-import { motion } from "motion/react"
+import { NavLink } from 'react-router-dom';
+import { motion, AnimatePresence } from "motion/react";
 import { useState } from 'react';
+import { HiBars3BottomLeft } from "react-icons/hi2";
 
-export default function Sidebar({ hide, AlartNotification, setNotificationsToDefult, NotificationsCurrentNumber, website, companyLiv }) {
-    const logout = () => {
-        localStorage.clear()
-    }
-    const [show, setshow] = useState({
-        order: false,
-        liv: false
-    })
+export default function Sidebar({ SemalHarder, togelHeader, open }) {
+    const [show, setShow] = useState({
+        store: false,
+        orders: false,
+        categories: false,
+        delivery: false,
+        marketing: false,
+    });
+
     return (
         <motion.aside
             initial={{ x: -1000 }}
             exit={{ x: -1000 }}
             animate={{ x: 0 }}
-            transition={{ duration: 0.9, type: "spring" }}
-            className="w-64 fixed top-3 left-5 min-h-[95vh] max-h-[95vh] bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-y-scroll a flex flex-col justify-between z-[60] rounded-xl">
+            transition={{ duration: 0.6, type: "spring" }}
+            className={`${SemalHarder ? "w-0 md:w-1/12" : "w-8/12 md:w-3/12"} 
+                bg-white/90 backdrop-blur-md border-l border-gray-200 shadow-xl 
+                flex flex-col z-[500] fixed top-0 right-0 h-full transition-all duration-300`}
+        >
+            {/* Toggle Button */}
+            <button
+                onClick={togelHeader}
+                className={`${SemalHarder ? "w-9/12 mt-3 mx-auto" : "absolute top-3 left-3"} flex items-center justify-between px-4 py-2.5 rounded-lg cursor-pointer transition-all hover:bg-blue-50 hover:text-blue-600`}
+            >
+                <HiBars3BottomLeft className="w-5 h-5 text-gray-700" />
+            </button>
 
-            {/* Logo and Close */}
-            <div>
-                <div className="flex items-center justify-between px-4 py-5 border-b border-gray-700">
-                    <div className="flex items-center space-x-2">
-                        <LayoutDashboard
-                            className="w-6 h-6 text-white" />
-                        <span className="font-semibold text-sm">Material Dashboard 2</span>
-                    </div>
-                    <CircleX onClick={hide}
-                    />
+            {/* Logo + alert */}
+            {!SemalHarder && (
+                <div className="px-6 py-6 text-center border-b border-gray-200">
+                    <h1 className="font-extrabold text-xl text-gray-800">Raouf Soft</h1>
+                    <span className="mt-3 inline-block bg-red-100 text-red-600 text-xs px-3 py-1 rounded-full shadow-sm">
+                        مغلق لعدم دفع الإشتراك
+                    </span>
                 </div>
+            )}
 
-                {/* Navigation Items */}
-                <nav className="mt-4 px-2 space-y-1 text-sm">
-                    <NavItem hide={hide} icon={<LayoutDashboard />} label="Dashboard" to="/" />
-
-
-                    <div
-
-                        onClick={() => {
-                            setshow({ order: !show.order, liv: false })
-                        }
-                        }
-                        className={
-                            `flex items-center px-4 py-2 rounded-lg cursor-pointer transition
-                text-gray-300 hover:bg-gray-700 hover:text-white`
-                        }
-                    >
-                        <div className="w-5 h-5 mr-3 flex justify-between"><Table /></div>
-                        <span>orders</span>
-
-                        {show.order ? <ChevronUp className='ml-auto' />
-                            : <ChevronDown className='ml-auto' />}
-                    </div>
-                    {show.order &&
-                        <>
-                            {companyLiv.name && <NavItem hide={hide} icon={<Truck />} label="Truck Orders" side={true} to="/TruckOrder" />}
-                            <NavItem hide={hide} icon={<PackageCheck />} label="All Orders" side={true} to="/orders" />
+            {/* Navigation */}
+            <nav className="flex-1 px-2 py-6 text-gray-700 text-sm space-y-1 overflow-y-auto">
 
 
-                        </>
+                <NavItem icon={<Home className="w-5 h-5" />} label="الرئيسية" to="/" collapsed={SemalHarder} />
 
+                <Dropdown
+                    label="المتجر"
+                    icon={<Store className="w-5 h-5" />}
+                    open={show.store}
+                    toggle={() => {
+
+                        open()
+                        setShow({ ...show, store: !show.store })
                     }
-                    <div
-
-                        onClick={() => {
-                            setshow({ order: false, liv: !show.liv })
-                        }
-                        }
-                        className={
-                            `flex items-center px-4 py-2 rounded-lg cursor-pointer transition
-                text-gray-300 hover:bg-gray-700 hover:text-white`
-                        }
-                    >
-                        <div className="w-5 h-5 mr-3 flex justify-between"><Package /></div>
-                        <span>livraison company</span>
-
-                        {show.liv ? <ChevronUp className='ml-auto' />
-                            : <ChevronDown className='ml-auto' />}
-                    </div>
-                    {show.liv &&
-                        <>
-                            <NavItem hide={hide} icon={<Truck />} label="delevry Company" side={true} to="/LivCompany" />
-                            <NavItem hide={hide} icon={<CircleDollarSign />} label="Delivery Price" side={true} to="/LivrisionPrice" />
-                        </>
-
                     }
-                    <NavItem hide={hide} icon={<Bell />} label="Notifications" alart={AlartNotification} to="/notifications" numbernot={NotificationsCurrentNumber} onClick={setNotificationsToDefult} />
+                    collapsed={SemalHarder}
+                >
+                    <NavItem side label="إعدادات المتجر" to="/modify-website" collapsed={SemalHarder} />
+                </Dropdown>
 
-                    <NavItem hide={hide} icon={<Package2 />} label="Items" to="/items" />
-                    <NavItem hide={hide} icon={<PackagePlus />} label="Add Items" to="/AddItems" />
-                    <NavItem hide={hide} icon={<Code />} label="modify website" to="/modify-website" />
-                    <NavItem
-                        onClick={logout}
-                        hide={hide} icon={<LogOut />} label="Log Out" to="/login" />
-                </nav>
-            </div>
+                <Dropdown
+                    label="الطلبات"
+                    icon={<Box className="w-5 h-5" />}
+                    open={show.orders}
+                    toggle={() => {
+                        open()
+                        setShow({
+                            ...show, orders: !show.orders
+                        })
+                    }}
+                    collapsed={SemalHarder}
+                >
+                    <NavItem side label="كل الطلبات" to="/orders" collapsed={SemalHarder} />
+                </Dropdown>
 
-            {/* Upgrade Button */}
+                <NavItem icon={<Tag className="w-5 h-5" />} label="المنتجات" to="/items" collapsed={SemalHarder} />
 
-            {website.link ? <div className="p-4">
-                <Link
-                    target='_blank'
-                    to={`https://${website.link}`}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md text-sm uppercase">
-                    VISIT YOUR WEBSITE
-                </Link>
-            </div> : <div className="p-4">
-                <Link
-                    onClick={hide}
-                    to={'/create-website'}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md text-sm uppercase">
-                    Create your website
-                </Link>
-            </div>}
+
+
+                <Dropdown
+                    label="التصنيفات"
+                    icon={<Layers className="w-5 h-5" />}
+                    open={show.categories}
+                    toggle={() => {
+                        open()
+                        setShow({ ...show, categories: !show.categories })
+                    }}
+                    collapsed={SemalHarder}
+                >
+                    <NavItem side label="كل التصنيفات" to="/modify-website" collapsed={SemalHarder} />
+                </Dropdown>
+
+                <Dropdown
+                    label="التوصيل"
+                    icon={<Truck className="w-5 h-5" />}
+                    open={show.delivery}
+                    toggle={() => {
+                        open()
+                        setShow({ ...show, delivery: !show.delivery })
+                    }}
+                    collapsed={SemalHarder}
+                >
+                    <NavItem side label="شركات التوصيل" to="/LivCompany" collapsed={SemalHarder} />
+                </Dropdown>
+
+                <NavItem icon={<Megaphone className="w-5 h-5" />} label="أدوات التسويق" to="/marketing" collapsed={SemalHarder} />
+            </nav>
         </motion.aside>
     );
 }
 
-// Reusable Nav Item Component with React Router
-function NavItem({ icon, side, label, to, hide, alart, numbernot, onClick }) {
+/* Reusable NavItem */
+function NavItem({ icon, label, to, side, active, hot, collapsed }) {
     return (
         <NavLink
             to={to}
-            onClick={() => {
-                hide()
-                onClick()
-            }
-            }
             className={({ isActive }) =>
-                `flex items-center px-4 py-2 rounded-lg cursor-pointer transition
-                ${side && "scale-[0.85]"}
-                ${isActive ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`
+                `flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium cursor-pointer transition-all duration-200
+                 ${side ? "pl-10 text-gray-600" : ""}
+                 ${active || isActive
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                }`
             }
         >
-            <div className="w-5 h-5 mr-3">{icon}</div>
-            <span>{label}</span>
-            {alart && <span
-                className='ml-auto text-blue-600 bg-white py-1 px-2 rounded-full text-[8px]'
-            >{numbernot}</span>}
+            {icon}
+            {!collapsed && (
+                <span className="flex items-center gap-1">
+                    {label} {hot && <span className="text-lg">🔥</span>}
+                </span>
+            )}
         </NavLink>
+    );
+}
+
+/* Dropdown Component */
+function Dropdown({ icon, label, open, toggle, children, collapsed }) {
+    return (
+        <div>
+            <div
+                onClick={toggle}
+                className="flex items-center justify-between px-4 py-2.5 rounded-lg cursor-pointer transition-all hover:bg-blue-50 hover:text-blue-600"
+            >
+                <div className="flex items-center gap-3">
+                    {icon}
+                    {!collapsed && <span>{label}</span>}
+                </div>
+                {!collapsed && (open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />)}
+            </div>
+            <AnimatePresence>
+                {open && !collapsed && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="ml-4 mt-1 space-y-1 border-r-2 border-blue-200 pr-2"
+                    >
+                        {children}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
     );
 }
