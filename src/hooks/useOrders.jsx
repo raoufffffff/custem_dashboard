@@ -67,8 +67,8 @@ const useOrders = () => {
         }
     }
     const CancelledOrder = orders.filter(e => (["cancelled", "failed"].includes(e.status)))
-    const ConfirmedOrder = Allorders.filter(e => e.status == "confirmed")
-    const panddingOrder = orders.filter(e => (["pending", "Connection failed 1", "Connection failed 2"].includes(e.status)))
+    const ConfirmedOrder = Allorders.filter(e => (["confirmed", "ready"].includes(e.status)))
+    const panddingOrder = orders.filter(e => (["pending", "Connection failed 1", "Connection failed 2", "Connection failed 3", "Postponed"].includes(e.status)))
     return { orders, loading, error, panddingOrder, CancelledOrder, ConfirmedOrder, fetchOrders, edite, editefull, Allorders, deleteOrder };
 };
 

@@ -12,22 +12,6 @@ export default function Header({ togelHeader }) {
             transition={{ duration: 0.5, ease: 'easeOut' }}
             className="sticky top-0 left-0 z-50 w-full bg-white shadow-sm px-6 py-3 flex items-center justify-between"
         >
-            {/* Left side icons */}
-            <div className="flex items-center gap-6">
-                {/* User */}
-                <button className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors">
-                    <FaRegCircleUser className="w-5 h-5" />
-                </button>
-
-                {/* Language */}
-                <button className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors">
-                    <Globe className="w-5 h-5" />
-                    <span className="text-sm">العربية</span>
-                </button>
-
-            </div>
-
-            {/* Right side logo */}
             <div
                 className='flex items-center'
             >
@@ -45,6 +29,23 @@ export default function Header({ togelHeader }) {
                     <HiBars3BottomLeft className="w-5 h-5 text-gray-700" />
                 </button>
             </div>
+            {/* Left side icons */}
+            <div className="flex items-center gap-6">
+                {/* User */}
+                <button className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors">
+                    <FaRegCircleUser className="w-5 h-5" />
+                </button>
+
+                {/* Language */}
+                <button className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors">
+                    <Globe className="w-5 h-5" />
+                    <span className="text-sm">english</span>
+                </button>
+
+            </div>
+
+            {/* Right side logo */}
+
         </motion.header>
     );
 }

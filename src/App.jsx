@@ -5,20 +5,21 @@ import Sidebar from "./compunent/header/Sidebar"
 
 
 function App() {
-  const [SemalHarder, setSemalHarder] = useState(false)
+  const [SemalHarder, setSemalHarder] = useState(true)
   const togelHeader = () => setSemalHarder(p => !p)
   const open = () => setSemalHarder(false)
   return (
     <div
-      className="min-h-screen w-full pb-11 "
+      className="min-h-screen w-full pb-11 flex justify-end"
     >
-      <Sidebar open={open} togelHeader={togelHeader} SemalHarder={SemalHarder} />
+
       <main
-        className={`relative  ${SemalHarder ? "w-full md:w-11/12" : "w-full md:w-9/12"}`}
+        className={`relative  ${SemalHarder ? "w-full md:w-11/12" : "w-full md:w-9/12"} transition-all duration-200`}
       >
         <Header togelHeader={togelHeader} />
         <Outlet />
       </main>
+      <Sidebar open={open} togelHeader={togelHeader} SemalHarder={SemalHarder} />
     </div>
   )
 }
