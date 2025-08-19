@@ -2,9 +2,8 @@ import { motion } from "framer-motion";
 import { format, differenceInMinutes, differenceInHours, differenceInDays, differenceInWeeks, differenceInMonths, differenceInYears } from 'date-fns';
 import { useState } from "react";
 import {
+    Bell, XCircle, CheckCircle2, Package, Clock, PhoneOff, Ban,
     CheckCircle,
-    Clock,
-    XCircle,
     WifiOff,
     AlertCircle,
     Circle,
@@ -41,7 +40,17 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
         'Connection failed 2': <WifiOff className="w-4 h-4 mr-2" />,
         failed: <AlertCircle className="w-4 h-4 mr-2" />
     };
-
+    const statuses = [
+        { key: "pending", label: "Pending", color: "bg-blue-100 text-blue-500 ring-blue-200", icon: <Bell className="w-4 h-4" /> },
+        { key: "Connection failed 1", label: "Connection failed 1", color: "bg-yellow-100 text-yellow-500 ring-yellow-200", icon: <PhoneOff className="w-4 h-4" /> },
+        { key: "Connection failed 2", label: "Connection failed 2", color: "bg-yellow-100 text-yellow-500 ring-yellow-200", icon: <PhoneOff className="w-4 h-4" /> },
+        { key: "Connection failed 3", label: "Connection failed 3", color: "bg-yellow-100 text-yellow-500 ring-yellow-200", icon: <PhoneOff className="w-4 h-4" /> },
+        { key: "confirmed", label: "Confirmed", color: "bg-green-100 text-green-500 ring-green-200", icon: <CheckCircle2 className="w-4 h-4" /> },
+        { key: "ready", label: "Ready", color: "bg-emerald-100 text-emerald-500 ring-emerald-200", icon: <Package className="w-4 h-4" /> },
+        { key: "Postponed", label: "Postponed", color: "bg-purple-100 text-purple-500 ring-purple-200", icon: <Clock className="w-4 h-4" /> },
+        { key: "cancelled", label: "Cancelled", color: "bg-gray-100 text-gray-500 ring-gray-200", icon: <XCircle className="w-4 h-4" /> },
+        { key: "failed", label: "Failed", color: "bg-red-100 text-red-500 ring-red-200", icon: <Ban className="w-4 h-4" /> },
+    ]
     const statusColors = {
         confirmed: { bg: 'bg-green-500', badge: 'bg-green-100 text-green-800' },
         pending: { bg: 'bg-yellow-500', badge: 'bg-yellow-100 text-yellow-800' },
@@ -139,7 +148,7 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="bg-white shadow-sm hover:shadow-md transition-shadow rounded-xl"
+                className="bg-white shadow-sm hover:shadow-md transition-shadow rounded-xl border-b border-[#eee]"
             >
 
 
@@ -183,12 +192,17 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
                     {/* {minutesPassed} */}
                 </td>
 
-                <td onClick={() => setShowStatusDropdown(true)} className="px-6 py-4 relative whitespace-nowrap cursor-pointer border-l-2 border-l-white">
-                    <div className={`px-2 inline-flex items-center text-xs font-semibold rounded-full ${statusColors[myorder.status]?.badge || 'bg-gray-100 text-gray-800'}`}>
-                        {statusIcons[myorder.status] || <Circle className="w-4 h-4 mr-2" />}
-                        {myorder.status}
-                    </div>
+                {/* Status */}
+                <td
+                    onClick={() => setShowStatusDropdown(true)}
+                    className="px-4 py-2">
+                    <span className={`inline-flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-full border ${statuses.find(e => e.key == myorder.status).color || 'bg-gray-100 text-gray-800'} ring-2 ring-offset-2`}>
+                        {statuses.find(e => e.key == myorder.status).icon}
+                        {statuses.find(e => e.key == myorder.status).label}
+                    </span>
                 </td>
+
+
 
                 <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap border-l-2 border-l-white">DZD {myorder.price + myorder.ride}</td>
                 <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap border-l-2 border-l-white">DZD {myorder.price}</td>

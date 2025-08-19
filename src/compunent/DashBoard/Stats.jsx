@@ -1,5 +1,6 @@
 import { LuArrowRight } from "react-icons/lu";
 import { Link } from "react-router-dom";
+import BoxCard from "../../CustomUi/BoxCard";
 
 const Stats = ({ ConfirmedOrder, panddingOrder }) => {
     const Earnings = () => {
@@ -10,21 +11,12 @@ const Stats = ({ ConfirmedOrder, panddingOrder }) => {
         return a
     }
     return (
-        <div className="bg-white w-11/12 mx-auto p-6 rounded-2xl shadow-md">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg  font-semibold text-gray-800">Overview</h2>
-                <Link
-                    to={'/'}
-                    className="text-sm flex items-center underline  hover:underline">
-                    View Details
-                    <LuArrowRight
-                        className="mt-1 mx-1"
+        <BoxCard
+            about={'Overview'}
+            link={'/'}
+        >
 
-                    />
 
-                </Link>
-            </div>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -52,7 +44,8 @@ const Stats = ({ ConfirmedOrder, panddingOrder }) => {
                     <p className="text-xl font-bold text-gray-800">{Earnings()} DA</p>
                 </div>
             </div>
-        </div>
+        </BoxCard>
+
     )
 }
 

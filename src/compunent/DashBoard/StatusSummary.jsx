@@ -1,7 +1,6 @@
 "use client"
 import { Bell, XCircle, CheckCircle2, Package, Clock, PhoneOff, Ban } from "lucide-react"
-import { LuArrowRight } from "react-icons/lu"
-import { Link } from "react-router-dom"
+import BoxCard from "../../CustomUi/BoxCard"
 
 const statuses = [
     { key: "pending", label: "Pending", color: "bg-blue-100 text-blue-500 ring-blue-200", icon: <Bell className="w-4 h-4" /> },
@@ -25,21 +24,11 @@ const StatusSummary = ({ Allorders }) => {
     }
 
     return (
-        <div className="bg-white w-11/12 mx-auto p-6 rounded-2xl shadow-md">
+        <BoxCard about={"Order Summary"} link={'order'} >
+
+
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-800">Order Summary</h2>
-                <Link
-                    to={'/'}
-                    className="text-sm flex items-center underline  hover:underline">
-                    View Details
-                    <LuArrowRight
-                        className="mt-1 mx-1"
 
-                    />
-
-                </Link>
-            </div>
 
             {/* Table */}
             <div className="overflow-x-auto">
@@ -73,7 +62,8 @@ const StatusSummary = ({ Allorders }) => {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </BoxCard>
+
     )
 }
 

@@ -14,6 +14,7 @@ import { useSearchParams } from "react-router-dom";
 import AddNewOrder from "../compunent/OrderPageCompunents/AddNewOrder";
 import EditeOrder from "../compunent/OrderPageCompunents/EditeOrder";
 import UseLivOrder from "../hooks/UseLivOrder";
+import OrdersSummary from "../compunent/orders/OrdersSummary";
 
 const OrderPage = () => {
     // State for UI controls
@@ -24,7 +25,7 @@ const OrderPage = () => {
     // Data hooks
     const { sendtoLiv } = UseLivOrder()
 
-    const { orders, loading, edite, fetchOrders, editefull, deleteOrder } = useOrders();
+    const { orders, Allorders, loading, edite, fetchOrders, editefull, deleteOrder } = useOrders();
     const {
         filteredOrders,
         filters,
@@ -51,6 +52,19 @@ const OrderPage = () => {
                     id: item._id,
                     name: item.name
                 });
+            }
+        }
+        return uniqueItems;
+    };
+    const getUniqueState = () => {
+        const uniqueItems = [];
+        const seen = new Set();
+
+        for (const orderItem of orders) {
+            const item = orderItem.state;
+            if (!seen.has(item)) {
+                seen.add(item);
+                uniqueItems.push(item);
             }
         }
         return uniqueItems;
@@ -83,16 +97,7 @@ const OrderPage = () => {
             return searchParams;
         })
     }
-    const getUniqueStatus = () => {
-        return [
-            'confirmed',
-            'pending',
-            'cancelled',
-            'Connection failed 1',
-            'Connection failed 2',
-            'failed'
-        ]
-    }
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -100,69 +105,14 @@ const OrderPage = () => {
             transition={{ duration: 0.3 }}
             className="p-6 max-w-7xl mx-auto"
         >
-            {searchParams.get("new") && <AddNewOrder fetchOrders={fetchOrders} hide={hide} />}
-            {searchParams.get("edite") && <EditeOrder id={searchParams.get("edite")} editefull={editefull} hide={hide} />}
-            {/* Stats Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <CustomStateCard
-                    loading={loading}
-                    label="Total Orders"
-                    value={stats.total}
-                    color="gray"
-                />
-                <CustomStateCard
-                    loading={loading}
-                    label="Confirmed"
-                    value={stats.confirmed}
-                    color="green"
-                />
-                <CustomStateCard
-                    loading={loading}
-                    label="Pending"
-                    value={stats.pending}
-                    color="yellow"
-                />
-                <CustomStateCard
-                    loading={loading}
-                    label="Cancelled"
-                    value={stats.cancelled}
-                    color="red"
-                />
-            </div>
-
-            {/* Action Buttons */}
-
-            <FilterButtons
-                add
-                AddNewOrder={addNewOrder}
-                filterOpen={filterOpen}
-                filteredOrders={filteredOrders}
-                searchOpen={searchOpen}
-                visibleItems={visibleItems}
-                setFilterOpen={togeleFilter}
-                setSearchOpen={togeleSearch}
+            <OrdersSummary Allorders={orders} />
+            <FilterPanel
+                clearFilters={clearFilters}
+                filters={filters}
+                setFilters={setFilters}
+                uniqueItems={getUniqueItems()}
+                getUniqueState={getUniqueState()}
             />
-
-            {/* Filter Panels */}
-            {filterOpen && (
-                <FilterPanel
-                    getUniqueStatus={getUniqueStatus}
-                    filters={filters}
-                    setFilters={setFilters}
-                    uniqueItems={getUniqueItems()}
-                    clearFilters={clearFilters}
-                    onDateClick={() => setShowDate(true)}
-                />
-            )}
-
-            {searchOpen && (
-                <SearchPanel
-                    customer={filters.customer}
-                    setCustomer={(customer) => setFilters({ ...filters, customer })}
-                />
-            )}
-
-            {/* Orders Table */}
             <OrdersTable
                 deleteOrder={deleteOrder}
                 EdetAllOrder={EdetAllOrder}
@@ -173,24 +123,6 @@ const OrderPage = () => {
                 fetchOrders={fetchOrders}
                 emptyMessage="No orders found matching your criteria"
             />
-
-            {/* Load More Button */}
-            {hasMore && (
-                <LoadMoreButton
-                    remaining={filteredOrders.length - visibleItems.length}
-                    onClick={loadMore}
-                />
-            )}
-
-            {/* Date Picker Modal */}
-            {showDate && (
-                <DatePickerModal
-                    dateRange={filters.dateRange}
-                    onApply={(dateRange) => setFilters({ ...filters, dateRange })}
-                    onReset={() => setFilters({ ...filters, dateRange: { start: null, end: null } })}
-                    onCancel={() => setShowDate(false)}
-                />
-            )}
         </motion.div>
     );
 };

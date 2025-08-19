@@ -12,6 +12,15 @@ const DashBoard = () => {
         <div
             className='flex flex-col gap-10 px-0 md:px-5 pt-4'
         >
+            <h1
+                className='!leading-[115%] w-11/12 mx-auto text-2xl md:text-3xl font-bold text-neutral-900 ltr:first-letter:uppercase flex items-center flex-wrap gap-2'
+            >welcome,
+                <span
+                    className='text-red-500'
+                >
+                    {JSON.parse(localStorage.getItem("user")).name}
+                </span>
+                👋</h1>
             <Stats panddingOrder={panddingOrder} ConfirmedOrder={ConfirmedOrder} />
             <StatusSummary Allorders={Allorders} />
         </div>
