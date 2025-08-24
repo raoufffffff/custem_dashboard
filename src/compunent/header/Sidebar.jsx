@@ -32,7 +32,7 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
             exit={{ x: -1000 }}
             animate={{ x: 0 }}
             transition={{ duration: 0.2, type: "spring" }}
-            className={`${SemalHarder ? "w-0 overflow-hidden md:w-1/12" : "w-8/12 md:w-3/12"} 
+            className={`${SemalHarder ? "w-0 overflow-hidden md:w-[9%]" : "w-8/12 md:w-3/12"} 
                 bg-white/90 backdrop-blur-md border-l border-gray-200 shadow-xl 
                 flex flex-col z-[500] fixed top-0 left-0 h-full transition-all duration-300`}
         >
@@ -65,7 +65,7 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
             {/* Navigation */}
             <nav className="flex-1 px-2 py-6 text-gray-700 text-sm space-y-1 overflow-y-auto">
 
-                <NavItem icon={<Home className="w-5 h-5" />} label="Home" to="/" collapsed={SemalHarder} />
+                <NavItem togelHeader={togelHeader} icon={<Home className="w-5 h-5" />} label="Home" to="/" collapsed={SemalHarder} />
 
                 <Dropdown
                     label="Store"
@@ -77,7 +77,7 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
                     }}
                     collapsed={SemalHarder}
                 >
-                    <NavItem side label="Store Settings" to="/modify-website" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} side label="Store Settings" to="/modify-website" collapsed={SemalHarder} />
                 </Dropdown>
 
                 <Dropdown
@@ -90,10 +90,22 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
                     }}
                     collapsed={SemalHarder}
                 >
-                    <NavItem side label="All Orders" to="/orders" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} side label="All Orders" to="/orders" collapsed={SemalHarder} />
+                </Dropdown>
+                <Dropdown
+                    label="Products"
+                    icon={<Tag className="w-5 h-5" />}
+                    open={show.orders}
+                    toggle={() => {
+                        open()
+                        setShow({ ...show, orders: !show.orders })
+                    }}
+                    collapsed={SemalHarder}
+                >
+                    <NavItem togelHeader={togelHeader} side label="Products" to="/items" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} side label="Add Products" to="/additems" collapsed={SemalHarder} />
                 </Dropdown>
 
-                <NavItem icon={<Tag className="w-5 h-5" />} label="Products" to="/items" collapsed={SemalHarder} />
 
                 <Dropdown
                     label="Categories"
@@ -105,7 +117,7 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
                     }}
                     collapsed={SemalHarder}
                 >
-                    <NavItem side label="All Categories" to="/modify-website" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} side label="All Categories" to="/modify-website" collapsed={SemalHarder} />
                 </Dropdown>
 
                 <Dropdown
@@ -118,17 +130,17 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
                     }}
                     collapsed={SemalHarder}
                 >
-                    <NavItem side label="Delivery Companies" to="/LivCompany" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} side label="Delivery Companies" to="/LivCompany" collapsed={SemalHarder} />
                 </Dropdown>
 
-                <NavItem icon={<Megaphone className="w-5 h-5" />} label="Marketing Tools" to="/marketing" collapsed={SemalHarder} />
+                <NavItem togelHeader={togelHeader} icon={<Megaphone className="w-5 h-5" />} label="Marketing Tools" to="/marketing" collapsed={SemalHarder} />
             </nav>
         </motion.aside>
     );
 }
 
 /* Reusable NavItem */
-function NavItem({ icon, label, to, side, active, hot, collapsed }) {
+function NavItem({ icon, label, to, side, active, hot, collapsed, togelHeader }) {
     return (
         <NavLink
             to={to}
@@ -140,6 +152,7 @@ function NavItem({ icon, label, to, side, active, hot, collapsed }) {
                     : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
                 }`
             }
+            onClick={togelHeader}
         >
             {icon}
             {!collapsed && (

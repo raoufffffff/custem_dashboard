@@ -3,6 +3,8 @@ import useOrders from '../hooks/useOrders';
 import useOrderFilters from '../hooks/useOrderFilters';
 import usePagination from '../hooks/usePagination';
 import { useState } from "react";
+import PageContainer from '../CustomUi/PageContainer';
+
 import CustomStateCard from "../compunent/OrderPageCompunents/CustomStateCard";
 import FilterButtons from "../compunent/OrderPageCompunents/FilterButtons";
 import FilterPanel from "../compunent/OrderPageCompunents/FilterPanel";
@@ -99,11 +101,10 @@ const OrderPage = () => {
     }
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="p-6 max-w-7xl mx-auto"
+        <PageContainer
+            about={"Management"}
+            titel={"Order"}
+            className={"gap-2"}
         >
             <OrdersSummary Allorders={orders} />
             <FilterPanel
@@ -123,7 +124,7 @@ const OrderPage = () => {
                 fetchOrders={fetchOrders}
                 emptyMessage="No orders found matching your criteria"
             />
-        </motion.div>
+        </PageContainer>
     );
 };
 

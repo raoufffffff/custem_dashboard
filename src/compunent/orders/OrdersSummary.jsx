@@ -32,7 +32,7 @@ const OrdersSummary = ({ Allorders }) => {
                     return (
                         <div
                             key={i}
-                            className={`inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg border ${status.color} ring-2 ring-offset-2`}>
+                            className={`inline-flex items-center gap-1 px-1.5 py-0.5 md:px-3 md:py-1.5 text-xs font-medium rounded-lg border ${status.color} ring-2 ring-offset-2`}>
                             {status.icon}
                             ( {total} ) {status.label}
                         </div>

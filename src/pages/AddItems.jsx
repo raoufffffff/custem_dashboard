@@ -7,18 +7,24 @@ import handleImageUpload from '../utility/UploadImages';
 import { submitNewItem } from '../utility/itemHelper';
 import InputImg from '../CustomUi/InputImg';
 import CustomImg from '../CustomUi/CustomImg';
+import BoxCard from '../CustomUi/BoxCard';
+import PageContainer from '../CustomUi/PageContainer';
 const AddItems = () => {
     const router = useNavigate()
     const { _id, loading, Categories } = useUser()
     const [formData, setFormData] = useState({
         name: '',
         price: 0,
-        sTitel: '',
+        oldPrice: 0,
+        ShortDescription: '',
+        Description: '',
         type: "",
-        lanImg: ""
     });
+    const setValue = (e) => {
+        setFormData((prev) => ({ ...prev, Description: e }))
+    }
 
-
+    const [lanImg, setlanImg] = useState([]);
     const [images, setImages] = useState([]);
     const [uploading, setUploading] = useState(false);
 
@@ -41,7 +47,7 @@ const AddItems = () => {
         setUploading(true);
         try {
             const res = await handleImageUpload(event)
-            setFormData({ ...formData, lanImg: res })
+            setlanImg((prev) => [...prev, res])
         } catch (err) {
             console.error('Upload error:', err);
 
@@ -69,6 +75,9 @@ const AddItems = () => {
     const removeImage = (url) => {
         setImages((prev) => prev.filter((img) => img !== url));
     };
+    const removelanImg = (url) => {
+        setlanImg((prev) => prev.filter((img) => img !== url));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -84,89 +93,136 @@ const AddItems = () => {
     };
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-xl"
+        <PageContainer
+            about={"Add"}
+            titel={"Products"}
         >
-            <motion.h2
-                className="text-2xl font-bold text-black mb-6"
-                whileHover={{ scale: 1.02 }}
-            >
-                Add New Item
-            </motion.h2>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <motion.div whileHover={{ scale: 1.01 }}>
+            <BoxCard
+                small={true}
+                about={"General"}
+            >
+                <div
+                    className='my-2'
+                >
+                    <label className="block mb-2 font-medium text-gray-600">Product name</label>
                     <input
                         type="text"
                         name="name"
-                        placeholder="Name"
+                        placeholder="Product name"
                         value={formData.name}
                         onChange={handleChange}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
                     />
-                </motion.div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <motion.div whileHover={{ scale: 1.01 }}>
-                        <input
-                            type="number"
-                            name="price"
-                            placeholder="Price"
-                            value={formData.price}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
-                        />
-                    </motion.div>
-
-                    {!formData.lanImg && <InputImg label='landing img' uploading={uploading} ImageUpload={LanImageUpload} />}
-                    {formData.lanImg && <motion.div
-                        layout
-                        className="flex flex-wrap gap-3 mt-3"
-                    >
-
-                        <CustomImg logo={[formData.lanImg]} removeImage={removeImage} />
-
-                    </motion.div>}
-                    <motion.div whileHover={{ scale: 1.01 }}>
-                        <textarea
-                            type="text"
-                            name="sTitel"
-                            placeholder="Description"
-                            value={formData.sTitel}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
-                        />
-                    </motion.div>
                 </div>
-
-
-
-                {images.length < 5 && <InputImg label='item imgs' uploading={uploading} ImageUpload={ImageUpload} />}
-
+                <div
+                    className='my-2'
+                >
+                    <label className="block mb-2 font-medium text-gray-600">Product Short Description (Optional)</label>
+                    <textarea
+                        type="text"
+                        name="ShortDescription"
+                        placeholder="Product Short Description"
+                        value={formData.Description}
+                        onChange={handleChange}
+                        rows={3}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                    />
+                </div>
+            </BoxCard>
+            <BoxCard
+                small={true}
+                about={"Images"}
+            >
+                <p
+                    className='text-sm text-gray-500 mb-2'
+                >Product images should preferably be square, for example 700x700 pixels.</p>
                 <motion.div
                     layout
                     className="flex flex-wrap gap-3 mt-3"
                 >
 
-                    <CustomImg logo={images} removeImage={removeImage} />
+                    <CustomImg big logo={images} removeImage={removeImage} />
 
                 </motion.div>
-
-                <motion.button
-                    type="submit"
-                    whileHover={{ scale: 1.02, boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.1)" }}
-                    whileTap={{ scale: 0.98 }}
-                    className="mt-6 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 transition-colors w-full"
+                <div
+                    className='mt-4'
                 >
-                    Submit
-                </motion.button>
-            </form>
-        </motion.div>
+
+                    <InputImg label='' uploading={uploading} ImageUpload={ImageUpload} />
+
+                </div>
+
+            </BoxCard>
+            <BoxCard
+                small={true}
+                about={"Landing Pages (Optional)"}
+            >
+                <p
+                    className='text-sm text-gray-500 mb-2'
+                >Your landing page images will be displayed below the order form or add to cart button.</p>
+                <motion.div
+                    layout
+                    className="flex flex-wrap gap-3 mt-3"
+                >
+                    <CustomImg big logo={lanImg} removeImage={removelanImg} />
+
+
+
+                </motion.div>
+                <div
+                    className='mt-4'
+                >
+
+
+                    <InputImg label='' uploading={uploading} ImageUpload={LanImageUpload} />
+
+
+
+                </div>
+
+            </BoxCard>
+            <BoxCard
+                small={true}
+                about={"Prices"}
+            >
+                <div
+                    className='my-2 flex  md:flex-row gap-4'
+                >
+
+                    <div
+                        className='flex-1'
+                    >
+                        <label className="block  mb-2 font-medium text-gray-600">Price</label>
+                        <input
+                            type="text"
+                            name="price"
+                            placeholder="price"
+                            value={formData.price}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                        />
+                    </div>
+                    <div
+                        className='flex-1'
+
+                    >
+                        <label className="block mb-2 font-medium text-gray-600">Comparison price (optional)</label>
+                        <input
+                            type="text"
+                            name="oldPrice"
+                            placeholder="Comparison price"
+                            value={formData.oldPrice}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                        />
+                    </div>
+                </div>
+            </BoxCard>
+        </PageContainer>
     );
 };
 

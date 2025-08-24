@@ -24,9 +24,9 @@ const InputImg = ({ uploading, ImageUpload, label = "شعار الموقع" }) =
                             <>
                                 <Upload className="h-5 w-5 text-gray-400 mx-auto mb-1" />
                                 <p className="text-sm text-gray-600">
-                                    اختر صورة
+                                    Choose an image
                                 </p>
-                                <p className="text-xs text-gray-500 mt-1">PNG, JPG (حد أقصى 2MB)</p>
+                                <p className="text-xs text-gray-500 mt-1">PNG, JPG (maximum 2MB)</p>
                             </>
                         )}
                     </div>

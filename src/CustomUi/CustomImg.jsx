@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 
-const CustomImg = ({ logo = [], removeImage, tabel = false, category = false }) => {
+const CustomImg = ({ logo = [], removeImage, tabel = false, category = false, big = false }) => {
     return (
         <PhotoProvider>
             {logo.map((e, i) => (
@@ -11,9 +11,11 @@ const CustomImg = ({ logo = [], removeImage, tabel = false, category = false }) 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className={`${category ? "w-full h-full" : tabel ? "h-10 w-10  object-cover rounded-full" : "relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200"} `}
+                        className={`${category ? "w-full h-full" : tabel ? "object-cover rounded-full" : "relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200"} ${big ? "w-32 h-32 md:w-44 md:h-44" : "w-10 h-10"} cursor-pointer`}
                     >
-                        <img src={e} alt={i} />
+                        <img
+                            className='w-full h-full object-cover'
+                            src={e} alt={i} />
                         {removeImage && <button
                             type="button"
                             onClick={(event) => {
