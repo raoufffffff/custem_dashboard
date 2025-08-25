@@ -11,11 +11,11 @@ function App() {
   const open = () => setSemalHarder(false)
   return (
     <div
-      className="min-h-screen w-full pb-11 flex justify-end"
+      className="min-h-screen w-full  flex justify-end"
     >
 
       <main
-        className={`relative  ${SemalHarder ? "w-full md:w-[91%]" : "w-full md:w-9/12"} transition-all duration-200`}
+        className={`relative  ${SemalHarder ? "w-full md:w-[91%] lg:w-[95%]" : "w-full md:w-9/12"} transition-all duration-200`}
       >
         <Header togelHeader={togelHeader} />
         <AnimatePresence>

@@ -1,17 +1,22 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser';
 import { Loader2 } from 'lucide-react';
 import handleImageUpload from '../utility/UploadImages';
-import { submitNewItem } from '../utility/itemHelper';
+// import { submitNewItem } from '../utility/itemHelper';
 import InputImg from '../CustomUi/InputImg';
 import CustomImg from '../CustomUi/CustomImg';
 import BoxCard from '../CustomUi/BoxCard';
 import PageContainer from '../CustomUi/PageContainer';
+import ProductDescriptionEditor from '../CustomUi/ProductDescriptionEditor';
+import { IoMdAdd } from "react-icons/io";
+import { toast } from "react-hot-toast";
+import VariantsContainer from '../compunent/additem/Variants';
+import OffersContainer from '../compunent/additem/OffersContainer';
+
 const AddItems = () => {
-    const router = useNavigate()
-    const { _id, loading, Categories } = useUser()
+    // const router = useNavigate()
+    const { _id, loading } = useUser()
     const [formData, setFormData] = useState({
         name: '',
         price: 0,
@@ -20,9 +25,23 @@ const AddItems = () => {
         Description: '',
         type: "",
     });
-    const setValue = (e) => {
-        setFormData((prev) => ({ ...prev, Description: e }))
+    const [Variants, setVariants] = useState([]);
+    const [Offers, setOffers] = useState([]);
+    const addOffers = () => {
+
+        setOffers((prev) => [...prev, { id: Offers.length, name: '', Quantity: "", price: "", freedelevry: false, topOffer: false }]);
     }
+
+    const addVariant = () => {
+        if (Variants.length >= 3) {
+            toast.error("You can add up to 3 variants only.");
+            return;
+        }
+        setVariants((prev) => [...prev, { id: Variants.length, name: '', type: "", options: [], curentOption: "" }]);
+    }
+    // const setValue = (e) => {
+    //     setFormData((prev) => ({ ...prev, Description: e }))
+    // }
 
     const [lanImg, setlanImg] = useState([]);
     const [images, setImages] = useState([]);
@@ -79,23 +98,37 @@ const AddItems = () => {
         setlanImg((prev) => prev.filter((img) => img !== url));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const form = { ...formData, imgs: images, userId: _id }
-        try {
-            const res = await submitNewItem(form)
-            if (res) {
-                router('/')
-            }
-        } catch (error) {
-            console.log(error);
+    const handleSubmit = () => {
+        console.log("hwllo");
+
+        if (!formData.name || !formData.price || images.length === 0) {
+            toast.error("Please fill in all required fields.");
+            return;
         }
+        if (Variants.length > 0) {
+            for (let variant of Variants) {
+                if (!variant.name || !variant.type || variant.options.length === 0) {
+                    toast.error("Please fill in all variant fields.");
+                    return;
+                }
+            }
+        }
+        if (Offers.length > 0) {
+            for (let offer of Offers) {
+                if (!offer.name || !offer.Quantity || !offer.price) {
+                    toast.error("Please fill in all offer fields.");
+                    return;
+                }
+            }
+        }
+        toast.success("submit successful");
     };
 
     return (
         <PageContainer
             about={"Add"}
             titel={"Products"}
+            className={"px-4"}
         >
 
             <BoxCard
@@ -124,12 +157,22 @@ const AddItems = () => {
                         type="text"
                         name="ShortDescription"
                         placeholder="Product Short Description"
-                        value={formData.Description}
+                        value={formData.ShortDescription}
                         onChange={handleChange}
                         rows={3}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
                     />
                 </div>
+                {/* <div
+                    className='my-2'
+                >
+                    <label className="block mb-2 font-medium text-gray-600">Product Short Description (Optional)</label>
+                    <ProductDescriptionEditor
+                        value={formData.Description}
+                        onChange={setValue}
+
+                    />
+                </div> */}
             </BoxCard>
             <BoxCard
                 small={true}
@@ -138,14 +181,14 @@ const AddItems = () => {
                 <p
                     className='text-sm text-gray-500 mb-2'
                 >Product images should preferably be square, for example 700x700 pixels.</p>
-                <motion.div
+                <div
                     layout
                     className="flex flex-wrap gap-3 mt-3"
                 >
 
                     <CustomImg big logo={images} removeImage={removeImage} />
 
-                </motion.div>
+                </div>
                 <div
                     className='mt-4'
                 >
@@ -162,7 +205,7 @@ const AddItems = () => {
                 <p
                     className='text-sm text-gray-500 mb-2'
                 >Your landing page images will be displayed below the order form or add to cart button.</p>
-                <motion.div
+                <div
                     layout
                     className="flex flex-wrap gap-3 mt-3"
                 >
@@ -170,7 +213,7 @@ const AddItems = () => {
 
 
 
-                </motion.div>
+                </div>
                 <div
                     className='mt-4'
                 >
@@ -188,7 +231,7 @@ const AddItems = () => {
                 about={"Prices"}
             >
                 <div
-                    className='my-2 flex  md:flex-row gap-4'
+                    className='my-2 flex flex-col  md:flex-row gap-4'
                 >
 
                     <div
@@ -222,6 +265,43 @@ const AddItems = () => {
                     </div>
                 </div>
             </BoxCard>
+            <BoxCard
+                className={'relative'}
+                small={true}
+                about={"Variants"}
+                button={"Add option like size or color"}
+                buttonicon={<IoMdAdd className='size-6 md:size-8' />}
+                onclick={addVariant}
+            >
+                {Variants.length === 0 ? (<p
+                    className={'text-sm text-center mt-10 text-gray-500'}>
+                    You haven't added any variants yet.
+                </p>) : (
+                    <VariantsContainer Variants={Variants} setVariants={setVariants} />
+                )}
+            </BoxCard>
+            <BoxCard
+                className={'relative'}
+                small={true}
+                about={"Offers"}
+                button={"Add Offer"}
+                buttonicon={<IoMdAdd className='size-6 md:size-8' />}
+                onclick={addOffers}
+            >
+                {Offers.length === 0 ? (<p
+                    className={'text-sm text-center mt-10 text-gray-500'}>
+                    You haven't added any Offers yet.
+                </p>) : (
+                    <OffersContainer Offers={Offers} setOffers={setOffers} />
+                )}
+            </BoxCard>
+            <button
+                onClick={() => {
+                    console.log("hello");
+                    handleSubmit()
+                }}
+                className='bg-blue-600 ml-auto hover:bg-blue-700 text-white px-6 py-2 rounded-lg mt-6 mb-10 transition-all shadow-md shadow-blue-300 flex items-center'
+            >Save</button>
         </PageContainer>
     );
 };
