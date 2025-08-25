@@ -61,7 +61,10 @@ const VariantsContainer = ({ Variants, setVariants }) => {
                         {/* Delete Button */}
                         <button
                             type="button"
-
+onClick={() => {
+                                const newOffers = Variants.filter((_, i) => i !== index);
+                                setVariants(newOffers);
+                            }}
                             className="ml-auto  hover:text-red-500 text-red-400"
                         >
                             <Trash2 size={20} />
@@ -138,5 +141,6 @@ const VariantsContainer = ({ Variants, setVariants }) => {
         </div>
     )
 }
+
 
 export default VariantsContainer
