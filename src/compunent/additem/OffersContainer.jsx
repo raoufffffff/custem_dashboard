@@ -1,13 +1,13 @@
 import React from "react";
 import { Trash2 } from "lucide-react";
 
-const OffersContainer = ({ Offers, setOffers }) => {
+const OffersContainer = ({ Offers, setOffers, err }) => {
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 w-full overflow-hidden">
             {Offers.map((offer, index) => (
                 <div
                     key={index}
-                    className="border-b border-gray-200 pb-6 flex flex-col gap-4"
+                    className="border-b w-full border-gray-200 pb-6 flex flex-col gap-4"
                 >
 
                     {/* Top Row */}
@@ -16,7 +16,7 @@ const OffersContainer = ({ Offers, setOffers }) => {
 
 
                         {/* Inputs */}
-                        <div className="flex flex-col sm:flex-row gap-3 flex-1 pr-2">
+                        <div className="flex w-10/12 flex-col sm:flex-row gap-3 flex-1 pr-2">
                             <input
                                 type="text"
                                 placeholder="Offer Name"
@@ -26,7 +26,7 @@ const OffersContainer = ({ Offers, setOffers }) => {
                                     newOffers[index].name = e.target.value;
                                     setOffers(newOffers);
                                 }}
-                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                className={`flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${err && !offer.name ? "border-red-500 focus:ring-red-500" : ""}`}
                             />
                             <input
                                 type="text"
@@ -37,7 +37,7 @@ const OffersContainer = ({ Offers, setOffers }) => {
                                     newOffers[index].Quantity = e.target.value;
                                     setOffers(newOffers);
                                 }}
-                                className="sm:w-40 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                className={`sm:w-40 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${err && !offer.Quantity ? "border-red-500 focus:ring-red-500" : ""}`}
                             />
                             <input
                                 type="text"
@@ -48,7 +48,7 @@ const OffersContainer = ({ Offers, setOffers }) => {
                                     newOffers[index].price = e.target.value;
                                     setOffers(newOffers);
                                 }}
-                                className="sm:w-40 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                className={`sm:w-40 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${err && !offer.price ? "border-red-500 focus:ring-red-500" : ""}`}
                             />
                         </div>
                         <button

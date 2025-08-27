@@ -17,7 +17,7 @@ const PageContainer = ({ className, children, titel, about }) => {
                 >
                     {about}
                 </span>
-                👋</h1>
+            </h1>
             {children}
         </motion.div>
     )

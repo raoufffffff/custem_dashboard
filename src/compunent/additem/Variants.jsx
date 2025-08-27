@@ -1,9 +1,9 @@
 import { Trash2, X } from 'lucide-react';
 
-const VariantsContainer = ({ Variants, setVariants }) => {
+const VariantsContainer = ({ Variants, setVariants, err }) => {
     return (
         <div
-            className='space-y-4'
+            className='space-y-4 w-full overflow-hidden'
         >
             {Variants.map((variant, index) => (
                 <form
@@ -20,7 +20,7 @@ const VariantsContainer = ({ Variants, setVariants }) => {
                         setVariants(newVariants);
                     }}
                     key={index}
-                    className="p-4 flex flex-col border border-gray-200 rounded-lg bg-white shadow-sm"
+                    className="p-4 flex flex-col border border-gray-200 w-full rounded-lg bg-white shadow-sm"
                 >
                     <div className="flex flex-wrap gap-4 items-center">
                         {/* Option Name */}
@@ -35,7 +35,7 @@ const VariantsContainer = ({ Variants, setVariants }) => {
                                     setVariants(newVariants);
                                 }}
                                 placeholder="Size"
-                                className="px-3 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
+                                className={`px-3 w-11/12 mt-1 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none ${err && !variant.name ? "border-red-500 focus:ring-red-500" : ""}`}
                             />
                         </div>
 
@@ -49,7 +49,7 @@ const VariantsContainer = ({ Variants, setVariants }) => {
                                     newVariants[index].type = e.target.value;
                                     setVariants(newVariants);
                                 }}
-                                className="px-3 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
+                                className={`px-3 py-2 mt-1 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none ${err && !variant.type ? "border-red-500 focus:ring-red-500" : ""}`}
                             >
                                 <option value="" disabled>Select type</option>
                                 <option value="size">Size</option>
@@ -61,7 +61,7 @@ const VariantsContainer = ({ Variants, setVariants }) => {
                         {/* Delete Button */}
                         <button
                             type="button"
-onClick={() => {
+                            onClick={() => {
                                 const newOffers = Variants.filter((_, i) => i !== index);
                                 setVariants(newOffers);
                             }}
@@ -92,17 +92,30 @@ onClick={() => {
                                 </button>
                                 {opt.name}
                                 {variant.type === "color" && (
-                                    <input
-                                        type="color"
-                                        value={opt.color}
-                                        onChange={(e) => {
-                                            const newVariants = [...Variants];
-                                            newVariants[index].options[i].color = e.target.value;
-                                            setVariants(newVariants);
-                                        }}
-                                        className="ml-2 w-5 h-5 rounded-full border border-gray-300 cursor-pointer"
-                                    />
+                                    <div className="flex items-center gap-3">
+                                        <label
+                                            htmlFor={`color-${i}`}
+                                            className="relative w-5 h-5 rounded-full border border-gray-300 cursor-pointer shadow-sm"
+                                            style={{ backgroundColor: opt.color }}
+                                        >
+                                            {/* Accessibility text (screen readers only) */}
+                                            <span className="sr-only">Choose color</span>
+                                        </label>
+
+                                        <input
+                                            id={`color-${i}`}
+                                            type="color"
+                                            value={opt.color}
+                                            onChange={(e) => {
+                                                const newVariants = [...Variants];
+                                                newVariants[index].options[i].color = e.target.value;
+                                                setVariants(newVariants);
+                                            }}
+                                            className="hidden"
+                                        />
+                                    </div>
                                 )}
+
                             </span>
                         ))}
 
@@ -118,7 +131,7 @@ onClick={() => {
                             newVariants[index].curentOption = e.target.value;
                             setVariants(newVariants);
                         }}
-                        className="px-3 mt-2 py-1 text-sm border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 outline-none"
+                        className={`px-3 mt-2 py-1 text-sm border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 outline-none ${err && variant.options.length === 0 && "border-red-500 focus:ring-red-500"}`}
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 e.preventDefault();

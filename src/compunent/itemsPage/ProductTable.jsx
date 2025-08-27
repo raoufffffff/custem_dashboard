@@ -1,0 +1,122 @@
+"use client";
+import { useState } from "react";
+import { Search, X, ExternalLink, Edit, Trash2 } from "lucide-react";
+import { format } from "date-fns";
+
+const ProductTable = ({ products }) => {
+    const [search, setSearch] = useState("");
+
+    const filtered = products.filter((p) =>
+        p.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    return (
+        <div className="w-full bg-white rounded-2xl shadow-md p-4 sm:p-6">
+            {/* Search Bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+                <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2 w-full sm:w-2/3">
+                    <input
+                        type="text"
+                        placeholder="Recherchez par noms de produits"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="flex-1 bg-transparent border-none outline-none text-sm"
+                    />
+                    {search ? (
+                        <X
+                            className="w-5 h-5 text-gray-500 cursor-pointer"
+                            onClick={() => setSearch("")}
+                        />
+                    ) : (
+                        <Search className="w-5 h-5 text-gray-500" />
+                    )}
+                </div>
+                <button className="bg-gray-800 text-white rounded-lg px-4 py-2 text-xs sm:text-sm font-medium">
+                    1-{filtered.length} SUR {products.length}
+                </button>
+            </div>
+
+            {/* Table Wrapper (scroll on mobile) */}
+            <div className="overflow-x-auto">
+                <table className="w-full text-sm text-gray-700">
+                    <thead className="bg-gray-50">
+                        <tr className="text-left border-b">
+                            <th className="py-3 px-4">Photo</th>
+                            <th className="px-4">Produit</th>
+                            <th className="px-4">Visites</th>
+                            <th className="px-4">Prix</th>
+                            <th className="px-4">État du produit</th>
+                            <th className="px-4">Ajouté le</th>
+                            <th className="px-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filtered.map((p, i) => (
+                            <tr
+                                key={i}
+                                className="border-b hover:bg-gray-50 transition-colors"
+                            >
+                                <td className="py-3 px-4">
+                                    <img
+                                        src={p.imgs[0]}
+                                        alt={p.name}
+                                        className="w-12 h-12 rounded-md object-cover"
+                                    />
+                                </td>
+                                <td className="px-4 font-medium text-gray-900">{p.name}</td>
+                                <td className="px-4 text-center">{p.visits || 0}</td>
+                                <td className="px-4">
+                                    <div className="flex flex-col">
+                                        <span className="font-bold text-gray-900">{p.price} DA</span>
+                                        {p.oldPrice && (
+                                            <span className="line-through text-red-500 text-xs">
+                                                {p.oldPrice} DA
+                                            </span>
+                                        )}
+                                        {p.extraOffers && (
+                                            <span className="text-xs text-gray-500">
+                                                +{p.extraOffers} offres
+                                            </span>
+                                        )}
+                                    </div>
+                                </td>
+                                <td className="px-4">
+                                    <span
+                                        className={`px-3 py-1 rounded-full text-xs font-medium ${p.best === "visible"
+                                            ? "bg-green-100 text-green-700"
+                                            : "bg-red-100 text-red-600"
+                                            }`}
+                                    >
+                                        {p.best ? "visible" : "caché"}
+                                    </span>
+                                </td>
+                                <td className="px-4 text-xs text-gray-500 whitespace-nowrap">
+                                    {format(new Date(p.date), "MMM dd, yyyy")}
+                                    <span className="ml-1">
+                                        {format(new Date(p.date), "HH:mm")}
+                                    </span>
+                                </td>
+                                <td className="px-4">
+                                    <div className="flex gap-3">
+                                        <ExternalLink className="w-4 h-4 cursor-pointer text-gray-600 hover:text-gray-900" />
+                                        <Edit className="w-4 h-4 cursor-pointer text-blue-500 hover:text-blue-700" />
+                                        <Trash2 className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700" />
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* Footer Pagination */}
+            <div className="flex justify-end mt-6">
+                <button className="bg-gray-800 text-white rounded-lg px-5 py-2 text-xs sm:text-sm font-medium">
+                    1-{filtered.length} SUR {products.length}
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default ProductTable;

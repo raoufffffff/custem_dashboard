@@ -12,7 +12,7 @@ const DashBoard = () => {
     return (
         <PageContainer
             about={JSON.parse(localStorage.getItem("user")).name}
-            titel={"welcome"}
+            titel={"welcome 👋"}
         >
 
             <Stats panddingOrder={panddingOrder} ConfirmedOrder={ConfirmedOrder} />

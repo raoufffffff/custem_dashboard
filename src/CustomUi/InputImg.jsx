@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Loader2, X, Upload } from 'lucide-react';
 
-const InputImg = ({ uploading, ImageUpload, label = "شعار الموقع" }) => {
+const InputImg = ({ uploading, ImageUpload, label = "شعار الموقع", multiple = false }) => {
     return (
         <div
         >
@@ -33,6 +33,7 @@ const InputImg = ({ uploading, ImageUpload, label = "شعار الموقع" }) =
                     <input
                         type="file"
                         accept="image/*"
+                        multiple={multiple}
                         onChange={ImageUpload}
                         className="hidden"
                         disabled={uploading}

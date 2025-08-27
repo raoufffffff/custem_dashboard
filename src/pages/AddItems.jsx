@@ -26,6 +26,7 @@ const AddItems = () => {
         type: "",
     });
     const [Variants, setVariants] = useState([]);
+    const [err, seterr] = useState(false);
     const [Offers, setOffers] = useState([]);
     const addOffers = () => {
 
@@ -76,20 +77,34 @@ const AddItems = () => {
     }
 
     const ImageUpload = async (event) => {
-        const file = event.target.files[0];
-        if (!file || images.length >= 5) return;
+        const files = Array.from(event.target.files);
+        if (!files.length) return;
+
+        // limit to max 5 images
+        // const remainingSlots = 5 - images.length;
+        const selectedFiles = files
+
         setUploading(true);
+
         try {
-            const res = await handleImageUpload(event)
-            setImages((prev) => [...prev, res]);
+            // upload each image
+            const uploadedImages = [];
+            for (const file of selectedFiles) {
+                const res = await handleImageUpload({ target: { files: [file] } });
+                uploadedImages.push(res);
+            }
 
+            // update state once with all uploaded
+            setImages((prev) => [...prev, ...uploadedImages]);
         } catch (err) {
-            console.error('Upload error:', err);
-
+            console.error("Upload error:", err);
         } finally {
             setUploading(false);
+            // reset input so same file can be re-selected if needed
+            event.target.value = "";
         }
-    }
+    };
+
 
     const removeImage = (url) => {
         setImages((prev) => prev.filter((img) => img !== url));
@@ -103,12 +118,15 @@ const AddItems = () => {
 
         if (!formData.name || !formData.price || images.length === 0) {
             toast.error("Please fill in all required fields.");
+            seterr(true);
             return;
         }
         if (Variants.length > 0) {
             for (let variant of Variants) {
                 if (!variant.name || !variant.type || variant.options.length === 0) {
                     toast.error("Please fill in all variant fields.");
+                    seterr(true);
+
                     return;
                 }
             }
@@ -117,6 +135,7 @@ const AddItems = () => {
             for (let offer of Offers) {
                 if (!offer.name || !offer.Quantity || !offer.price) {
                     toast.error("Please fill in all offer fields.");
+                    seterr(true);
                     return;
                 }
             }
@@ -146,7 +165,7 @@ const AddItems = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                        className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all ${err && !formData.name ? "border-red-500 focus:ring-red-500" : ""}`}
                     />
                 </div>
                 <div
@@ -177,13 +196,14 @@ const AddItems = () => {
             <BoxCard
                 small={true}
                 about={"Images"}
+                className={err && images.length === 0 ? "border-red-500" : ""}
             >
-                <p
+                {images.length === 0 && <p
                     className='text-sm text-gray-500 mb-2'
-                >Product images should preferably be square, for example 700x700 pixels.</p>
+                >Product images should preferably be square, for example 700x700 pixels.</p>}
                 <div
                     layout
-                    className="flex flex-wrap gap-3 mt-3"
+                    className="flex flex-wrap justify-center gap-3 mt-3"
                 >
 
                     <CustomImg big logo={images} removeImage={removeImage} />
@@ -193,7 +213,7 @@ const AddItems = () => {
                     className='mt-4'
                 >
 
-                    <InputImg label='' uploading={uploading} ImageUpload={ImageUpload} />
+                    <InputImg multiple label='' uploading={uploading} ImageUpload={ImageUpload} />
 
                 </div>
 
@@ -245,7 +265,7 @@ const AddItems = () => {
                             value={formData.price}
                             onChange={handleChange}
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                            className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all ${err && !formData.price ? "border-red-500 focus:ring-red-500" : ""}`}
                         />
                     </div>
                     <div
@@ -269,7 +289,7 @@ const AddItems = () => {
                 className={'relative'}
                 small={true}
                 about={"Variants"}
-                button={"Add option like size or color"}
+                button={"Add Variants"}
                 buttonicon={<IoMdAdd className='size-6 md:size-8' />}
                 onclick={addVariant}
             >
@@ -277,7 +297,7 @@ const AddItems = () => {
                     className={'text-sm text-center mt-10 text-gray-500'}>
                     You haven't added any variants yet.
                 </p>) : (
-                    <VariantsContainer Variants={Variants} setVariants={setVariants} />
+                    <VariantsContainer err={err} Variants={Variants} setVariants={setVariants} />
                 )}
             </BoxCard>
             <BoxCard
@@ -292,7 +312,7 @@ const AddItems = () => {
                     className={'text-sm text-center mt-10 text-gray-500'}>
                     You haven't added any Offers yet.
                 </p>) : (
-                    <OffersContainer Offers={Offers} setOffers={setOffers} />
+                    <OffersContainer err={err} Offers={Offers} setOffers={setOffers} />
                 )}
             </BoxCard>
             <button

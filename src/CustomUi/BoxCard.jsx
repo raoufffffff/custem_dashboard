@@ -10,7 +10,7 @@ const BoxCard = ({ className, children, about, link, small, button, onclick, but
                 <h2 className="text-lg font-semibold text-gray-800">{about}</h2>
                 {button && <button
                     onClick={onclick}
-                    className="text-blue-600 flex cursor-pointer items-center  hover:text-blue-700 "
+                    className="text-blue-600 flex cursor-pointer items-center text-xs  hover:text-blue-700 "
                 >{buttonicon}{button}</button>}
                 {link && <Link
                     to={`/${link}`}
