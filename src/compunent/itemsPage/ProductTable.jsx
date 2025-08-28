@@ -1,17 +1,78 @@
-"use client";
 import { useState } from "react";
 import { Search, X, ExternalLink, Edit, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 
-const ProductTable = ({ products }) => {
+const ProductTable = ({ products, changeStatus, deleteItem }) => {
     const [search, setSearch] = useState("");
-
+    const [show, setShow] = useState({
+        show: false,
+        id: null,
+        showDelete: false,
+        name: null
+    });
     const filtered = products.filter((p) =>
         p.name.toLowerCase().includes(search.toLowerCase())
     );
 
     return (
         <div className="w-full bg-white rounded-2xl shadow-md p-4 sm:p-6">
+            {show.showDelete && <div
+                onClick={() => setShow({ show: false, id: null, showDelete: false, name: null })}
+                className="fixed  inset-0 bg-[#0007] z-[100000] bg-opacity-50 flex items-center justify-center "
+            >
+                <div className="bg-white w-11/12 md:w-7/12 p-6 rounded-lg shadow-lg" onClick={(e) => e.stopPropagation()}>
+                    <h2 className="text-lg font-bold mb-4">delete the product</h2>
+                    <p className="mb-6">Are you sure you want to delete product {show.name}? All data related to this product, such as sales statistics, etc., will be deleted.</p>
+                    <div
+                        className="flex justify-end gap-3"
+                    >
+                        <button
+                            onClick={() => setShow({ show: false, id: null, showDelete: false, name: null })}
+                            className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-all">Cancel</button>
+                        <button
+                            onClick={() => {
+                                deleteItem(show.id);
+                                setShow({ show: false, id: null, showDelete: false, name: null })
+                            }
+                            }
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all">Delete</button>
+                    </div>
+                </div>
+            </div>}
+            {show.show && <div
+                onClick={() => setShow({ show: false, id: null, showDelete: false, name: null })}
+                className="fixed  inset-0 bg-[#0007] z-[100000] bg-opacity-50 flex items-center justify-center "
+            >
+                <div className="bg-white w-11/12 md:w-7/12 p-6 rounded-lg shadow-lg" onClick={(e) => e.stopPropagation()}>
+                    <h2 className="text-lg font-bold mb-4">Update the status of this product</h2>
+
+                    <div className="flex flex-col justify-end gap-3">
+                        <div
+                            className="flex w-full"
+                        >
+                            <button
+                                onClick={() => {
+                                    changeStatus(show.id, true);
+                                    setShow({ show: false, id: null, showDelete: false, name: null })
+                                }
+                                }
+                                className="px-4 flex-1 py-2 text-start text-green-600 bg-green-200  rounded-lg transition-all hover:scale-105">visible</button>
+                        </div>
+                        <div
+                            className="flex w-full"
+                        >
+                            <button
+                                onClick={() => {
+                                    changeStatus(show.id, false);
+                                    setShow({ show: false, id: null, showDelete: false, name: null })
+                                }
+                                }
+                                className="px-4 flex-1 transition-all text-start py-2 text-red-600 bg-red-200  rounded-lg hover:scale-105"
+                            >hidden</button>
+                        </div>
+                    </div>
+                </div>
+            </div>}
             {/* Search Bar */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
                 <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2 w-full sm:w-2/3">
@@ -54,7 +115,7 @@ const ProductTable = ({ products }) => {
                         {filtered.map((p, i) => (
                             <tr
                                 key={i}
-                                className="border-b hover:bg-gray-50 transition-colors"
+                                className="border-b border-[#eee] hover:bg-gray-50 transition-colors"
                             >
                                 <td className="py-3 px-4">
                                     <img
@@ -82,9 +143,11 @@ const ProductTable = ({ products }) => {
                                 </td>
                                 <td className="px-4">
                                     <span
-                                        className={`px-3 py-1 rounded-full text-xs font-medium ${p.best === "visible"
-                                            ? "bg-green-100 text-green-700"
-                                            : "bg-red-100 text-red-600"
+                                        onClick={() => setShow({ show: !show.show, id: p._id, showDelete: false, name: p.name })}
+                                        className={`px-3 py-1 rounded-full text-xs 
+                                        cursor-pointer font-medium mx-auto ${p.best
+                                                ? "bg-green-100 text-green-700"
+                                                : "bg-red-100 text-red-600"
                                             }`}
                                     >
                                         {p.best ? "visible" : "caché"}
@@ -100,7 +163,9 @@ const ProductTable = ({ products }) => {
                                     <div className="flex gap-3">
                                         <ExternalLink className="w-4 h-4 cursor-pointer text-gray-600 hover:text-gray-900" />
                                         <Edit className="w-4 h-4 cursor-pointer text-blue-500 hover:text-blue-700" />
-                                        <Trash2 className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700" />
+                                        <Trash2
+                                            onClick={() => setShow({ show: false, id: p._id, showDelete: true, name: p.name })}
+                                            className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700" />
                                     </div>
                                 </td>
                             </tr>
