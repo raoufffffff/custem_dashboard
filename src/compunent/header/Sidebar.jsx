@@ -32,7 +32,7 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
             exit={{ x: -1000 }}
             animate={{ x: 0 }}
             transition={{ duration: 0.2, type: "spring" }}
-            className={`${SemalHarder ? "w-0 overflow-hidden md:w-[9%]  lg:w-[5%]" : "w-8/12 md:w-3/12"} 
+            className={`${SemalHarder ? "w-0 overflow-hidden md:w-[9%]  lg:w-[7%]" : "w-8/12 md:w-3/12"} 
                 bg-white/90 backdrop-blur-md border-l border-gray-200 shadow-xl 
                 flex flex-col z-[500] fixed top-0 left-0 h-full transition-all duration-300`}
         >
@@ -78,6 +78,7 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
                     collapsed={SemalHarder}
                 >
                     <NavItem togelHeader={togelHeader} side label="Logo" to="/update/logo" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} side label="Theme" to="/update/theme" collapsed={SemalHarder} />
                 </Dropdown>
 
                 <Dropdown

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 const BoxCard = ({ className, children, about, link, small, button, onclick, buttonicon }) => {
     return (
         <div
-            className={`bg-white  w-[95%] md:w-[90%] mx-auto p-6 rounded-2xl shadow-md border border-[#ddd] ${className}`}
+            className={`bg-white w-[95%]  md:w-full  mx-auto py-3 px-6 rounded-2xl shadow-md border border-[#ddd] ${className}`}
         >
             <div className={`flex items-center justify-between ${small ? "mb-2" : "mb-6"}`}>
                 <h2 className="text-lg font-semibold text-gray-800">{about}</h2>

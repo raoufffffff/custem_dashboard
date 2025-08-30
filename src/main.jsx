@@ -13,12 +13,18 @@ import Sinin from './pages/Sinin.jsx';
 import { Toaster } from 'react-hot-toast';
 import Notifications from './pages/Notifications.jsx';
 import CreateWebsite from './pages/CreateWebsite.jsx';
-import ModifyWebsite from './pages/ModifyWebsite.jsx';
 import TruckOrder from './pages/TruckOrder.jsx';
 import LivCompany from './pages/LivCompany.jsx';
 import LivrisionPrice from './pages/LivrisionPrice.jsx';
 import Update from './pages/Update.jsx';
-import UpdateLogo from './pages/UpdateLogo.jsx';
+import UpdateLogo from './pages/update/UpdateLogo.jsx';
+import UpdateTheme from './pages/update/UpdateTheme.jsx';
+import ProductsCrad from './pages/update/UpdateTheme/ProductsCrad.jsx';
+import CategoriesCard from './pages/update/UpdateTheme/CategoriesCard.jsx';
+import StoreHeader from './pages/update/UpdateTheme/StoreHeader.jsx';
+import ThanksPage from './pages/update/UpdateTheme/ThanksPage.jsx';
+import Color from './pages/update/UpdateTheme/Color.jsx';
+
 
 
 
@@ -54,7 +60,24 @@ const router = createBrowserRouter(
         <Route path="update" element={<ProtectedRoute
         ><Update /></ProtectedRoute>
         } >
-          <Route path=":id" element={<ProtectedRoute><UpdateLogo /></ProtectedRoute>} />
+          <Route path="logo" element={<ProtectedRoute><UpdateLogo /></ProtectedRoute>} />
+          <Route path="theme" element={<ProtectedRoute><UpdateTheme /></ProtectedRoute>} >
+            <Route index element={<ProtectedRoute
+            ><Color /></ProtectedRoute>
+            } />
+            <Route path='products' element={<ProtectedRoute
+            ><ProductsCrad /></ProtectedRoute>
+            } />
+            <Route path='categories' element={<ProtectedRoute
+            ><CategoriesCard /></ProtectedRoute>
+            } />
+            <Route path='header' element={<ProtectedRoute
+            ><StoreHeader /></ProtectedRoute>
+            } />
+            <Route path='thanks-page' element={<ProtectedRoute
+            ><ThanksPage /></ProtectedRoute>
+            } />
+          </Route>
         </Route>
         <Route path="LivCompany" element={
           <ProtectedRoute><LivCompany /></ProtectedRoute>

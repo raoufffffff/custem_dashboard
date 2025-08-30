@@ -15,7 +15,7 @@ function App() {
     >
 
       <main
-        className={`relative  ${SemalHarder ? "w-full md:w-[91%] lg:w-[95%]" : "w-full md:w-9/12"} transition-all duration-200`}
+        className={`relative  ${SemalHarder ? "w-full md:w-[91%] lg:w-[93%]" : "w-full md:w-9/12"} transition-all pb-10 duration-200`}
       >
         <Header togelHeader={togelHeader} />
         <AnimatePresence>

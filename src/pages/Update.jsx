@@ -5,8 +5,8 @@ const Update = () => {
     return (
         <PageContainer
             titel={"Update your "}
-            about={"Store"}
-            className={"py-5"}
+            about={" Store"}
+            className={"py-2"}
         >
             <Outlet />
         </PageContainer>

@@ -100,19 +100,20 @@ const VariantsContainer = ({ Variants, setVariants, err }) => {
                                         >
                                             {/* Accessibility text (screen readers only) */}
                                             <span className="sr-only">Choose color</span>
+                                            <input
+                                                id={`color-${i}`}
+                                                type="color"
+                                                value={opt.color}
+                                                onChange={(e) => {
+                                                    const newVariants = [...Variants];
+                                                    newVariants[index].options[i].color = e.target.value;
+                                                    setVariants(newVariants);
+                                                }}
+                                                className="absolute w-0 h-0 opacity-0"
+                                            />
                                         </label>
 
-                                        <input
-                                            id={`color-${i}`}
-                                            type="color"
-                                            value={opt.color}
-                                            onChange={(e) => {
-                                                const newVariants = [...Variants];
-                                                newVariants[index].options[i].color = e.target.value;
-                                                setVariants(newVariants);
-                                            }}
-                                            className="hidden"
-                                        />
+
                                     </div>
                                 )}
 
