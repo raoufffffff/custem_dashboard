@@ -25,6 +25,7 @@ import StoreHeader from './pages/update/UpdateTheme/StoreHeader.jsx';
 import ThanksPage from './pages/update/UpdateTheme/ThanksPage.jsx';
 import Color from './pages/update/UpdateTheme/Color.jsx';
 import UpdateContactInfos from './pages/update/UpdateContactInfos.jsx';
+import UpdateSettings from './pages/update/UpdateSettings.jsx';
 
 
 
@@ -80,6 +81,7 @@ const router = createBrowserRouter(
             } />
           </Route>
           <Route path="Contact-information" element={<ProtectedRoute><UpdateContactInfos /></ProtectedRoute>} />
+          <Route path="settings" element={<ProtectedRoute><UpdateSettings /></ProtectedRoute>} />
         </Route>
         <Route path="LivCompany" element={
           <ProtectedRoute><LivCompany /></ProtectedRoute>

@@ -1,8 +1,34 @@
-import React from 'react'
+import { useState } from 'react'
 import BoxCard from '../../CustomUi/BoxCard'
 import { FaFacebook, FaInstagram, FaSnapchat, FaTiktok, FaWhatsapp, FaViber } from "react-icons/fa";
 
 const UpdateContactInfos = () => {
+    const [form, setForm] = useState({
+        email: "",
+        phone: "",
+        whatsapp: "",
+        viber: "",
+        facebook: "",
+        instagram: "",
+        snapchat: "",
+        tiktok: ""
+    });
+
+    const handleChange = (field, value) => {
+        setForm((prev) => ({
+            ...prev,
+            [field]: value
+        }));
+    };
+
+
+
+
+    const handleSubmit = () => {
+        console.log("Submitted data:", form);
+        // here you can send to API
+    };
+
     return (
         <div className='w-full'>
             <BoxCard
@@ -21,41 +47,51 @@ const UpdateContactInfos = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                         <input
                             type="email"
+                            value={form.email}
+                            onChange={(e) => handleChange("email", e.target.value)}
                             placeholder="Enter email"
-                            className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         />
                     </div>
 
                     {/* Phone Numbers */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Phone Numbers</label>
+
                         <input
                             type="text"
+                            value={form.phone}
+                            onChange={(e) => handleChange("phone", e.target.value)}
                             placeholder="Enter phone number"
-                            className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full mb-2 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         />
+
                     </div>
 
                     {/* WhatsApp & Viber */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
-                                <FaWhatsapp className="text-green-500 h-7 w-7" /> WhatsApp
+                                <FaWhatsapp className="text-green-500 h-6 w-6" /> WhatsApp
                             </label>
                             <input
                                 type="text"
+                                value={form.whatsapp}
+                                onChange={(e) => handleChange("whatsapp", e.target.value)}
                                 placeholder="WhatsApp number"
-                                className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
                             />
                         </div>
                         <div>
                             <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
-                                <FaViber className="text-purple-600 h-7 w-7" /> Viber
+                                <FaViber className="text-purple-600 h-6 w-6" /> Viber
                             </label>
                             <input
                                 type="text"
+                                value={form.viber}
+                                onChange={(e) => handleChange("viber", e.target.value)}
                                 placeholder="Viber number"
-                                className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
                             />
                         </div>
                     </div>
@@ -66,41 +102,48 @@ const UpdateContactInfos = () => {
                         <div className="space-y-3">
 
                             <div className="flex items-center gap-2">
-                                <FaFacebook className="text-blue-600 h-7 w-7" />
+                                <FaFacebook className="text-blue-600 h-6 w-6" />
                                 <input
                                     type="text"
+                                    value={form.facebook}
+                                    onChange={(e) => handleChange("facebook", e.target.value)}
                                     placeholder="Facebook page link"
-                                    className="flex-1 px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                 />
                             </div>
 
                             <div className="flex items-center gap-2">
-                                <FaInstagram className="text-pink-500 h-7 w-7" />
+                                <FaInstagram className="text-pink-500 h-6 w-6" />
                                 <input
                                     type="text"
+                                    value={form.instagram}
+                                    onChange={(e) => handleChange("instagram", e.target.value)}
                                     placeholder="Instagram account link"
-                                    className="flex-1 px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none"
                                 />
                             </div>
 
                             <div className="flex items-center gap-2">
-                                <FaSnapchat className="text-yellow-400 h-7 w-7" />
+                                <FaSnapchat className="text-yellow-400 h-6 w-6" />
                                 <input
                                     type="text"
+                                    value={form.snapchat}
+                                    onChange={(e) => handleChange("snapchat", e.target.value)}
                                     placeholder="Snapchat account link"
-                                    className="flex-1 px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:outline-none"
                                 />
                             </div>
 
                             <div className="flex items-center gap-2">
-                                <FaTiktok className="text-black h-7 w-7" />
+                                <FaTiktok className="text-black h-6 w-6" />
                                 <input
                                     type="text"
+                                    value={form.tiktok}
+                                    onChange={(e) => handleChange("tiktok", e.target.value)}
                                     placeholder="TikTok account link"
-                                    className="flex-1 px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-gray-500 focus:outline-none"
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:outline-none"
                                 />
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -108,6 +151,7 @@ const UpdateContactInfos = () => {
                 {/* Save button */}
                 <div className='mt-5 flex justify-end'>
                     <button
+                        onClick={handleSubmit}
                         className='w-full bg-blue-600 text-white px-4 py-2 rounded-xl shadow-blue-700 hover:bg-blue-700 transition'
                     >
                         Save

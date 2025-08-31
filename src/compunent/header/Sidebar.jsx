@@ -80,6 +80,7 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
                     <NavItem togelHeader={togelHeader} side label="Logo" to="/update/logo" collapsed={SemalHarder} />
                     <NavItem togelHeader={togelHeader} side label="Theme" to="/update/theme" collapsed={SemalHarder} />
                     <NavItem togelHeader={togelHeader} side label="Contact information" to="/update/Contact-information" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} side label="Store settings" to="/update/settings" collapsed={SemalHarder} />
                 </Dropdown>
 
                 <Dropdown
