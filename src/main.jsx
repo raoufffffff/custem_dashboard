@@ -24,6 +24,7 @@ import CategoriesCard from './pages/update/UpdateTheme/CategoriesCard.jsx';
 import StoreHeader from './pages/update/UpdateTheme/StoreHeader.jsx';
 import ThanksPage from './pages/update/UpdateTheme/ThanksPage.jsx';
 import Color from './pages/update/UpdateTheme/Color.jsx';
+import UpdateContactInfos from './pages/update/UpdateContactInfos.jsx';
 
 
 
@@ -78,6 +79,7 @@ const router = createBrowserRouter(
             ><ThanksPage /></ProtectedRoute>
             } />
           </Route>
+          <Route path="Contact-information" element={<ProtectedRoute><UpdateContactInfos /></ProtectedRoute>} />
         </Route>
         <Route path="LivCompany" element={
           <ProtectedRoute><LivCompany /></ProtectedRoute>
