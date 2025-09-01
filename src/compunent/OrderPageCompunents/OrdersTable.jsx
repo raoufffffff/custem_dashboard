@@ -1,8 +1,8 @@
 import BoxCard from "../../CustomUi/BoxCard";
 import OrderRow from "./OrderRow";
-import { IoMdSearch, IoMdClose } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 
-const OrdersTable = ({ orders, emptyMessage, loading, edite, ucan, EdetAllOrder, sendtoLiv, fetchOrders, deleteOrder }) => (
+const OrdersTable = ({ orders, emptyMessage, loading, edite, ucan, EdetAllOrder, sendtoLiv, fetchOrders, deleteOrder, setFilters, filters }) => (
     <BoxCard
         about={"Orders"}
     >
@@ -13,14 +13,11 @@ const OrdersTable = ({ orders, emptyMessage, loading, edite, ucan, EdetAllOrder,
                 type="text" name="search"
                 className=" bg-gray-100 focus:border-gray-600 focus:outline-gray-200 flex-1 px-3 rounded-xl py-2"
                 placeholder="Search by: order number, name, surname, phone number..."
-                autocomplete="off" value=""
+                onChange={(e) => setFilters({ ...filters, customer: e.target.value })} value={filters.customer}
             />
+
             <span
-                className="bg-gray-100 cursor-pointer py-3 px-4 mx-0.5 rounded-xl"
-            >
-                <IoMdSearch />
-            </span>
-            <span
+                onClick={() => setFilters({ ...filters, customer: "" })}
                 className="bg-gray-100 cursor-pointer py-3 px-4 mx-0.5 rounded-xl"
             >
                 <IoMdClose />

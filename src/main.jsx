@@ -27,12 +27,6 @@ import Color from './pages/update/UpdateTheme/Color.jsx';
 import UpdateContactInfos from './pages/update/UpdateContactInfos.jsx';
 import UpdateSettings from './pages/update/UpdateSettings.jsx';
 import UpdateFaqs from './pages/update/UpdateFaqs.jsx';
-import UpdateAbout from './pages/update/UpdateAbout.jsx';
-
-
-
-
-
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -84,7 +78,6 @@ const router = createBrowserRouter(
           </Route>
           <Route path="Contact-information" element={<ProtectedRoute><UpdateContactInfos /></ProtectedRoute>} />
           <Route path="faqs" element={<ProtectedRoute><UpdateFaqs /></ProtectedRoute>} />
-          <Route path="about-page" element={<ProtectedRoute><UpdateAbout /></ProtectedRoute>} />
           <Route path="settings" element={<ProtectedRoute><UpdateSettings /></ProtectedRoute>} />
         </Route>
         <Route path="LivCompany" element={

@@ -6,7 +6,7 @@ const useOrderFilters = (orders = []) => {
     const [filters, setFilters] = useState({
         status: "all",       // "all" | "pending" | "confirmed" | "cancelled"
         item: "all",         // "all" | "item-name"
-        customer: { name: "", phone: "" },
+        customer: "",
         dateRange: { start: null, end: null },
         sortBy: "newest",    // "newest" | "oldest" | "priceHigh" | "priceLow"
     });
@@ -28,16 +28,14 @@ const useOrderFilters = (orders = []) => {
         }
 
         // 3. Apply customer name/phone search
-        if (filters.customer.name) {
+        if (filters.customer) {
+            const query = filters.customer.toLowerCase();
             result = result.filter(order =>
-                order.name.toLowerCase().includes(filters.customer.name.toLowerCase())
+                (order.name && order.name.toLowerCase().includes(query)) ||
+                (order.phone && order.phone.toLowerCase().includes(query))
             );
         }
-        if (filters.customer.phone) {
-            result = result.filter(order =>
-                order.phone.includes(filters.customer.phone)
-            );
-        }
+
 
         // 4. Apply date range filter
         if (filters.dateRange.start && filters.dateRange.end) {
@@ -66,7 +64,7 @@ const useOrderFilters = (orders = []) => {
     const clearFilters = () => setFilters({
         status: "all",
         item: "all",
-        customer: { name: "", phone: "" },
+        customer: "",
         dateRange: { start: null, end: null },
         sortBy: "newest",
     })

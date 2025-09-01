@@ -8,10 +8,11 @@ const FilterPanel = ({
     setFilters,
     uniqueItems,
     clearFilters,
-    getUniqueState
+    getUniqueState,
+    className
 }) => (
     <BoxCard
-        className={"hidden md:block"}
+        className={className}
         about={'fillter'}
     >
         {/* Grid */}

@@ -1,47 +1,33 @@
-import { motion } from "framer-motion";
 import useOrders from '../hooks/useOrders';
 import useOrderFilters from '../hooks/useOrderFilters';
 import usePagination from '../hooks/usePagination';
 import { useState } from "react";
 import PageContainer from '../CustomUi/PageContainer';
-
-import CustomStateCard from "../compunent/OrderPageCompunents/CustomStateCard";
-import FilterButtons from "../compunent/OrderPageCompunents/FilterButtons";
 import FilterPanel from "../compunent/OrderPageCompunents/FilterPanel";
-import SearchPanel from "../compunent/OrderPageCompunents/SearchPanel";
 import OrdersTable from "../compunent/OrderPageCompunents/OrdersTable";
-import DatePickerModal from "../compunent/OrderPageCompunents/DatePickerModal";
-import LoadMoreButton from "../compunent/OrderPageCompunents/LoadMoreButton";
 import { useSearchParams } from "react-router-dom";
-import AddNewOrder from "../compunent/OrderPageCompunents/AddNewOrder";
-import EditeOrder from "../compunent/OrderPageCompunents/EditeOrder";
 import UseLivOrder from "../hooks/UseLivOrder";
 import OrdersSummary from "../compunent/orders/OrdersSummary";
+import { FaFilter } from "react-icons/fa";
+import Model from '../CustomUi/Model';
 
 const OrderPage = () => {
     // State for UI controls
-    const [showDate, setShowDate] = useState(false);
-    const [filterOpen, setFilterOpen] = useState(false);
-    const [searchOpen, setSearchOpen] = useState(false);
+    const [showFillters, setShowFillters] = useState(false)
     const [searchParams, setsearchParams] = useSearchParams()
     // Data hooks
     const { sendtoLiv } = UseLivOrder()
 
-    const { orders, Allorders, loading, edite, fetchOrders, editefull, deleteOrder } = useOrders();
+    const { orders, loading, edite, fetchOrders, deleteOrder } = useOrders();
     const {
         filteredOrders,
         filters,
         setFilters,
         clearFilters,
     } = useOrderFilters(orders);
-    const { visibleItems, hasMore, loadMore } = usePagination(filteredOrders);
+    const { visibleItems } = usePagination(filteredOrders);
     // Derived values
-    const stats = {
-        total: filteredOrders.length,
-        confirmed: filteredOrders.filter(o => o.status === 'confirmed').length,
-        pending: filteredOrders.filter(e => (["pending", "Connection failed 1", "Connection failed 2"].includes(e.status))).length,
-        cancelled: filteredOrders.filter(e => (["cancelled", "failed"].includes(e.status))).length
-    };
+    const hide = () => setShowFillters(false)
     const getUniqueItems = () => {
         const uniqueItems = [];
         const seen = new Set();
@@ -71,31 +57,11 @@ const OrderPage = () => {
         }
         return uniqueItems;
     };
-    const togeleFilter = () => {
-        setFilterOpen(!filterOpen)
-        setSearchOpen(false)
-    }
-    const togeleSearch = () => {
-        setFilterOpen(false)
 
-        setSearchOpen(!searchOpen)
-    }
-    const addNewOrder = () => {
-        setsearchParams((searchParams) => {
-            searchParams.set("new", "true");
-            return searchParams;
-        })
-    }
+
     const EdetAllOrder = (id) => {
         setsearchParams((searchParams) => {
             searchParams.set("edite", id);
-            return searchParams;
-        })
-    }
-    const hide = () => {
-        setsearchParams((searchParams) => {
-            searchParams.delete("new");
-            searchParams.delete("edite");
             return searchParams;
         })
     }
@@ -104,10 +70,29 @@ const OrderPage = () => {
         <PageContainer
             about={"Management"}
             titel={"Order"}
-            className={"gap-2"}
+            className={"gap-2 relative"}
         >
+            {showFillters && <Model
+                onclose={hide}
+            >
+                <FilterPanel
+                    className={"block "}
+                    clearFilters={clearFilters}
+                    filters={filters}
+                    setFilters={setFilters}
+                    uniqueItems={getUniqueItems()}
+                    getUniqueState={getUniqueState()}
+                />
+            </Model>}
+            <div
+                onClick={() => setShowFillters(true)}
+                className='fixed bottom-7 right-5 flex md:hidden bg-blue-600 rounded-full p-3 cursor-pointer'
+            >
+                <FaFilter className='text-white' size={20} />
+            </div>
             <OrdersSummary Allorders={orders} />
             <FilterPanel
+                className={"hidden md:block"}
                 clearFilters={clearFilters}
                 filters={filters}
                 setFilters={setFilters}
@@ -118,6 +103,8 @@ const OrderPage = () => {
                 deleteOrder={deleteOrder}
                 EdetAllOrder={EdetAllOrder}
                 edite={edite}
+                filters={filters}
+                setFilters={setFilters}
                 orders={visibleItems}
                 loading={loading}
                 sendtoLiv={sendtoLiv}
