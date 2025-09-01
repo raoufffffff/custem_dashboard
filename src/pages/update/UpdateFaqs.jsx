@@ -1,0 +1,216 @@
+import { useState } from 'react'
+import BoxCard from '../../CustomUi/BoxCard'
+import Model from '../../CustomUi/Model'
+import { Plus } from 'lucide-react'
+import { BiSolidError } from "react-icons/bi";
+import { RxDragHandleDots2 } from "react-icons/rx";
+import { AiTwotoneEdit } from "react-icons/ai";
+import { FaRegTrashAlt } from 'react-icons/fa';
+import {
+    DndContext,
+    closestCenter
+} from "@dnd-kit/core";
+import {
+    arrayMove,
+    SortableContext,
+    useSortable,
+    verticalListSortingStrategy
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
+const UpdateFaqs = () => {
+    const [faqs, setfaqs] = useState([])
+    const [faq, setfaq] = useState({ question: "", answer: "", id: null })
+    const [err, seterr] = useState(false)
+    const [show, setshow] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
+
+    // delete modal state
+    const [deleteTarget, setDeleteTarget] = useState(null)
+
+    const hide = () => {
+        setshow(false)
+        setfaq({ question: "", answer: "", id: null })
+        setIsEditing(false)
+    }
+
+    const handleSave = () => {
+        if (faq.question.trim().length < 5 || faq.answer.trim().length < 5) {
+            seterr(true)
+            return
+        }
+        seterr(false)
+
+        if (isEditing) {
+            setfaqs(faqs.map(f => f.id === faq.id ? faq : f))
+        } else {
+            setfaqs([...faqs, { ...faq, id: Date.now().toString() }])
+        }
+        hide()
+    }
+
+    const confirmDelete = () => {
+        setfaqs(faqs.filter(f => f.id !== deleteTarget))
+        setDeleteTarget(null)
+    }
+
+    const handleEdit = (data) => {
+        setfaq(data)
+        setIsEditing(true)
+        setshow(true)
+    }
+
+    const handleDragEnd = (event) => {
+        const { active, over } = event
+        if (!over || active.id === over.id) return
+        const oldIndex = faqs.findIndex(f => f.id === active.id)
+        const newIndex = faqs.findIndex(f => f.id === over.id)
+        setfaqs(arrayMove(faqs, oldIndex, newIndex))
+    }
+    console.log(faqs);
+
+    return (
+        <div className='w-full'>
+            {/* Add/Edit Modal */}
+            {show && <Model onclose={hide} classname={"p-4 relative"}>
+                <p className='font-medium'>{isEditing ? "Edit FAQ" : "Add a question and answer"}</p>
+                <input
+                    type="text"
+                    value={faq.question}
+                    onChange={(e) => setfaq({ ...faq, question: e.target.value })}
+                    placeholder="question"
+                    className={`w-full mt-3 px-3 py-2 border rounded-lg border-gray-300 focus:outline-none ${err && faq.question.length < 5 && "border-red-500"}`}
+                />
+                {err && faq.question.length < 5 && (
+                    <div className="bg-red-100 rounded-lg flex items-center px-2 py-1.5 mt-1.5 text-red-500">
+                        <BiSolidError className='mr-2' />
+                        The question must contain between 5 and 120 characters.
+                    </div>
+                )}
+                <textarea
+                    rows={4}
+                    value={faq.answer}
+                    onChange={(e) => setfaq({ ...faq, answer: e.target.value })}
+                    placeholder="answer ...."
+                    className={`w-full mt-3 px-3 py-2 border rounded-lg border-gray-300 focus:outline-none ${err && faq.answer.length < 5 && "border-red-500"}`}
+                />
+                {err && faq.answer.length < 5 && (
+                    <div className="bg-red-100 rounded-lg flex items-center px-2 py-1.5 my-1.5 text-red-500">
+                        <BiSolidError className='mr-2' />
+                        The answer must contain between 5 and 500 characters.
+                    </div>
+                )}
+                <button
+                    onClick={handleSave}
+                    className='w-full bg-blue-600 text-white px-4 py-2 rounded-xl shadow-blue-700 hover:bg-blue-700 transition'
+                >
+                    {isEditing ? "Update" : "Save"}
+                </button>
+            </Model>}
+
+            {/* Delete Confirm Modal */}
+            {deleteTarget && (
+                <Model onclose={() => setDeleteTarget(null)} classname={"p-5 relative"}>
+                    <p className="text-lg font-semibold mb-4">Are you sure you want to delete this FAQ?</p>
+                    <div className="flex gap-3 justify-end">
+                        <button
+                            onClick={() => setDeleteTarget(null)}
+                            className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={confirmDelete}
+                            className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </Model>
+            )}
+
+            <BoxCard about={"Frequently Asked Questions"} small={true} className={`py-1`}>
+                <p className='text-sm text-gray-600'>
+                    Add FAQs to answer your customers' most frequently asked questions. They will be displayed on your store's FAQ page.
+                </p>
+                <button
+                    onClick={() => setshow(true)}
+                    className='w-fit my-3 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm shadow-blue-700 hover:bg-blue-700 transition flex items-center'
+                >
+                    Add
+                    <Plus className='ml-2 ' size={20} />
+                </button>
+
+                <div className='w-[95%] mx-auto border-t border-t-gray-300'>
+                    {faqs.length === 0 ? (
+                        <>
+                            <img className='w-6/12 mx-auto' src='/empty.png' alt='empty' />
+                            <p className='text-gray-600 text-center'>No data.</p>
+                        </>
+                    ) : (
+                        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                            <SortableContext items={faqs.map(f => f.id)} strategy={verticalListSortingStrategy}>
+                                <div className='mt-3'>
+                                    {faqs.map((faq) => (
+                                        <SortableFaq
+                                            key={faq.id}
+                                            data={faq}
+                                            onEdit={() => handleEdit(faq)}
+                                            onDelete={() => setDeleteTarget(faq.id)}
+                                        />
+                                    ))}
+                                </div>
+                            </SortableContext>
+                        </DndContext>
+                    )}
+                </div>
+
+                <div className='mt-5 flex justify-end'>
+                    <button className='w-full bg-blue-600 text-white px-4 py-2 rounded-xl shadow-blue-700 hover:bg-blue-700 transition'>
+                        Save
+                    </button>
+                </div>
+            </BoxCard>
+        </div>
+    )
+}
+
+const SortableFaq = ({ data, onEdit, onDelete }) => {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: data.id })
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    }
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            className='rounded-xl flex my-2 shadow border py-2 px-4 border-gray-300 w-full items-center bg-white'
+        >
+            <div {...listeners}>
+                <RxDragHandleDots2 size={26} className='text-gray-600 mr-3 cursor-grab' />
+            </div>
+            <div className='flex-1'>
+                <strong>{data.question}</strong>
+                <p className='text-sm text-gray-600'>{data.answer}</p>
+            </div>
+            <div className='flex mr-4 justify-center items-center gap-3'>
+                <AiTwotoneEdit
+                    onClick={onEdit}
+                    size={18}
+                    className='cursor-pointer text-blue-600'
+                />
+                <FaRegTrashAlt
+                    onClick={onDelete}
+                    className='cursor-pointer text-red-600'
+                    size={18}
+                />
+            </div>
+        </div>
+    )
+}
+
+export default UpdateFaqs

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Trash2, Plus, Loader2, Pen, Save } from "lucide-react";
+import { Loader2, Save } from "lucide-react";
 import useItem from "../hooks/useItem";
 import PageContainer from "../CustomUi/PageContainer";
 import GeneralOverview from "../compunent/itemsPage/GeneralOverview";
