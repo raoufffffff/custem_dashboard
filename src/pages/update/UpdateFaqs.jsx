@@ -188,12 +188,16 @@ const SortableFaq = ({ data, onEdit, onDelete }) => {
             ref={setNodeRef}
             style={style}
             {...attributes}
-            className='rounded-xl flex my-2 shadow border py-2 px-4 border-gray-300 w-full items-center bg-white'
+            className='rounded-xl flex my-2 shadow border py-2 px-4 border-gray-300 w-full  items-center bg-white'
         >
-            <div {...listeners}>
-                <RxDragHandleDots2 size={26} className='text-gray-600 mr-3 cursor-grab' />
-            </div>
-            <div className='flex-1'>
+            <RxDragHandleDots2 size={26} className='text-gray-600 mr-3 cursor-grab' />
+
+            <div className='flex-1 relative'>
+                <div
+                    className='h-full w-full absolute top-0 left-0 z-[1000]'
+                    {...listeners}>
+
+                </div>
                 <strong>{data.question}</strong>
                 <p className='text-sm text-gray-600'>{data.answer}</p>
             </div>
