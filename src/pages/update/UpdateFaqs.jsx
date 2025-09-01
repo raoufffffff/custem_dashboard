@@ -14,6 +14,7 @@ import {
     MouseSensor,
     TouchSensor
 } from "@dnd-kit/core";
+
 import {
     arrayMove,
     SortableContext,
@@ -52,7 +53,28 @@ const UpdateFaqs = () => {
         }
         hide()
     }
+    const mouseSensor = useSensor(MouseSensor, {
+        activationConstraint: {
+            distance: 5, // start drag after 5px move
+        },
+    });
 
+    const touchSensor = useSensor(TouchSensor, {
+        activationConstraint: {
+            delay: 200,
+            tolerance: 5,
+        },
+    });
+
+    const sensors = useSensors(mouseSensor, touchSensor);
+
+    const handleDragEnd = (event) => {
+        const { active, over } = event
+        if (!over || active.id === over.id) return
+        const oldIndex = faqs.findIndex(f => f.id === active.id)
+        const newIndex = faqs.findIndex(f => f.id === over.id)
+        setfaqs(arrayMove(faqs, oldIndex, newIndex))
+    }
     const confirmDelete = () => {
         setfaqs(faqs.filter(f => f.id !== deleteTarget))
         setDeleteTarget(null)
@@ -64,24 +86,7 @@ const UpdateFaqs = () => {
         setshow(true)
     }
 
-    const handleDragEnd = (event) => {
-        const { active, over } = event
-        if (!over || active.id === over.id) return
-        const oldIndex = faqs.findIndex(f => f.id === active.id)
-        const newIndex = faqs.findIndex(f => f.id === over.id)
-        setfaqs(arrayMove(faqs, oldIndex, newIndex))
-    }
 
-    // sensors for mouse + touch
-    const mouseSensor = useSensor(MouseSensor, {
-        activationConstraint: { distance: 5 }
-    })
-
-    const touchSensor = useSensor(TouchSensor, {
-        activationConstraint: { delay: 200, tolerance: 5 }
-    })
-
-    const sensors = useSensors(mouseSensor, touchSensor)
 
     return (
         <div className='w-full'>
@@ -206,118 +211,6 @@ const SortableFaq = ({ data, onEdit, onDelete }) => {
             ref={setNodeRef}
             style={style}
             {...attributes}
-            className='rounded-xl flex my-2 shadow border py-2 px-4 border-gray-300 w-full items-center bg-white'
-        >
-            {/* handle drag only from icon */}
-            <RxDragHandleDots2
-                size={26}
-                className='text-gray-600 mr-3 cursor-grab'
-                {...listeners}
-            />
-
-            <div className='flex-1'>
-                <strong>{data.question}</strong>
-                <p className='text-sm text-gray-600'>{data.answer}</p>
-            </div>
-            <div className='flex mr-4 justify-center items-center gap-3'>
-                <AiTwotoneEdit
-                    onClick={onEdit}
-                    size={18}
-                    className='cursor-pointer text-blue-600'
-                />
-                <FaRegTrashAlt
-                    onClick={onDelete}
-                    className='cursor-pointer text-red-600'
-                    size={18}
-                />
-            </div>
-        </div>
-    )
-}
-
-export default UpdateFaqs                </button>
-            </Model>}
-
-            {/* Delete Confirm Modal */}
-            {deleteTarget && (
-                <Model onclose={() => setDeleteTarget(null)} classname={"p-5 relative"}>
-                    <p className="text-lg font-semibold mb-4">Are you sure you want to delete this FAQ?</p>
-                    <div className="flex gap-3 justify-end">
-                        <button
-                            onClick={() => setDeleteTarget(null)}
-                            className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            onClick={confirmDelete}
-                            className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
-                        >
-                            Delete
-                        </button>
-                    </div>
-                </Model>
-            )}
-
-            <BoxCard about={"Frequently Asked Questions"} small={true} className={`py-1`}>
-                <p className='text-sm text-gray-600'>
-                    Add FAQs to answer your customers' most frequently asked questions. They will be displayed on your store's FAQ page.
-                </p>
-                <button
-                    onClick={() => setshow(true)}
-                    className='w-fit my-3 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm shadow-blue-700 hover:bg-blue-700 transition flex items-center'
-                >
-                    Add
-                    <Plus className='ml-2 ' size={20} />
-                </button>
-
-                <div className='w-[95%] mx-auto border-t border-t-gray-300'>
-                    {faqs.length === 0 ? (
-                        <>
-                            <img className='w-6/12 mx-auto' src='/empty.png' alt='empty' />
-                            <p className='text-gray-600 text-center'>No data.</p>
-                        </>
-                    ) : (
-                        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                            <SortableContext items={faqs.map(f => f.id)} strategy={verticalListSortingStrategy}>
-                                <div className='mt-3'>
-                                    {faqs.map((faq) => (
-                                        <SortableFaq
-                                            key={faq.id}
-                                            data={faq}
-                                            onEdit={() => handleEdit(faq)}
-                                            onDelete={() => setDeleteTarget(faq.id)}
-                                        />
-                                    ))}
-                                </div>
-                            </SortableContext>
-                        </DndContext>
-                    )}
-                </div>
-
-                <div className='mt-5 flex justify-end'>
-                    <button className='w-full bg-blue-600 text-white px-4 py-2 rounded-xl shadow-blue-700 hover:bg-blue-700 transition'>
-                        Save
-                    </button>
-                </div>
-            </BoxCard>
-        </div>
-    )
-}
-
-const SortableFaq = ({ data, onEdit, onDelete }) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: data.id })
-
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-    }
-
-    return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
             className='rounded-xl flex my-2 shadow border py-2 px-4 border-gray-300 w-full  items-center bg-white'
         >
             <RxDragHandleDots2 size={26} className='text-gray-600 mr-3 cursor-grab' />
@@ -348,4 +241,3 @@ const SortableFaq = ({ data, onEdit, onDelete }) => {
 }
 
 export default UpdateFaqs
-
