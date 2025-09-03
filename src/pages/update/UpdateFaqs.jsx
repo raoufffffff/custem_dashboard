@@ -22,6 +22,7 @@ import {
     verticalListSortingStrategy
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import Empty from '../../CustomUi/Empty';
 
 const UpdateFaqs = () => {
     const [faqs, setfaqs] = useState([])
@@ -161,12 +162,7 @@ const UpdateFaqs = () => {
                 </button>
 
                 <div className='w-[95%] mx-auto border-t border-t-gray-300'>
-                    {faqs.length === 0 ? (
-                        <>
-                            <img className='w-6/12 mx-auto' src='/empty.png' alt='empty' />
-                            <p className='text-gray-600 text-center'>No data.</p>
-                        </>
-                    ) : (
+                    {faqs.length === 0 ? <Empty /> : (
                         <DndContext
                             sensors={sensors}
                             collisionDetection={closestCenter}

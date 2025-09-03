@@ -9,23 +9,24 @@ const SummaryCard = ({ label, value, bg }) => (
     </div>
 );
 
-const GeneralOverview = ({ stats }) => {
+const GeneralOverview = ({ stats, type }) => {
+    console.log(stats);
 
     return (
         <div className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <SummaryCard
-                    label="Total des produits"
+                    label={type == "Categories" ? "Total des Categories" : "Total des produits"}
                     value={stats.length}
                     bg="bg-blue-100"
                 />
                 <SummaryCard
-                    label="Produits visibles"
+                    label={type == "Categories" ? "Categories visibles" : "Produits visibles"}
                     value={stats.filter(e => e.best).length}
                     bg="bg-green-100"
                 />
                 <SummaryCard
-                    label="Produits cachés"
+                    label={type == "Categories" ? "Categories cachés" : "Produits cachés"}
                     value={stats.filter(e => !e.best).length}
                     bg="bg-yellow-100"
                 />

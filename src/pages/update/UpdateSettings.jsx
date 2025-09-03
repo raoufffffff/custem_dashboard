@@ -89,12 +89,6 @@ const UpdateSettingsForm = ({ store }) => {
                             className="toggle toggle-primary"
                         />
                     </label>
-
-
-
-
-
-
                 </div>
             </div>
 

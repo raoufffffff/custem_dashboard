@@ -27,6 +27,8 @@ import Color from './pages/update/UpdateTheme/Color.jsx';
 import UpdateContactInfos from './pages/update/UpdateContactInfos.jsx';
 import UpdateSettings from './pages/update/UpdateSettings.jsx';
 import UpdateFaqs from './pages/update/UpdateFaqs.jsx';
+import Categories from './pages/Categories.jsx';
+import AddCategories from './pages/AddCategories.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -85,6 +87,12 @@ const router = createBrowserRouter(
         } />
         <Route path="LivrisionPrice" element={
           <ProtectedRoute><LivrisionPrice /></ProtectedRoute>
+        } />
+        <Route path="Categories" element={
+          <ProtectedRoute><Categories /></ProtectedRoute>
+        } />
+        <Route path="AddCategories" element={
+          <ProtectedRoute><AddCategories /></ProtectedRoute>
         } />
       </Route>
       <Route path="login" element={<Login />} />

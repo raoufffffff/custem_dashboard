@@ -81,7 +81,6 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
                     <NavItem togelHeader={togelHeader} side label="Theme" to="/update/theme" collapsed={SemalHarder} />
                     <NavItem togelHeader={togelHeader} side label="Contact information" to="/update/Contact-information" collapsed={SemalHarder} />
                     <NavItem togelHeader={togelHeader} side label="Faqs page" to="/update/faqs" collapsed={SemalHarder} />
-                    <NavItem togelHeader={togelHeader} side label="About Store" to="/update/about-page" collapsed={SemalHarder} />
                     <NavItem togelHeader={togelHeader} side label="Store settings" to="/update/settings" collapsed={SemalHarder} />
                 </Dropdown>
 
@@ -122,7 +121,8 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
                     }}
                     collapsed={SemalHarder}
                 >
-                    <NavItem togelHeader={togelHeader} side label="All Categories" to="/modify-website" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} side label=" Categories" to="/Categories" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} side label="Add  Categories" to="/AddCategories" collapsed={SemalHarder} />
                 </Dropdown>
 
                 <Dropdown
