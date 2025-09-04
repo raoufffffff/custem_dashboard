@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { FaRegCircleUser } from "react-icons/fa6";
 import { HiBars3BottomLeft } from 'react-icons/hi2';
 
-export default function Header({ togelHeader }) {
+export default function Header({ togelHeader, openLanguagePanel,
+    openAccountPanel }) {
     return (
         <motion.header
             initial={{ y: -20, opacity: 0 }}
@@ -32,12 +33,16 @@ export default function Header({ togelHeader }) {
             {/* Left side icons */}
             <div className="flex items-center gap-6">
                 {/* User */}
-                <button className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors">
+                <button
+                    onClick={openAccountPanel}
+                    className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors">
                     <FaRegCircleUser className="w-5 h-5" />
                 </button>
 
                 {/* Language */}
-                <button className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors">
+                <button
+                    onClick={openLanguagePanel}
+                    className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors">
                     <Globe className="w-5 h-5" />
                     <span className="text-sm">english</span>
                 </button>

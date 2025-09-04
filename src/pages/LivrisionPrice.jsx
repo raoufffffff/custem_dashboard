@@ -5,6 +5,8 @@ import useUser from "../hooks/useUser";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { Save } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import PageContainer from "../CustomUi/PageContainer";
 
 const LivrisionPrice = () => {
     const [liv, setLiv] = useState(states);
@@ -44,8 +46,9 @@ const LivrisionPrice = () => {
         setUcan(true)
     };
 
-    if (loading || loadingg) return <div className="text-center text-xl mt-10 text-blue-600">جارٍ التحميل...</div>;
-
+    if (loading || loadingg) return <div className="flex justify-center items-center min-h-[200px]">
+        <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
+    </div>
     const UpdateWebsete = async () => {
         setLoading(true)
         setUcan(false)
@@ -65,7 +68,10 @@ const LivrisionPrice = () => {
         }
     }
     return (
-        <div className="max-w-6xl mx-auto p-6 font-[Cairo] bg-white min-h-screen">
+        <PageContainer
+            titel={"delivery"}
+            about={"Prices"}
+        >
             {Ucan && (
                 <motion.button
                     initial={{ opacity: 0, y: 20 }}
@@ -79,52 +85,56 @@ const LivrisionPrice = () => {
                     <span>Save to Website</span>
                 </motion.button>
             )}
-            <h1 className="text-3xl font-bold text-blue-600 text-center mb-10">إعداد أسعار التوصيل حسب الولاية</h1>
 
-            <div className="overflow-x-auto">
-                <table className="table w-full border border-gray-200 rounded-xl shadow-md table-zebra">
-                    <thead className="bg-blue-600 text-white text-center text-base">
-                        <tr>
-                            <th className="py-3">#</th>
-                            <th>الولاية</th>
-                            <th>إلى المنزل</th>
-                            <th>إلى المكتب</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-center">
-                        {liv.map((state, index) => {
-                            const info = states.find((s) => s.id === state.id);
-                            return (
-                                <tr key={state.id} className="hover:bg-blue-50 transition-all">
-                                    <td className="font-bold">{index + 1}</td>
-                                    <td className="text-blue-800 font-semibold">{info?.ar_name || state.name}</td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            className="input input-sm w-24 text-center border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:outline-none"
-                                            value={state.prix_initial}
-                                            onChange={(e) =>
-                                                handleInputChange(state.id, "prix_initial", e.target.value)
-                                            }
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            className="input input-sm w-24 text-center border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:outline-none"
-                                            value={state.stop_back}
-                                            onChange={(e) =>
-                                                handleInputChange(state.id, "stop_back", e.target.value)
-                                            }
-                                        />
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+            <div className="overflow-hidden w-full rounded shadow-xl border border-gray-200">
+                <div className="overflow-x-auto relative">
+                    <table className="min-w-full bg-white">
+                        {/* Sticky header */}
+                        <thead className="bg-blue-500 text-white sticky top-0 z-10 shadow-sm">
+                            <tr>
+                                <th className="px-4 py-3 text-left text-xs font-semibold  uppercase tracking-wider">#</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold  uppercase tracking-wider">الولاية</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold  uppercase tracking-wider">إلى المنزل</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold  uppercase tracking-wider">إلى المكتب</th>
+                            </tr>
+                        </thead>
+
+                        <tbody className="divide-y divide-gray-100 text-sm">
+                            {liv.map((state, index) => {
+                                const info = states.find((s) => s.id === state.id);
+                                return (
+                                    <tr
+                                        key={state.id}
+                                        className="hover:bg-blue-50/50 transition-all duration-200 ease-in-out hover:shadow-sm"
+                                    >
+                                        <td className="px-4 py-3 font-medium text-gray-700">{index + 1}</td>
+                                        <td className="px-6 py-3 font-semibold text-gray-900">{info?.ar_name || state.name}</td>
+                                        <td className="px-6 py-3">
+                                            <input
+                                                type="number"
+                                                className="w-28 text-center border border-gray-300 rounded-lg px-2 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                                value={state.prix_initial}
+                                                onChange={(e) => handleInputChange(state.id, "prix_initial", e.target.value)}
+                                            />
+                                        </td>
+                                        <td className="px-6 py-3">
+                                            <input
+                                                type="number"
+                                                className="w-28 text-center border border-gray-300 rounded-lg px-2 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                                value={state.stop_back}
+                                                onChange={(e) => handleInputChange(state.id, "stop_back", e.target.value)}
+                                            />
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+
+
+        </PageContainer>
     );
 };
 

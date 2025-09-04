@@ -71,7 +71,7 @@ const ProductTable = ({ products = [], changeStatus, deleteItem }) => {
                 </div>
             </Model>}
             {/* Search Bar */}
-            {filtered.length > 0 ? (
+            {products.length > 0 ? (
                 <>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
                         <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2 w-full sm:w-2/3">

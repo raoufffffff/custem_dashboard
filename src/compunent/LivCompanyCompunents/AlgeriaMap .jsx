@@ -1,11 +1,17 @@
 import states from '../../constanst/states'
+import PageContainer from '../../CustomUi/PageContainer';
 import UseLivOrder from '../../hooks/UseLivOrder';
 import WilayaTable from './WilayaTable ';
 
 const AlgeriaMap = () => {
     const { Livloading, orders } = UseLivOrder()
-    console.log(orders[0]);
-
+    if (Livloading) {
+        return (
+            <div className="flex justify-center items-center min-h-[200px]">
+                <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
+            </div>
+        );
+    }
     const getUniqueWilaya = () => {
         const wilayaStats = {};
 
@@ -40,9 +46,13 @@ const AlgeriaMap = () => {
 
 
     return (
-        <div>
+        <PageContainer
+            titel={"Wilaya Shipping "}
+            about={"Statistics"}
+        >
+
             <WilayaTable data={getUniqueWilaya()} />
-        </div>
+        </PageContainer>
     );
 }
 export default AlgeriaMap;

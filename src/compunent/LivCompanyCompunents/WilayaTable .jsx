@@ -34,15 +34,7 @@ const WilayaTable = ({ data }) => {
     }
 
     return (
-        <div className="p-6 bg-gray-50 rounded-xl">
-            <motion.h2
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-2xl font-bold mb-6 text-gray-800"
-            >
-                Wilaya Shipping Statistics
-            </motion.h2>
+        <div className="rounded-xl">
 
             <motion.div
                 initial={{ opacity: 0 }}

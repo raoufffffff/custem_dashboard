@@ -136,6 +136,7 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
                     collapsed={SemalHarder}
                 >
                     <NavItem togelHeader={togelHeader} side label="Delivery Companies" to="/LivCompany" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} side label="Delivery Prices" to="/LivrisionPrice" collapsed={SemalHarder} />
                 </Dropdown>
 
                 <NavItem togelHeader={togelHeader} icon={<Megaphone className="w-5 h-5" />} label="Marketing Tools" to="/marketing" collapsed={SemalHarder} />
