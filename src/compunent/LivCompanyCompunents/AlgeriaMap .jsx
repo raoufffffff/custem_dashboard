@@ -2,7 +2,7 @@ import states from '../../constanst/states'
 import PageContainer from '../../CustomUi/PageContainer';
 import UseLivOrder from '../../hooks/UseLivOrder';
 import WilayaTable from './WilayaTable ';
-
+import { Loader2 } from "lucide-react";
 const AlgeriaMap = () => {
     const { Livloading, orders } = UseLivOrder()
     if (Livloading) {
@@ -55,4 +55,5 @@ const AlgeriaMap = () => {
         </PageContainer>
     );
 }
+
 export default AlgeriaMap;
