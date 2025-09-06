@@ -155,7 +155,7 @@ const UpdateFaqs = () => {
                 </p>
                 <button
                     onClick={() => setshow(true)}
-                    className='w-fit my-3 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm shadow-blue-700 hover:bg-blue-700 transition flex items-center'
+                    className='w-fit my-3 bg-teal-600 text-white px-3 py-2 rounded-lg text-sm shadow-teal-700 hover:bg-teal-700 transition flex items-center'
                 >
                     Add
                     <Plus className='ml-2 ' size={20} />
@@ -184,11 +184,11 @@ const UpdateFaqs = () => {
                     )}
                 </div>
 
-                <div className='mt-5 flex justify-end'>
-                    <button className='w-full bg-blue-600 text-white px-4 py-2 rounded-xl shadow-blue-700 hover:bg-blue-700 transition'>
-                        Save
-                    </button>
-                </div>
+                <button
+                    className='w-full bg-teal-600 mt-2 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
+                >
+                    Save
+                </button>
             </BoxCard>
         </div>
     )

@@ -4,14 +4,14 @@ import CustomImg from '../../CustomUi/CustomImg'
 import InputImg from '../../CustomUi/InputImg'
 import handleImageUpload from '../../utility/UploadImages'
 import { useState } from 'react'
-import useUser from '../../hooks/useUser'
+import { useOutletContext } from 'react-router-dom';
 
 const UpdateLogo = () => {
-    const { website, loading } = useUser()
-    const { websiteStyle } = website || {}
+    const user = useOutletContext() // get websiteStyle from context
+
+    const { websiteStyle } = user.website || {}
     const [logo, setlogo] = useState(null);
     const [uploading, setUploading] = useState(false);
-    if (loading) return <div>Loading...</div>
 
 
 
@@ -78,11 +78,13 @@ const UpdateLogo = () => {
                     className='mt-5 flex justify-end'
                 >
 
+
                     <button
-                        className='w-full bg-blue-600 text-white px-4 py-2 rounded-xl  shadow-blue-700 hover:bg-blue-700 transition'
+                        className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                     >
-                        save
+                        Save
                     </button>
+
                 </div>
             </BoxCard>
         </div>

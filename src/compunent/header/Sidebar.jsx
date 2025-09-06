@@ -10,13 +10,12 @@ import {
     ChevronDown,
     ChevronUp,
 } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useOutletContext } from 'react-router-dom';
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from 'react';
 import { HiBars3BottomLeft } from "react-icons/hi2";
-import useUser from '../../hooks/useUser';
 
-export default function Sidebar({ SemalHarder, togelHeader, open }) {
+export default function Sidebar({ SemalHarder, togelHeader, open, name, website }) {
     const [show, setShow] = useState({
         store: false,
         orders: false,
@@ -24,7 +23,6 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
         delivery: false,
         marketing: false,
     });
-    const { loading, name, website } = useUser()
 
     return (
         <motion.aside
@@ -39,28 +37,23 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
             {/* Toggle Button */}
             <button
                 onClick={togelHeader}
-                className={`${SemalHarder ? "w-9/12 mt-3 mx-auto" : "absolute top-3 right-3"} flex items-center justify-between px-4 py-2.5 rounded-lg cursor-pointer transition-all hover:bg-blue-50 hover:text-blue-600`}
+                className={`${SemalHarder ? "w-9/12 mt-3 mx-auto" : "absolute top-3 right-3"} flex items-center justify-between px-4 py-2.5 rounded-lg cursor-pointer transition-all hover:bg-blue-50 hover:text-purple-600`}
             >
                 <HiBars3BottomLeft className="w-5 h-5 text-gray-700" />
             </button>
 
             {/* Logo + Alert */}
-            {loading ? (
-                <div className={` ${SemalHarder && "hidden"} px-6 py-6 text-center border-b border-gray-200 animate-pulse`}>
-                    <div className="h-6 w-32 mx-auto rounded bg-gray-200" />
-                    <div className="mt-3 h-5 w-24 mx-auto rounded-full bg-gray-300" />
-                </div>
-            ) : (
-                <div className={` ${SemalHarder && "hidden"} px-6 py-6 text-center border-b border-gray-200`}>
-                    <h1 className="font-extrabold text-xl text-gray-800">{name}</h1>
-                    <a
-                        target='_blank'
-                        href={`https://${website.link}`}
-                        className="mt-3 inline-block bg-green-600 text-xs text-white px-3 py-1 rounded-full shadow-sm">
-                        your website
-                    </a>
-                </div>
-            )}
+
+            <div className={` ${SemalHarder && "hidden"} px-6 py-6 text-center border-b border-gray-200`}>
+                <h1 className="font-extrabold text-xl text-gray-800">{name}</h1>
+                <a
+                    target='_blank'
+                    href={`https://${website.link}`}
+                    className="mt-3 inline-block bg-teal-600 text-xs text-white px-3 py-1 rounded-full shadow-sm">
+                    your website
+                </a>
+            </div>
+
 
             {/* Navigation */}
             <nav className="flex-1 px-2 py-6 text-gray-700 text-sm space-y-1 overflow-y-auto">
@@ -146,6 +139,7 @@ export default function Sidebar({ SemalHarder, togelHeader, open }) {
 }
 
 /* Reusable NavItem */
+/* NavItem */
 function NavItem({ icon, label, to, side, active, hot, collapsed, togelHeader }) {
     return (
         <NavLink
@@ -154,8 +148,8 @@ function NavItem({ icon, label, to, side, active, hot, collapsed, togelHeader })
                 `flex items-center gap-3 px-4 py-2.5 rounded-lg font-medium cursor-pointer transition-all duration-200
                  ${side ? "pl-10 text-gray-600" : ""}
                  ${active || isActive
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    ? "bg-purple-600 text-white shadow-md"
+                    : "text-gray-700 hover:bg-teal-50 hover:text-teal-600"
                 }`
             }
             onClick={togelHeader}
@@ -170,13 +164,13 @@ function NavItem({ icon, label, to, side, active, hot, collapsed, togelHeader })
     );
 }
 
-/* Dropdown Component */
+/* Dropdown */
 function Dropdown({ icon, label, open, toggle, children, collapsed }) {
     return (
         <div>
             <div
                 onClick={toggle}
-                className="flex items-center justify-between px-4 py-2.5 rounded-lg cursor-pointer transition-all hover:bg-blue-50 hover:text-blue-600"
+                className="flex items-center justify-between px-4 py-2.5 rounded-lg cursor-pointer transition-all hover:bg-teal-50 hover:text-teal-600"
             >
                 <div className="flex items-center gap-3">
                     {icon}
@@ -191,7 +185,7 @@ function Dropdown({ icon, label, open, toggle, children, collapsed }) {
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.25 }}
-                        className="ml-4 mt-1 space-y-1 border-r-2 border-blue-200 pr-2"
+                        className="ml-4 mt-1 space-y-1 border-r-2 border-purple-200 pr-2"
                     >
                         {children}
                     </motion.div>

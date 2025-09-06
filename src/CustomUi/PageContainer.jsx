@@ -13,7 +13,7 @@ const PageContainer = ({ className, children, titel, about }) => {
                 className=' px-5 md:px-0 w-full  mx-auto text-2xl md:text-3xl font-bold text-neutral-900 ltr:first-letter:uppercase flex items-center flex-wrap '
             >{titel}
                 <span
-                    className='text-red-500 mx-3'
+                    className='text-teal-500 mx-3'
                 >
                     {about}
                 </span>

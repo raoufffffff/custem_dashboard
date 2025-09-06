@@ -34,7 +34,7 @@ const WilayaTable = ({ data }) => {
     }
 
     return (
-        <div className="rounded-xl">
+        <div className="rounded-xl w-full overflow-auto">
 
             <motion.div
                 initial={{ opacity: 0 }}

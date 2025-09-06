@@ -1,10 +1,10 @@
 import BoxCard from '../../CustomUi/BoxCard'
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import useUser from '../../hooks/useUser';
+import { NavLink, Outlet, useLocation, useOutletContext } from 'react-router-dom';
 
 const UpdateTheme = () => {
-    const { website, loading } = useUser();
     const location = useLocation();
+    const user = useOutletContext() // get websiteStyle from context
+
 
     const links = [
         {
@@ -39,7 +39,6 @@ const UpdateTheme = () => {
         }
     ];
 
-    if (loading) return <div>Loading...</div>;
 
     // find active link (default is colors when path ends with "theme/")
     const current = links.find(link => {
@@ -80,7 +79,7 @@ const UpdateTheme = () => {
                     <h1 className="text-lg mb-1 font-semibold">{current.titel}</h1>
                     <p className='text-sm mb-5 text-gray-600'>{current.description}</p>
 
-                    <Outlet context={website.websiteStyle} />
+                    <Outlet context={user.website.websiteStyle} />
                 </div>
             </div>
         </BoxCard>

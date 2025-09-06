@@ -152,7 +152,7 @@ const UpdateContactInfos = () => {
                 <div className='mt-5 flex justify-end'>
                     <button
                         onClick={handleSubmit}
-                        className='w-full bg-blue-600 text-white px-4 py-2 rounded-xl shadow-blue-700 hover:bg-blue-700 transition'
+                        className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                     >
                         Save
                     </button>

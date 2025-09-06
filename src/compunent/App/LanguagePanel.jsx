@@ -11,19 +11,20 @@ const LanguagePanel = ({ hide }) => {
                 className='w-full mx-auto flex mt-3 flex-col'
             >
                 <button
-                    className='bg-blue-100 my-1 hover:scale-[1.01] py-2 rounded-xl text-blue-500 hover:bg-gray-100 flex justify-between px-3 hover:text-gray-700'
+                    className='bg-purple-100 my-1 hover:scale-[1.01] py-2 rounded-xl text-purple-500 hover:bg-purple-200 flex justify-between px-3 hover:text-purple-600'
                 >English
                     <Check />
                 </button>
                 <button
-                    className=' flex my-1 hover:scale-[1.01] py-2 rounded-xl justify-between px-3 hover:bg-gray-100 hover:text-gray-700'
+                    className='  my-1 hover:scale-[1.01] py-2 rounded-xl hover:bg-purple-200  px-3hover:bg-purple-100 flex justify-between px-3 hover:text-purple-600'
                 >Arabic
                 </button>
             </div>
             <button
                 onClick={hide}
-                className='ml-auto px-3 py-2 bg-gray-200 rounded-xl'
-            >Close
+                className="ml-auto mt-4 px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-xl transition-all shadow-md"
+            >
+                Close
             </button>
         </div>
     )

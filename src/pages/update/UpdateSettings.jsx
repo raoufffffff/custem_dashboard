@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import BoxCard from '../../CustomUi/BoxCard';
-import useUser from '../../hooks/useUser';
+import { useOutletContext } from 'react-router-dom';
 
 const UpdateSettings = () => {
-    const { website, loading } = useUser();
+    const user = useOutletContext() // get websiteStyle from context
 
 
-    if (loading) return <div>Loading...</div>;
 
 
 
     return (
         <div className='w-full'>
-            <UpdateSettingsForm store={website.websiteStyle} />
+            <UpdateSettingsForm store={user.website.websiteStyle} />
         </div>
     );
 };
@@ -80,7 +79,7 @@ const UpdateSettingsForm = ({ store }) => {
                 <div className="space-y-3">
                     <label className="flex items-center justify-between">
                         <span className="text-sm text-gray-700">
-                            Enable <span className="text-red-500">Navigatiob bar</span> Product page
+                            Enable <span className="text-purple-600">Navigatiob bar</span> Product page
                         </span>
                         <input
                             type="checkbox"
@@ -96,7 +95,7 @@ const UpdateSettingsForm = ({ store }) => {
             <div className='mt-5 flex justify-end'>
                 <button
                     onClick={handleSubmit}
-                    className='w-full bg-blue-600 text-white px-4 py-2 rounded-xl shadow-blue-700 hover:bg-blue-700 transition'
+                    className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
                     Save
                 </button>

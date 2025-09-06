@@ -11,7 +11,7 @@ export default function Header({ togelHeader, openLanguagePanel,
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="sticky top-0 left-0 z-50 w-full bg-white shadow-sm px-6 py-3 flex items-center justify-between"
+            className="sticky top-0 left-0 z-50 w-full bg-white shadow-sm px-6 flex items-center justify-between"
         >
             <div
                 className='flex items-center'
@@ -20,7 +20,7 @@ export default function Header({ togelHeader, openLanguagePanel,
                     <img
                         src="/logo.png" // replace with your logo (FLEX)
                         alt="FLEX"
-                        className="h-6 w-auto object-contain"
+                        className="h-16 w-auto object-contain"
                     />
                 </Link>
                 <button
