@@ -29,6 +29,9 @@ import UpdateSettings from './pages/update/UpdateSettings.jsx';
 import UpdateFaqs from './pages/update/UpdateFaqs.jsx';
 import Categories from './pages/Categories.jsx';
 import AddCategories from './pages/AddCategories.jsx';
+import Settings from './pages/Settings.jsx';
+import ContactUs from './pages/ContactUs.jsx';
+import FAQ from './pages/FAQ.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -94,6 +97,18 @@ const router = createBrowserRouter(
         <Route path="AddCategories" element={
           <ProtectedRoute><AddCategories /></ProtectedRoute>
         } />
+        <Route path="Settings" element={
+          <ProtectedRoute><Settings /></ProtectedRoute>
+        } />
+        <Route path="ContactUs" element={
+          <ProtectedRoute><ContactUs /></ProtectedRoute>
+        } />
+        <Route path="FAQ" element={
+          <ProtectedRoute><FAQ /></ProtectedRoute>
+        } />
+
+
+
       </Route>
       <Route path="login" element={<Login />} />
       <Route path="sinin" element={<Sinin />} />

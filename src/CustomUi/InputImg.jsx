@@ -14,7 +14,7 @@ const InputImg = ({ uploading, ImageUpload, label = "شعار الموقع", mul
                 <motion.label
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`flex-1 flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer ${uploading ? 'border-blue-300 bg-blue-50' : 'border-gray-300 hover:border-blue-400'
+                    className={`flex-1 flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer ${uploading ? 'border-teal-300 bg-blue-50' : 'border-gray-300 hover:border-teal-400'
                         }`}
                 >
                     <div className="text-center">
@@ -22,7 +22,7 @@ const InputImg = ({ uploading, ImageUpload, label = "شعار الموقع", mul
                             <Loader2 className="animate-spin h-5 w-5 text-blue-500 mx-auto" />
                         ) : (
                             <>
-                                <Upload className="h-5 w-5 text-gray-400 mx-auto mb-1" />
+                                <Upload className="h-5 w-5 text-teal-400 mx-auto mb-1" />
                                 <p className="text-sm text-gray-600">
                                     Choose an image
                                 </p>

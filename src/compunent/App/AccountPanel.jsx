@@ -5,24 +5,27 @@ import {
     HelpCircle,
     LogOut,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const AccountPanel = ({ user, hide }) => {
     const menu = [
-
         {
+            link: "/Settings",
             label: "Store Owner Settings",
             icon: <Settings className="w-4 h-4 text-purple-600" />,
         },
-
         {
+            link: "/ContactUs",
             label: "Contact Us",
             icon: <MessageCircle className="w-4 h-4 text-purple-600" />,
         },
         {
+            link: "/FAQ",
             label: "FAQ",
             icon: <HelpCircle className="w-4 h-4 text-purple-600" />,
         },
         {
+            link: "/login",
             label: "Log Out",
             icon: <LogOut className="w-4 h-4 text-purple-600" />,
         },
@@ -41,22 +44,28 @@ const AccountPanel = ({ user, hide }) => {
                 </p>
             </div>
 
-            {/* Info (like "nnn" + eye icon from screenshot) */}
-
-
             {/* Menu items */}
             <div className="w-full flex flex-col mt-4">
                 {menu.map((item, idx) => (
-                    <button
+                    <NavLink
+                        onClick={() => {
+                            hide()
+                            if (item.link == "/login") {
+                                window.localStorage.clear()
+                            }
+                        }}
+                        to={item.link}
                         key={idx}
-                        className={`flex items-center justify-between w-full px-3 py-3 rounded-lg text-sm transition ${item.highlight
-                            ? "bg-pink-100 text-pink-600 font-medium"
-                            : "hover:bg-gray-100 text-gray-700"
-                            }`}
+                        className={({ isActive }) =>
+                            `flex items-center justify-between w-full px-3 py-3 rounded-lg text-sm transition ${isActive
+                                ? "bg-purple-100 text-purple-600 font-medium"
+                                : "hover:bg-gray-100 text-gray-700"
+                            }`
+                        }
                     >
                         <span>{item.label}</span>
                         {item.icon}
-                    </button>
+                    </NavLink>
                 ))}
             </div>
 

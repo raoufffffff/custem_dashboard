@@ -32,11 +32,13 @@ const Color = () => {
                 </div>
 
             </div>
-            <button
-                className=' bg-blue-600 text-white px-4 py-2 rounded-xl  shadow-blue-700 hover:bg-blue-700 transition'
-            >
-                save
-            </button>
+            <div className='mt-5 flex justify-end'>
+                <button
+                    className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
+                >
+                    Save
+                </button>
+            </div>
         </div>
     )
 }

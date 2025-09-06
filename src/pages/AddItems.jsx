@@ -294,7 +294,7 @@ const AddItems = () => {
                 onclick={addVariant}
             >
                 {Variants.length === 0 ? (<p
-                    className={'text-sm text-center mt-10 text-gray-500'}>
+                    className={'text-sm text-center mt-10 text-teal-500'}>
                     You haven't added any variants yet.
                 </p>) : (
                     <VariantsContainer err={err} Variants={Variants} setVariants={setVariants} />
@@ -309,7 +309,7 @@ const AddItems = () => {
                 onclick={addOffers}
             >
                 {Offers.length === 0 ? (<p
-                    className={'text-sm text-center mt-10 text-gray-500'}>
+                    className={'text-sm text-center mt-10 text-teal-500'}>
                     You haven't added any Offers yet.
                 </p>) : (
                     <OffersContainer err={err} Offers={Offers} setOffers={setOffers} />
@@ -320,7 +320,7 @@ const AddItems = () => {
                     console.log("hello");
                     handleSubmit()
                 }}
-                className='bg-blue-600 ml-auto hover:bg-blue-700 text-white px-6 py-2 rounded-lg mt-6 mb-10 transition-all shadow-md shadow-blue-300 flex items-center'
+                className='bg-teal-600 ml-auto hover:bg-teal-700 text-white px-6 py-2 rounded-lg mt-6 mb-10 transition-all shadow-md shadow-teal-300 flex items-center'
             >Save</button>
         </PageContainer>
     );

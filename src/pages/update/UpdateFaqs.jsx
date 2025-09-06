@@ -122,7 +122,7 @@ const UpdateFaqs = () => {
                 )}
                 <button
                     onClick={handleSave}
-                    className='w-full bg-blue-600 text-white px-4 py-2 rounded-xl shadow-blue-700 hover:bg-blue-700 transition'
+                    className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
                     {isEditing ? "Update" : "Save"}
                 </button>

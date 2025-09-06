@@ -52,7 +52,7 @@ const AddCategories = () => {
                     />
                     <label className="flex items-center justify-between">
                         <span className="text-sm text-gray-700">
-                            Enable <span className="text-red-500">Navigatiob bar</span> Product page
+                            Enable <span className="text-purple-500">Navigatiob bar</span> Product page
                         </span>
                         <input
                             type="checkbox"
@@ -77,7 +77,7 @@ const AddCategories = () => {
                 </BoxCard>
             </div>
             <button
-                className='w-full bg-blue-600 text-white px-4 py-2 rounded-xl shadow-blue-700 hover:bg-blue-700 transition'            >save</button>
+                className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'            >save</button>
         </PageContainer>
     )
 }

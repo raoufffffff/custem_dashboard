@@ -10,11 +10,11 @@ const BoxCard = ({ className, children, about, link, small, button, onclick, but
                 <h2 className="text-lg font-semibold text-gray-800">{about}</h2>
                 {button && <button
                     onClick={onclick}
-                    className="text-blue-600 flex cursor-pointer items-center text-xs  hover:text-blue-700 "
+                    className="text-purple-600 flex cursor-pointer items-center text-xs  hover:text-purple-700 "
                 >{buttonicon}{button}</button>}
                 {link && <Link
                     to={`/${link}`}
-                    className="text-sm flex items-center underline  hover:underline">
+                    className="text-sm text-purple-600 flex items-center underline  hover:underline">
                     View Details
                     <LuArrowRight
                         className="mt-1 mx-1"

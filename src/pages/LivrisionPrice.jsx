@@ -77,7 +77,7 @@ const LivrisionPrice = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     onClick={UpdateWebsete}
-                    className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-colors"
+                    className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-2 bg-teal-500 text-white rounded-full shadow-lg hover:bg-teal-600 transition-colors"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
@@ -90,7 +90,7 @@ const LivrisionPrice = () => {
                 <div className="overflow-x-auto relative">
                     <table className="min-w-full bg-white">
                         {/* Sticky header */}
-                        <thead className="bg-blue-500 text-white sticky top-0 z-10 shadow-sm">
+                        <thead className="bg-purple-500 text-white sticky top-0 z-10 shadow-sm">
                             <tr>
                                 <th className="px-4 py-3 text-left text-xs font-semibold  uppercase tracking-wider">#</th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold  uppercase tracking-wider">الولاية</th>

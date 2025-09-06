@@ -64,7 +64,7 @@ const UpdateTheme = () => {
                             end={link.link === ''} // exact match for index
                             className={({ isActive }) =>
                                 isActive
-                                    ? 'bg-blue-600 text-white px-3 py-1 rounded-full shadow-sm text-xs'
+                                    ? 'bg-teal-600 text-white px-3 py-1 rounded-full shadow-sm text-xs'
                                     : 'bg-gray-200 text-gray-800 px-3 py-1 rounded-full shadow-sm text-xs hover:bg-gray-300'
                             }
                             key={index}

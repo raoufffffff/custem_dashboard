@@ -44,7 +44,7 @@ const WilayaTable = ({ data }) => {
             >
                 <table className="w-full border-collapse">
                     <thead>
-                        <tr className="bg-gradient-to-r from-blue-600 to-blue-500 text-white">
+                        <tr className="bg-gradient-to-r from-purple-600 to-purple-500 text-white">
                             <th className="px-6 py-3 text-left font-semibold text-sm uppercase tracking-wider">#</th>
                             <th className="px-6 py-3 text-left font-semibold text-sm uppercase tracking-wider">Wilaya (AR)</th>
                             <th className="px-6 py-3 text-left font-semibold text-sm uppercase tracking-wider">Total Orders</th>
