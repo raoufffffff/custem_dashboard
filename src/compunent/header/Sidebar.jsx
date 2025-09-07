@@ -2,7 +2,6 @@ import {
     Home,
     Store,
     Box,
-    Package,
     Tag,
     Layers,
     Truck,
@@ -10,7 +9,9 @@ import {
     ChevronDown,
     ChevronUp,
 } from 'lucide-react';
-import { NavLink, useOutletContext } from 'react-router-dom';
+import { FaPix } from "react-icons/fa6";
+import { FaFacebook, FaTiktok } from "react-icons/fa";
+import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from 'react';
 import { HiBars3BottomLeft } from "react-icons/hi2";
@@ -19,6 +20,7 @@ export default function Sidebar({ SemalHarder, togelHeader, open, name, website 
     const [show, setShow] = useState({
         store: false,
         orders: false,
+        Products: false,
         categories: false,
         delivery: false,
         marketing: false,
@@ -92,10 +94,10 @@ export default function Sidebar({ SemalHarder, togelHeader, open, name, website 
                 <Dropdown
                     label="Products"
                     icon={<Tag className="w-5 h-5" />}
-                    open={show.orders}
+                    open={show.Products}
                     toggle={() => {
                         open()
-                        setShow({ ...show, orders: !show.orders })
+                        setShow({ ...show, Products: !show.Products })
                     }}
                     collapsed={SemalHarder}
                 >
@@ -131,8 +133,24 @@ export default function Sidebar({ SemalHarder, togelHeader, open, name, website 
                     <NavItem togelHeader={togelHeader} side label="Delivery Companies" to="/LivCompany" collapsed={SemalHarder} />
                     <NavItem togelHeader={togelHeader} side label="Delivery Prices" to="/LivrisionPrice" collapsed={SemalHarder} />
                 </Dropdown>
+                <Dropdown
+                    label="marketing Tools"
+                    icon={<Megaphone className="w-5 h-5" />}
+                    open={show.marketing}
+                    toggle={() => {
+                        open()
+                        setShow({ ...show, marketing: !show.marketing })
+                    }}
+                    collapsed={SemalHarder}
+                >
+                    <NavItem togelHeader={togelHeader} icon={
+                        <FaPix className="w-5 h-5" />} label="Store Pixals" to="/Pixels" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} icon={
+                        <FaFacebook className="w-5 h-5" />} label="Add facebook Pixals" to="/AddFacebookPixel" collapsed={SemalHarder} />
+                    <NavItem togelHeader={togelHeader} icon={
+                        <FaTiktok className="w-5 h-5" />} label="add Tiktok Pixals" to="/AddTiktokPixel" collapsed={SemalHarder} />
+                </Dropdown>
 
-                <NavItem togelHeader={togelHeader} icon={<Megaphone className="w-5 h-5" />} label="Marketing Tools" to="/marketing" collapsed={SemalHarder} />
             </nav>
         </motion.aside>
     );

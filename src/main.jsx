@@ -32,6 +32,9 @@ import AddCategories from './pages/AddCategories.jsx';
 import Settings from './pages/Settings.jsx';
 import ContactUs from './pages/ContactUs.jsx';
 import FAQ from './pages/FAQ.jsx';
+import AddFacebookPixel from './pages/AddFacebookPixel.jsx';
+import AddTiktokPixel from './pages/AddTiktokPixel.jsx';
+import Pixels from './pages/Pixels.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -107,6 +110,15 @@ const router = createBrowserRouter(
           <ProtectedRoute><FAQ /></ProtectedRoute>
         } />
 
+        <Route path="Pixels" element={
+          <ProtectedRoute><Pixels /></ProtectedRoute>
+        } />
+        <Route path="AddFacebookPixel" element={
+          <ProtectedRoute><AddFacebookPixel /></ProtectedRoute>
+        } />
+        <Route path="AddTiktokPixel" element={
+          <ProtectedRoute><AddTiktokPixel /></ProtectedRoute>
+        } />
 
 
       </Route>
