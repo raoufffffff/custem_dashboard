@@ -8,7 +8,6 @@ import InputImg from '../CustomUi/InputImg';
 import CustomImg from '../CustomUi/CustomImg';
 import BoxCard from '../CustomUi/BoxCard';
 import PageContainer from '../CustomUi/PageContainer';
-import ProductDescriptionEditor from '../CustomUi/ProductDescriptionEditor';
 import { IoMdAdd } from "react-icons/io";
 import { toast } from "react-hot-toast";
 import VariantsContainer from '../compunent/additem/Variants';

@@ -35,6 +35,10 @@ import FAQ from './pages/FAQ.jsx';
 import AddFacebookPixel from './pages/AddFacebookPixel.jsx';
 import AddTiktokPixel from './pages/AddTiktokPixel.jsx';
 import Pixels from './pages/Pixels.jsx';
+import UpdateName from './pages/Account/UpdateName.jsx';
+import UpdateEmail from './pages/Account/UpdateEmail.jsx';
+import UpdatePassword from './pages/Account/UpdatePassword.jsx';
+import UpdatePhone from './pages/Account/UpdatePhone.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -118,6 +122,22 @@ const router = createBrowserRouter(
         } />
         <Route path="AddTiktokPixel" element={
           <ProtectedRoute><AddTiktokPixel /></ProtectedRoute>
+        } />
+
+        <Route path="Settings" element={<ProtectedRoute
+        ><Settings /></ProtectedRoute>
+        } />
+        <Route path='Settings/Update-name' element={<ProtectedRoute
+        ><UpdateName /></ProtectedRoute>
+        } />
+        <Route path='Settings/Update-Phone' element={<ProtectedRoute
+        ><UpdatePhone /></ProtectedRoute>
+        } />
+        <Route path='Settings/Update-email' element={<ProtectedRoute
+        ><UpdateEmail /></ProtectedRoute>
+        } />
+        <Route path='Settings/Update-password' element={<ProtectedRoute
+        ><UpdatePassword /></ProtectedRoute>
         } />
 
 

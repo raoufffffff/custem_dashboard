@@ -11,7 +11,7 @@ import { Loader2 } from "lucide-react";
 
 
 function App() {
-  const { loading, website, name, email, phone } = useUser()
+  const { loading, website, name, email, phone, password } = useUser()
   const [SemalHarder, setSemalHarder] = useState(true)
   const togelHeader = () => setSemalHarder(p => !p)
   const openSidebar = () => setSemalHarder(false)
@@ -31,7 +31,7 @@ function App() {
       <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
     </div>
   );
-  let user = { name: name, email: email, website: website, phone: phone }
+  let user = { name: name, email: email, website: website, phone: phone, password: password }
   return (
     <div
       className="min-h-screen w-full  flex justify-end"

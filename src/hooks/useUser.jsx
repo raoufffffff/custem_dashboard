@@ -72,6 +72,7 @@ const useUser = () => {
         email = '',
         phone = '',
         type = '',
+        password = '',
         Notifications = [],
         AlartNotification = false,
         NotificationsCurrentNumber = 0,
@@ -94,7 +95,8 @@ const useUser = () => {
         setNotificationsToDefult,
         handleUpdateCategory,
         website,
-        fetchUser
+        fetchUser,
+        password
     };
 };
 
