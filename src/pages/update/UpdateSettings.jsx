@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import BoxCard from '../../CustomUi/BoxCard';
 import { useOutletContext } from 'react-router-dom';
+import UseUpdateStore from '../../hooks/UseUpdateStore';
+import toast from 'react-hot-toast';
+import { Loader2 } from "lucide-react";
 
 const UpdateSettings = () => {
     const user = useOutletContext() // get websiteStyle from context
@@ -11,30 +14,29 @@ const UpdateSettings = () => {
 
     return (
         <div className='w-full'>
-            <UpdateSettingsForm store={user.website.websiteStyle} />
+            <UpdateSettingsForm store={user.website} repoName={user.repoName} />
         </div>
     );
 };
 
 
-const UpdateSettingsForm = ({ store }) => {
+const UpdateSettingsForm = ({ store, repoName }) => {
     const [storeSetting, setStoreSetting] = useState({
         name: store.store_name || "",
-        language: "ar", // default
-        showHeader: true,
+        language: store.language || "ar", // default
+        EnableBerue: store.EnableBerue || false,
     });
-
+    const [change, SetChange] = useState(false)
+    const { loading, UpdateStore } = UseUpdateStore()
     const handleChange = (field, value) => {
+        SetChange(true)
         setStoreSetting((prev) => ({
             ...prev,
             [field]: value,
         }));
     };
 
-    const handleSubmit = () => {
-        console.log("Submitted settings:", storeSetting);
-        // send to API here
-    };
+
     return (
         <BoxCard
             about={"Store Settings"}
@@ -79,12 +81,12 @@ const UpdateSettingsForm = ({ store }) => {
                 <div className="space-y-3">
                     <label className="flex items-center justify-between">
                         <span className="text-sm text-gray-700">
-                            Enable <span className="text-purple-600">Navigatiob bar</span> Product page
+                            Enable <span className="text-purple-600">Delevry to  </span> The berue
                         </span>
                         <input
                             type="checkbox"
-                            checked={storeSetting.freeShipping}
-                            onChange={(e) => handleChange("freeShipping", e.target.checked)}
+                            checked={storeSetting.EnableBerue}
+                            onChange={(e) => handleChange("EnableBerue", e.target.EnableBerue)}
                             className="toggle toggle-primary"
                         />
                     </label>
@@ -94,11 +96,23 @@ const UpdateSettingsForm = ({ store }) => {
             {/* Save button */}
             <div className='mt-5 flex justify-end'>
                 <button
-                    onClick={handleSubmit}
+                    onClick={() => {
+                        if (change) {
+                            UpdateStore({
+                                ...store,
+                                repoName: repoName,
+                                store_name: storeSetting.name,
+                                language: storeSetting.language, // default
+                                EnableBerue: storeSetting.EnableBerue
+                            })
+                            return
+                        }
+                        toast.error("upload your logo")
+
+                    }}
                     className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
-                    Save
-                </button>
+                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
             </div>
         </BoxCard>
     )

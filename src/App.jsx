@@ -11,9 +11,9 @@ import { Loader2 } from "lucide-react";
 
 
 function App() {
-  const { loading, website, name, email, phone, password } = useUser()
+  const { loading, website, name, email, phone, password, link, repoName, Categories, _id } = useUser()
   const [SemalHarder, setSemalHarder] = useState(true)
-  const togelHeader = () => setSemalHarder(p => !p)
+  const toggleHeader = () => setSemalHarder(p => !p)
   const openSidebar = () => setSemalHarder(false)
   const [showPanels, setShowPanels] = useState({
     LanguagePanel: false,
@@ -31,7 +31,7 @@ function App() {
       <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
     </div>
   );
-  let user = { name: name, email: email, website: website, phone: phone, password: password }
+  let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id }
   return (
     <div
       className="min-h-screen w-full  flex justify-end"
@@ -52,12 +52,12 @@ function App() {
         <Header
           openLanguagePanel={openLanguagePanel}
           openAccountPanel={openAccountPanel}
-          togelHeader={togelHeader} />
+          toggleHeader={toggleHeader} />
         <AnimatePresence>
           <Outlet context={user} />
         </AnimatePresence>
       </main>
-      <Sidebar name={name} website={website} open={openSidebar} togelHeader={togelHeader} SemalHarder={SemalHarder} />
+      <Sidebar link={link} name={name} website={website} open={openSidebar} toggleHeader={toggleHeader} SemalHarder={SemalHarder} />
     </div>
   )
 }

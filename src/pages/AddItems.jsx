@@ -173,9 +173,9 @@ const AddItems = () => {
                     <label className="block mb-2 font-medium text-gray-600">Product Short Description (Optional)</label>
                     <textarea
                         type="text"
-                        name="ShortDescription"
-                        placeholder="Product Short Description"
-                        value={formData.ShortDescription}
+                        name="Description"
+                        placeholder="Product Description"
+                        value={formData.Description}
                         onChange={handleChange}
                         rows={3}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"

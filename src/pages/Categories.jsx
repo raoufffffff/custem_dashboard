@@ -1,4 +1,3 @@
-import React from 'react'
 import useUser from '../hooks/useUser';
 import PageContainer from '../CustomUi/PageContainer';
 import BoxCard from '../CustomUi/BoxCard';
@@ -7,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 import CategoriesTable from '../compunent/Categories/CategoriesTable';
 
 const Categories = () => {
-    const { Categories, loading } = useUser()
+    const { Categories, loading, handleUpdateCategory, repoName } = useUser()
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-[200px]">
@@ -31,9 +30,9 @@ const Categories = () => {
                 about={"Categories list"}>
                 <CategoriesTable
                     type={"Categories"}
-                    products={Categories}
-                // changeStatus={changeStatus}
-                // deleteItem={deleteItem}
+                    repoName={repoName}
+                    Categories={Categories}
+                    handleUpdateCategory={handleUpdateCategory}
                 />
 
             </BoxCard>

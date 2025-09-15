@@ -5,19 +5,24 @@ import InputImg from '../CustomUi/InputImg'
 import handleImageUpload from '../utility/UploadImages'
 import toast from 'react-hot-toast'
 import CustomImg from '../CustomUi/CustomImg'
+import { useOutletContext } from 'react-router-dom'
+import UseUpdateStore from '../hooks/UseUpdateStore'
+import { Loader2 } from 'lucide-react'
 
 const AddCategories = () => {
+    const user = useOutletContext()
     const [Categori, setCategori] = useState({
         name: "",
-        img: null,
+        image: null,
         show: true
     })
+    const { loading, UpdateCategories } = UseUpdateStore()
     const [uploading, setUploading] = useState(false);
     const ImageUpload = async (event) => {
         setUploading(true);
         try {
             const res = await handleImageUpload(event)
-            setCategori({ ...Categori, img: res })
+            setCategori({ ...Categori, image: res })
         } catch (err) {
             console.error('Upload error:', err);
             toast.error('Failed to upload image. Please try again.');
@@ -26,9 +31,23 @@ const AddCategories = () => {
         }
     };
 
+    const update = async () => {
 
+        if (Categori.img === null || Categori.name === "") {
+            toast.error("fill all inputs")
+            return
+        }
+        const result = await UpdateCategories({
+            Categories: [...user.Categories, { ...Categori, id: user.Categories.length + 1 }],
+            repoName: user.repoName,
+            id: user.id
+        })
+        if (result) {
+            setCategori({ image: null, name: "", show: true })
+        }
+    }
     const removeImage = () => {
-        setCategori({ ...Categori, img: null })
+        setCategori({ ...Categori, image: null })
     };
     return (
         <PageContainer
@@ -38,7 +57,6 @@ const AddCategories = () => {
             <div
                 className='flex flex-col sm:flex-row gap-3'
             >
-
                 <BoxCard
                     about={"general"}
                     className={"h-fit"}
@@ -69,16 +87,18 @@ const AddCategories = () => {
                     <p
                         className='text-sm text-gray-600 mb-3'
                     >The category image should preferably be square, for example 500x500 pixels.</p>
-                    {Categori.img && <CustomImg
-                        logo={[Categori.img]}
+                    {Categori.image && <CustomImg
+                        logo={[Categori.image]}
                         removeImage={removeImage}
                     />}
                     <InputImg label='' uploading={uploading} ImageUpload={ImageUpload} />
                 </BoxCard>
             </div>
             <button
+                onClick={update}
                 className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
-            >save</button>
+            >
+                {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
         </PageContainer>
     )
 }

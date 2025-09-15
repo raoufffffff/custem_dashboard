@@ -79,7 +79,7 @@ const UpdateTheme = () => {
                     <h1 className="text-lg mb-1 font-semibold">{current.titel}</h1>
                     <p className='text-sm mb-5 text-gray-600'>{current.description}</p>
 
-                    <Outlet context={user.website.websiteStyle} />
+                    <Outlet context={user} />
                 </div>
             </div>
         </BoxCard>

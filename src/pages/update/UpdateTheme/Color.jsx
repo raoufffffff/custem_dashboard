@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 import { useOutletContext } from 'react-router-dom'
+import UseUpdateStore from '../../../hooks/UseUpdateStore';
+import { Loader2 } from 'lucide-react';
 
 const Color = () => {
-    const websiteStyle = useOutletContext() // get websiteStyle from context
-    const [color, setColor] = useState(websiteStyle.main_color || '#ffffff');
+    const user = useOutletContext() // get websiteStyle from context
+    const [color, setColor] = useState(user.website.main_color || '#ffffff');
+    const [change, SetChange] = useState(false)
+    const { loading, UpdateStore } = UseUpdateStore()
     return (
         <div
             className='w-full flex flex-col gap-6'
@@ -25,7 +30,10 @@ const Color = () => {
                         <input
                             type="color"
                             value={color}
-                            onChange={(e) => setColor(e.target.value)}
+                            onChange={(e) => {
+                                SetChange(true)
+                                setColor(e.target.value)
+                            }}
                             className="absolute w-0 h-0 opacity-0"
                         />
                     </label>
@@ -34,10 +42,22 @@ const Color = () => {
             </div>
             <div className='mt-5 flex justify-end'>
                 <button
+                    onClick={() => {
+                        if (change) {
+                            UpdateStore({
+                                ...user.website,
+                                repoName: user.repoName,
+                                main_color: color,
+
+                            })
+                            return
+                        }
+                        toast.error("upload your logo")
+
+                    }}
                     className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
-                    Save
-                </button>
+                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
             </div>
         </div>
     )

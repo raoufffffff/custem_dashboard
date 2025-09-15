@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { ArrowRight, BookmarkCheck, Copy } from 'lucide-react';
+import { ArrowRight, BookmarkCheck, Copy, Loader2 } from 'lucide-react';
 import { useOutletContext } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
+import UseUpdateStore from "../../../hooks/UseUpdateStore";
+import toast from "react-hot-toast";
 
 const ThanksPage = () => {
-    const websiteStyle = useOutletContext(); // get websiteStyle from context
-    const [thanksPageText, setthanksPageText] = useState({
-        title: "Thank you for your order!",
-        about: "We will contact you soon. Have a nice day.",
-    });
+    const user = useOutletContext(); // get websiteStyle from context
+    const [change, SetChange] = useState(false)
+    const { loading, UpdateStore } = UseUpdateStore()
     const [thanks, setthanks] = useState({
         img: true,
         title: true,
@@ -16,8 +16,11 @@ const ThanksPage = () => {
         homebutton: true,
         phone: true,
         media: true,
+        titleText: "Thank you for your order!",
+        aboutText: "We will contact you soon. Have a nice day.",
     });
     const toggleOption = (key) => {
+        SetChange(true)
         setthanks((prev) => ({ ...prev, [key]: !prev[key] }));
     };
     return (
@@ -99,10 +102,10 @@ const ThanksPage = () => {
                         className="text-green-500 size-18 mt-10" />}
                     {thanks.title && <h1
                         className="text-lg md:text-3xl font-bold text-gray-800 mt-4 mb-2"
-                    >{thanksPageText.title}</h1>}
+                    >{thanks.title}</h1>}
                     {thanks.about && <p
                         className="text-xs md:text-sm text-gray-600 mt-1 md:mt-2 "
-                    >{thanksPageText.about}</p>}
+                    >{thanks.about}</p>}
                     <div
                         className={`mt-5 mb-2 w-10/12 ${(thanks.phone || thanks.homebutton) && "border-y border-gray-200"} pt-4 pb-6  flex flex-col justify-center items-center`}
                     >
@@ -114,10 +117,14 @@ const ThanksPage = () => {
                                 className="border border-gray-200  font-semibold flex items-center  shadow-2xl px-4 py-2 rounded-xl text-gray-700 text-xs md:text-sm cursor-pointer mt-3"
                             >
                                 <Copy className="mr-2" />
-                                {websiteStyle.phone}</p>
+                                {user.website.phone}</p>
                         </>}
                         {thanks.homebutton && <button
-                            className="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs   shadow-blue-500 hover:bg-blue-700 transition mt-5 flex items-center shadow-2xl "
+                            className=" text-white px-4 py-2 rounded-xl text-xs     transition mt-5 flex items-center shadow-2xl "
+                            style={{
+                                backgroundColor: user.website.main_color, // ✅ dynamic color from JSON
+                                boxShadow: `0 4px 14px ${user.website.main_color}80` // 80 = opacity in hex
+                            }}
                         >
                             Home Page
                             <ArrowRight />
@@ -150,8 +157,12 @@ const ThanksPage = () => {
                     </label>
                     <input
                         type="text"
-                        value={thanksPageText.title}
-                        onChange={(e) => setthanksPageText((prev) => ({ ...prev, title: e.target.value }))}
+                        value={thanks.titleText}
+                        onChange={(e) => {
+                            SetChange(true)
+                            setthanks((prev) => ({ ...prev, titleText: e.target.value }))
+                        }
+                        }
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2"
                         placeholder="Thank you for your order!"
                     />
@@ -167,8 +178,12 @@ const ThanksPage = () => {
                     <textarea
                         type="text"
                         rows={3}
-                        value={thanksPageText.about}
-                        onChange={(e) => setthanksPageText((prev) => ({ ...prev, about: e.target.value }))}
+                        value={thanks.aboutText}
+                        onChange={(e) => {
+                            SetChange(true)
+                            setthanks((prev) => ({ ...prev, aboutText: e.target.value }))
+                        }
+                        }
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2"
                         placeholder="We will contact you soon. Have a nice day."
                     />
@@ -176,11 +191,24 @@ const ThanksPage = () => {
 
             </div>
 
-            <button
-                className=' bg-blue-600 text-white px-4 py-2 rounded-xl  shadow-blue-700 hover:bg-blue-700 transition'
-            >
-                save
-            </button>
+            <div className='mt-5 flex justify-end'>
+                <button
+                    onClick={() => {
+                        if (change) {
+                            UpdateStore({
+                                ...user.website,
+                                repoName: user.repoName,
+                                thanks: thanks
+                            })
+                            return
+                        }
+                        toast.error("upload your inpormation")
+
+                    }}
+                    className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
+                >
+                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
+            </div>
         </div>
     )
 }

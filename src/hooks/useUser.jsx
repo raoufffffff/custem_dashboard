@@ -52,7 +52,7 @@ const useUser = () => {
                 {
                     id: userId,
                     Categories: nerCategories,
-                    name: repo
+                    repoName: repo
                 }
             ).then(() => {
                 fetchUser()
@@ -76,7 +76,9 @@ const useUser = () => {
         Notifications = [],
         AlartNotification = false,
         NotificationsCurrentNumber = 0,
-        companyLiv = {}
+        companyLiv = {},
+        repoName = "",
+        link = "",
     } = user || {};
 
     return {
@@ -96,7 +98,9 @@ const useUser = () => {
         handleUpdateCategory,
         website,
         fetchUser,
-        password
+        password,
+        repoName,
+        link
     };
 };
 

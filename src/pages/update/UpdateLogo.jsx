@@ -5,14 +5,15 @@ import InputImg from '../../CustomUi/InputImg'
 import handleImageUpload from '../../utility/UploadImages'
 import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom';
+import UseUpdateStore from '../../hooks/UseUpdateStore'
+import { Loader2 } from "lucide-react";
 
 const UpdateLogo = () => {
     const user = useOutletContext() // get websiteStyle from context
-
-    const { websiteStyle } = user.website || {}
+    const { loading, UpdateStore } = UseUpdateStore()
+    let { website, repoName } = user || {}
     const [logo, setlogo] = useState(null);
     const [uploading, setUploading] = useState(false);
-
 
 
     const ImageUpload = async (event) => {
@@ -36,7 +37,6 @@ const UpdateLogo = () => {
         <div
             className='w-full'
         >
-
             <BoxCard
                 about={"Logo"}
                 small={true}
@@ -59,7 +59,7 @@ const UpdateLogo = () => {
                             layout
                             className="flex flex-wrap gap-3 mt-3"
                         >
-                            <CustomImg tabel={logo ? false : true} big logo={logo ? [logo] : [websiteStyle.logo]} removeImage={removeImage} />
+                            <CustomImg tabel={logo ? false : true} big logo={logo ? [logo] : [website.logo]} removeImage={removeImage} />
                         </div>
                         {!logo && <div
                             className='mt-4'
@@ -80,9 +80,16 @@ const UpdateLogo = () => {
 
 
                     <button
+                        onClick={() => {
+                            if (logo) {
+                                UpdateStore({ ...website, logo: logo, repoName: repoName })
+                                return
+                            }
+                            toast.error("upload your logo")
+                        }}
                         className='w-full bg-purple-600 text-white px-4 py-2 rounded-xl shadow-purple-700 hover:bg-purple-700 transition'
                     >
-                        Save
+                        {loading ? <Loader2 className="animate-spin h-8 w-8 " /> : "Save"}
                     </button>
 
                 </div>

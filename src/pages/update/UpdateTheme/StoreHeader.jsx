@@ -1,19 +1,22 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Search, Menu } from "lucide-react"; // icons
+import { Search, Menu, Loader2 } from "lucide-react"; // icons
+import UseUpdateStore from "../../../hooks/UseUpdateStore";
+import toast from "react-hot-toast";
 
 const StoreHeader = () => {
-    const websiteStyle = useOutletContext(); // get websiteStyle from context
-
+    const user = useOutletContext(); // get websiteStyle from context
+    const [change, SetChange] = useState(false)
+    const { loading, UpdateStore } = UseUpdateStore()
     const [header, setHeader] = useState({
-        name: true,
-        logo: true,
-        search: true,
-        headercolor: "#ffffff",
-        namecolor: "#000000",
-        barcolor: "#333333",
+        name: user.website.header.name,
+        logo: user.website.header.logo,
+        headercolor: user.website.header.headercolor,
+        namecolor: user.website.header.namecolor,
+        barcolor: user.website.header.barcolor,
     });
     const toggleOption = (key) => {
+        SetChange(true)
         setHeader((prev) => ({ ...prev, [key]: !prev[key] }));
     };
     return (
@@ -37,14 +40,7 @@ const StoreHeader = () => {
                     <span>Show store name?</span>
                 </label>
 
-                <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="checkbox"
-                        checked={header.search}
-                        onChange={() => toggleOption("search")}
-                    />
-                    <span>Show search icon?</span>
-                </label>
+
             </div>
             <div
                 className="w-11/12 mx-auto flex flex-wrap gap-3 items-start "
@@ -137,6 +133,22 @@ const StoreHeader = () => {
                     style={{ backgroundColor: header.headercolor }}
                     className="  shadow-sm border border-gray-200 p-3 flex items-center justify-between">
                     {/* Left side: Cart */}
+                    <div className="flex items-center gap-2">
+                        {header.logo && (
+                            <img
+                                src={user.website.logo}
+                                alt="logo"
+                                className="w-8 h-8 object-cover rounded-full"
+                            />
+                        )}
+                        {header.name && <span
+                            style={{ color: header.namecolor }}
+                            className="font-medium text-xs md:text-lg">{user.website.store_name}</span>}
+
+                    </div>
+
+                    {/* Right side: Logo + Name + Menu */}
+
                     <div
                         className="flex items-center gap-2"
                     >
@@ -152,21 +164,6 @@ const StoreHeader = () => {
 
                         )}
                     </div>
-
-                    {/* Right side: Logo + Name + Menu */}
-                    <div className="flex items-center gap-2">
-                        {header.logo && (
-                            <img
-                                src={websiteStyle.logo}
-                                alt="logo"
-                                className="w-8 h-8 object-cover rounded-full"
-                            />
-                        )}
-                        {header.name && <span
-                            style={{ color: header.namecolor }}
-                            className="font-medium text-xs md:text-lg">{websiteStyle.name}</span>}
-
-                    </div>
                 </div>
                 <div className={` px-6 py-6 text-center border-b border-gray-300 animate-pulse`}>
                     <div className="h-4 md:h-6 w-full  bg-gray-200 rounded-xl" />
@@ -176,11 +173,24 @@ const StoreHeader = () => {
             </div>
 
 
-            <button
-                className=' bg-blue-600 text-white px-4 py-2 rounded-xl  shadow-blue-700 hover:bg-blue-700 transition'
-            >
-                save
-            </button>
+            <div className='mt-5 flex justify-end'>
+                <button
+                    onClick={() => {
+                        if (change) {
+                            UpdateStore({
+                                ...user.website,
+                                repoName: user.repoName,
+                                header: header
+                            })
+                            return
+                        }
+                        toast.error("upload your logo")
+
+                    }}
+                    className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
+                >
+                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
+            </div>
         </div>
     );
 };

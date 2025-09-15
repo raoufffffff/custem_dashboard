@@ -1,20 +1,29 @@
 import { useState } from 'react'
 import BoxCard from '../../CustomUi/BoxCard'
 import { FaFacebook, FaInstagram, FaSnapchat, FaTiktok, FaWhatsapp, FaViber } from "react-icons/fa";
+import { useOutletContext } from 'react-router-dom';
+import UseUpdateStore from '../../hooks/UseUpdateStore';
+import toast from 'react-hot-toast';
+import { Loader2 } from 'lucide-react';
 
 const UpdateContactInfos = () => {
+    const user = useOutletContext()
+    let { website, repoName } = user || {}
+    const [change, SetChange] = useState(false)
+    const { loading, UpdateStore } = UseUpdateStore()
     const [form, setForm] = useState({
-        email: "",
-        phone: "",
-        whatsapp: "",
-        viber: "",
-        facebook: "",
-        instagram: "",
-        snapchat: "",
-        tiktok: ""
+        email: website.email,
+        phone: website.phone,
+        whatsapp: website.whatsapp,
+        viber: website.viber,
+        facebook: website.facebook,
+        instagram: website.instagram,
+        snapchat: website.snapchat,
+        tiktok: website.tiktok
     });
 
     const handleChange = (field, value) => {
+        SetChange(true)
         setForm((prev) => ({
             ...prev,
             [field]: value
@@ -24,10 +33,7 @@ const UpdateContactInfos = () => {
 
 
 
-    const handleSubmit = () => {
-        console.log("Submitted data:", form);
-        // here you can send to API
-    };
+
 
     return (
         <div className='w-full'>
@@ -151,11 +157,21 @@ const UpdateContactInfos = () => {
                 {/* Save button */}
                 <div className='mt-5 flex justify-end'>
                     <button
-                        onClick={handleSubmit}
+                        onClick={() => {
+                            if (change) {
+                                UpdateStore({
+                                    ...website,
+                                    repoName: repoName,
+                                    ...form
+                                })
+                                return
+                            }
+                            toast.error("upload your logo")
+
+                        }}
                         className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                     >
-                        Save
-                    </button>
+                        {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
                 </div>
             </BoxCard>
         </div>
