@@ -18,7 +18,7 @@ export default function Header({ toggleHeader, openLanguagePanel,
                 <Link to="/">
                     <img
                         src="/logo.png" // replace with your logo (FLEX)
-                        alt="FLEX"
+                        alt="Next commerce"
                         className="h-16 w-auto object-contain"
                     />
                 </Link>

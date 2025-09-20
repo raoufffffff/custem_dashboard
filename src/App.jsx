@@ -31,7 +31,7 @@ function App() {
       <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
     </div>
   );
-  let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id }
+  let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link }
   return (
     <div
       className="min-h-screen w-full  flex justify-end"

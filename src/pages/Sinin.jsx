@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
-import { Loader2 } from "lucide-react";
 
 // This is the main component for the two-step sign-up page
 const App = () => {
@@ -17,7 +16,6 @@ const App = () => {
     const [language, setLanguage] = useState("arabic");
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [domainAvailable, setDomainAvailable] = useState(null);
-const [Loading, setLoading] = useState(false)
 
     // Validation and move to next step
     const handleNextStep = () => {
@@ -82,7 +80,7 @@ const [Loading, setLoading] = useState(false)
             storeName,
             language,
         };
-setLoading(true)
+
         try {
             const res = await axios.post("https://next-website-server.vercel.app", body);
             // NOTE: The API endpoint must be updated on the server to handle the new fields (domain, storeName, language).
@@ -98,8 +96,6 @@ setLoading(true)
             toast.error("Connection to server failed.", {
                 style: { border: "1px solid #ef4444" },
             });
-        }finally{
-            setLoading(false)
         }
     };
 
@@ -327,8 +323,7 @@ setLoading(true)
                                 onClick={handleFinalRegister}
                                 className="rounded-xl bg-purple-600 py-3 px-6 font-semibold text-white shadow-lg transition duration-300 hover:bg-purple-700"
                             >
-                                 { Loading ?  <Loader2 className="mx-auto animate-spin h-8 w-8 " /> :"Create Account"}
-                               
+                                Create Account
                             </motion.button>
                         </div>
                     </>

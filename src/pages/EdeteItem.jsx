@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import handleImageUpload from '../utility/UploadImages';
@@ -13,11 +13,12 @@ import VariantsContainer from '../compunent/additem/Variants';
 import OffersContainer from '../compunent/additem/OffersContainer';
 import UseUpdateStore from '../hooks/UseUpdateStore';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AddItems = () => {
+const EdeteItem = () => {
     const router = useNavigate()
-
+    const { id } = useParams()
+    const [witing, setWiting] = useState(true)
     const { loading, Categories, _id, repoName } = UseUpdateStore()
     const [formData, setFormData] = useState({
         name: '',
@@ -30,6 +31,28 @@ const AddItems = () => {
     const [Variants, setVariants] = useState([]);
     const [err, seterr] = useState(false);
     const [Offers, setOffers] = useState([]);
+    const [lanImg, setlanImg] = useState([]);
+    const [images, setImages] = useState([]);
+    const [uploading, setUploading] = useState(false);
+
+    useEffect(() => {
+        const getItem = async () => {
+            try {
+                const res = await axios.get(`https://true-fit-dz-api.vercel.app/item/${id}`);
+                setFormData(res.data.result)
+                setVariants(res.data.result.Variants)
+                setlanImg(res.data.result.lanImg)
+                setImages(res.data.result.images)
+            } catch {
+                toast.error("something went wrong")
+            } finally {
+                setWiting(false);
+            }
+        }
+        getItem()
+    }, [])
+
+
     const addOffers = () => {
 
         setOffers((prev) => [...prev, { id: Offers.length, name: '', Quantity: "", price: "", freedelevry: false, topOffer: false }]);
@@ -46,12 +69,10 @@ const AddItems = () => {
     //     setFormData((prev) => ({ ...prev, Description: e }))
     // }
 
-    const [lanImg, setlanImg] = useState([]);
-    const [images, setImages] = useState([]);
-    const [uploading, setUploading] = useState(false);
+
 
     // Tiptap Editor Setup
-    if (loading) {
+    if (loading || witing) {
         return (
             <div className="flex justify-center items-center min-h-[200px]">
                 <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
@@ -150,10 +171,10 @@ const AddItems = () => {
             userId: _id
         }
         try {
-            const result = await axios.post(`https://true-fit-dz-api.vercel.app/item`, {
+            const result = await axios.put(`http://localhost:3010/item/edete/${id}`, {
                 item: item,
                 repoName: repoName,
-                id: _id
+                userId: _id
             })
             if (result.data.good) {
                 router("/Items");
@@ -167,11 +188,10 @@ const AddItems = () => {
 
     return (
         <PageContainer
-            about={"Add"}
-            titel={"Products"}
+            titel={"Edete Product"}
+            about={formData?.name}
             className={"px-4"}
         >
-
             <BoxCard
                 small={true}
                 about={"General"}
@@ -372,4 +392,4 @@ const AddItems = () => {
     );
 };
 
-export default AddItems;
+export default EdeteItem;

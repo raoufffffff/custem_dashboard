@@ -22,12 +22,12 @@ const GeneralOverview = ({ stats, type }) => {
                 />
                 <SummaryCard
                     label={type == "Categories" ? "Categories visibles" : "Produits visibles"}
-                    value={stats.filter(e => e.best).length}
+                    value={stats.filter(e => e.show).length}
                     bg="bg-green-100"
                 />
                 <SummaryCard
                     label={type == "Categories" ? "Categories cachés" : "Produits cachés"}
-                    value={stats.filter(e => !e.best).length}
+                    value={stats.filter(e => !e.show).length}
                     bg="bg-yellow-100"
                 />
 

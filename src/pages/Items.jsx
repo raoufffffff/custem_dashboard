@@ -6,13 +6,22 @@ import GeneralOverview from "../compunent/itemsPage/GeneralOverview";
 import BoxCard from "../CustomUi/BoxCard";
 import ProductTable from "../compunent/itemsPage/ProductTable";
 import toast from "react-hot-toast";
+import { useOutletContext } from "react-router-dom";
+import { useState } from "react";
 
 
 const Items = () => {
+    const [save, setSave] = useState(false)
     const { Items, loading, fetchItems } = useItem()
+    const user = useOutletContext()
     const deleteItem = async (id) => {
         try {
-            await axios.delete(`https://true-fit-dz-api.vercel.app/item/${id}`);
+            await axios.put(`http://localhost:3010/item/delete/${id}`,
+                {
+                    repoName: user.repoName,
+                    userId: user.id
+                }
+            );
             fetchItems();
             toast.success("Item deleted successfully")
         } catch (error) {
@@ -22,8 +31,9 @@ const Items = () => {
     }
     const changeStatus = async (id, status) => {
         try {
-            await axios.put(`https://true-fit-dz-api.vercel.app/item/${id}`, { best: status });
+            await axios.put(`https://true-fit-dz-api.vercel.app/item/${id}`, { show: status });
             fetchItems();
+            setSave(true)
             toast.success("Status updated successfully")
         } catch (error) {
             toast.error("Error updating status")
@@ -38,7 +48,21 @@ const Items = () => {
             </div>
         );
     }
+    const SaveInStore = async () => {
+        try {
+            await axios.put(`https://next-website-server.vercel.app/update-item`, {
+                repoName: user.repoName,
+                id: user.id
+            });
+            fetchItems();
+            setSave(false)
+            toast.success("your website will updated in few sec")
+        } catch (error) {
+            toast.error("Error updating status")
+            console.log("Error updating show status:", error);
+        }
 
+    }
     return (
         <PageContainer
             titel={'products'}
@@ -53,12 +77,16 @@ const Items = () => {
             <BoxCard
                 about={"Product list"}>
                 <ProductTable
+                    link={user.link}
                     products={Items}
                     changeStatus={changeStatus}
                     deleteItem={deleteItem}
                 />
-
             </BoxCard>
+            {save && <button
+                onClick={SaveInStore}
+                className="fixed py-1 rounded-lg px-4 bottom-4 right-3 bg-teal-500 text-white"
+            >save</button>}
         </PageContainer>
     );
 };

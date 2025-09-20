@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
 import BoxCard from "../../CustomUi/BoxCard";
 import OrderRow from "./OrderRow";
 import { IoMdClose } from "react-icons/io";
+import { Plus } from "lucide-react";
 
 const OrdersTable = ({ orders, emptyMessage, loading, edite, ucan, EdetAllOrder, sendtoLiv, fetchOrders, deleteOrder, setFilters, filters }) => (
     <BoxCard
@@ -22,6 +24,12 @@ const OrdersTable = ({ orders, emptyMessage, loading, edite, ucan, EdetAllOrder,
             >
                 <IoMdClose />
             </span>
+            <Link
+                to={'/'}
+                className="bg-teal-500 text-white cursor-pointer py-3 px-4 mx-0.5 rounded-xl"
+            >
+                <Plus size={15} />
+            </Link>
         </form>
 
         <div className="overflow-hidden ">

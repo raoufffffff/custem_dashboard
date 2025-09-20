@@ -145,11 +145,9 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
                     collapsed={SemalHarder}
                 >
                     <NavItem toggleHeader={toggleHeader} icon={
-                        <FaPix className="w-5 h-5" />} label="Store Pixals" to="/Pixels" collapsed={SemalHarder} />
+                        <FaFacebook className="w-5 h-5" />} label="facebook Pixals" to="/AddFacebookPixel" collapsed={SemalHarder} />
                     <NavItem toggleHeader={toggleHeader} icon={
-                        <FaFacebook className="w-5 h-5" />} label="Add facebook Pixals" to="/AddFacebookPixel" collapsed={SemalHarder} />
-                    <NavItem toggleHeader={toggleHeader} icon={
-                        <FaTiktok className="w-5 h-5" />} label="add Tiktok Pixals" to="/AddTiktokPixel" collapsed={SemalHarder} />
+                        <FaTiktok className="w-5 h-5" />} label=" Tiktok Pixals" to="/AddTiktokPixel" collapsed={SemalHarder} />
                 </Dropdown>
 
             </nav>

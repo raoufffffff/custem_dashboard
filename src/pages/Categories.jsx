@@ -1,12 +1,12 @@
-import useUser from '../hooks/useUser';
 import PageContainer from '../CustomUi/PageContainer';
 import BoxCard from '../CustomUi/BoxCard';
 import GeneralOverview from '../compunent/itemsPage/GeneralOverview';
 import { Loader2 } from 'lucide-react';
 import CategoriesTable from '../compunent/Categories/CategoriesTable';
+import UseUpdateStore from '../hooks/UseUpdateStore'
 
 const Categories = () => {
-    const { Categories, loading, handleUpdateCategory, repoName } = useUser()
+    const { loading, UpdateCategories, Categories, repoName, _id } = UseUpdateStore()
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-[200px]">
@@ -32,7 +32,8 @@ const Categories = () => {
                     type={"Categories"}
                     repoName={repoName}
                     Categories={Categories}
-                    handleUpdateCategory={handleUpdateCategory}
+                    id={_id}
+                    handleUpdateCategory={UpdateCategories}
                 />
 
             </BoxCard>

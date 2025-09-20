@@ -16,7 +16,7 @@ const AddCategories = () => {
         image: null,
         show: true
     })
-    const { loading, UpdateCategories } = UseUpdateStore()
+    const { loading, UpdateCategories, Categories } = UseUpdateStore()
     const [uploading, setUploading] = useState(false);
     const ImageUpload = async (event) => {
         setUploading(true);
@@ -38,7 +38,7 @@ const AddCategories = () => {
             return
         }
         const result = await UpdateCategories({
-            Categories: [...user.Categories, { ...Categori, id: user.Categories.length + 1 }],
+            Categories: [...Categories, { ...Categori, id: Categories.length + 1 }],
             repoName: user.repoName,
             id: user.id
         })

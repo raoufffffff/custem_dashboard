@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import BoxCard from '../../CustomUi/BoxCard'
 import Model from '../../CustomUi/Model'
-import { Plus } from 'lucide-react'
+import { Loader2, Plus } from 'lucide-react'
 import { BiSolidError } from "react-icons/bi";
 import { RxDragHandleDots2 } from "react-icons/rx";
 import { AiTwotoneEdit } from "react-icons/ai";
@@ -23,13 +23,20 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Empty from '../../CustomUi/Empty';
+import { useOutletContext } from 'react-router-dom';
+import UseUpdateStore from '../../hooks/UseUpdateStore';
+import toast from 'react-hot-toast';
 
 const UpdateFaqs = () => {
-    const [faqs, setfaqs] = useState([])
+    const { loading, UpdateStore } = UseUpdateStore()
+    const user = useOutletContext() // get websiteStyle from context
+    const { website } = user
+    const [faqs, setfaqs] = useState(website.faqs || [])
     const [faq, setfaq] = useState({ question: "", answer: "", id: null })
     const [err, seterr] = useState(false)
     const [show, setshow] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
+    const [change, SetChange] = useState(false)
 
     // delete modal state
     const [deleteTarget, setDeleteTarget] = useState(null)
@@ -46,7 +53,7 @@ const UpdateFaqs = () => {
             return
         }
         seterr(false)
-
+        SetChange(true)
         if (isEditing) {
             setfaqs(faqs.map(f => f.id === faq.id ? faq : f))
         } else {
@@ -184,11 +191,24 @@ const UpdateFaqs = () => {
                     )}
                 </div>
 
-                <button
-                    className='w-full bg-teal-600 mt-2 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
-                >
-                    Save
-                </button>
+                <div className='mt-5 flex justify-end'>
+                    <button
+                        onClick={() => {
+                            if (change) {
+                                UpdateStore({
+                                    ...website,
+                                    repoName: user.repoName,
+                                    faqs: faqs
+                                })
+                                return
+                            }
+                            toast.error("upload your logo")
+
+                        }}
+                        className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
+                    >
+                        {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
+                </div>
             </BoxCard>
         </div>
     )

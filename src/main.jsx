@@ -34,11 +34,11 @@ import ContactUs from './pages/ContactUs.jsx';
 import FAQ from './pages/FAQ.jsx';
 import AddFacebookPixel from './pages/AddFacebookPixel.jsx';
 import AddTiktokPixel from './pages/AddTiktokPixel.jsx';
-import Pixels from './pages/Pixels.jsx';
 import UpdateName from './pages/Account/UpdateName.jsx';
 import UpdateEmail from './pages/Account/UpdateEmail.jsx';
 import UpdatePassword from './pages/Account/UpdatePassword.jsx';
 import UpdatePhone from './pages/Account/UpdatePhone.jsx';
+import EdeteItem from './pages/EdeteItem.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,6 +57,9 @@ const router = createBrowserRouter(
         } />
         <Route path="AddItems" element={
           <ProtectedRoute><AddItems /></ProtectedRoute>
+        } />
+        <Route path="EdeteItem/:id" element={
+          <ProtectedRoute><EdeteItem /></ProtectedRoute>
         } />
         <Route path="Items" element={
           <ProtectedRoute><Items /></ProtectedRoute>
@@ -114,9 +117,7 @@ const router = createBrowserRouter(
           <ProtectedRoute><FAQ /></ProtectedRoute>
         } />
 
-        <Route path="Pixels" element={
-          <ProtectedRoute><Pixels /></ProtectedRoute>
-        } />
+
         <Route path="AddFacebookPixel" element={
           <ProtectedRoute><AddFacebookPixel /></ProtectedRoute>
         } />

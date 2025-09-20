@@ -3,8 +3,9 @@ import { Search, X, ExternalLink, Edit, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import Model from "../../CustomUi/Model";
 import Empty from "../../CustomUi/Empty";
+import { Link } from "react-router-dom";
 
-const ProductTable = ({ products = [], changeStatus, deleteItem }) => {
+const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
     const [search, setSearch] = useState("");
     const [show, setShow] = useState({
         show: false,
@@ -25,7 +26,7 @@ const ProductTable = ({ products = [], changeStatus, deleteItem }) => {
 
             >
                 <h2 className="text-lg font-bold mb-4">delete the product</h2>
-                <p className="mb-6">Are you sure you want to delete product {show.name}? All data related to this product, such as sales statistics, etc., will be deleted.</p>
+                <p className="mb-6">Are you sure you want to delete product <strong>{show.name}</strong> ? All data related to this product, such as sales statistics, etc., will be deleted.</p>
                 <div
                     className="flex justify-end gap-3"
                 >
@@ -118,7 +119,7 @@ const ProductTable = ({ products = [], changeStatus, deleteItem }) => {
                                     >
                                         <td className="py-3 px-4">
                                             <img
-                                                src={p.imgs[0]}
+                                                src={p.images[0]}
                                                 alt={p.name}
                                                 className="w-12 h-12 rounded-md object-cover"
                                             />
@@ -144,12 +145,12 @@ const ProductTable = ({ products = [], changeStatus, deleteItem }) => {
                                             <span
                                                 onClick={() => setShow({ show: !show.show, id: p._id, showDelete: false, name: p.name })}
                                                 className={`px-3 py-1 rounded-full text-xs 
-                                        cursor-pointer font-medium mx-auto ${p.best
+                                        cursor-pointer font-medium mx-auto ${p.show
                                                         ? "bg-green-100 text-green-700"
                                                         : "bg-red-100 text-red-600"
                                                     }`}
                                             >
-                                                {p.best ? "visible" : "caché"}
+                                                {p.show ? "visible" : "caché"}
                                             </span>
                                         </td>
                                         <td className="px-4 text-xs text-gray-500 whitespace-nowrap">
@@ -160,8 +161,18 @@ const ProductTable = ({ products = [], changeStatus, deleteItem }) => {
                                         </td>
                                         <td className="px-4">
                                             <div className="flex gap-3">
-                                                <ExternalLink className="w-4 h-4 cursor-pointer text-gray-600 hover:text-gray-900" />
-                                                <Edit className="w-4 h-4 cursor-pointer text-blue-500 hover:text-blue-700" />
+                                                <a
+                                                    target="_blank"
+                                                    href={`https://${link}/Product/${p._id}`}
+                                                >
+                                                    <ExternalLink className="w-4 h-4 cursor-pointer text-gray-600 hover:text-gray-900" />
+                                                </a>
+                                                <Link
+                                                    to={`/EdeteItem/${p._id}`}
+                                                >
+
+                                                    <Edit className="w-4 h-4 cursor-pointer text-blue-500 hover:text-blue-700" />
+                                                </Link>
                                                 <Trash2
                                                     onClick={() => setShow({ show: false, id: p._id, showDelete: true, name: p.name })}
                                                     className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700" />
