@@ -159,7 +159,7 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
                     <div className="flex items-center">
                         <img
                             className="h-10 w-10 rounded-full object-cover shadow-md"
-                            src={myorder.item.imgs[0]}
+                            src={myorder.item.images[0]}
                             alt={myorder.item.name}
                         />
                         <div className="ml-4">
@@ -275,3 +275,4 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
 };
 
 export default OrderRow;
+
