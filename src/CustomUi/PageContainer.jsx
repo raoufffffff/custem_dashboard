@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 const PageContainer = ({ className, children, titel, about, back = false }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation("constanst");
 
     return (
         <motion.div
@@ -31,7 +33,7 @@ const PageContainer = ({ className, children, titel, about, back = false }) => {
                     '
                 >
                     <FaArrowLeft className='mr-2' />
-                    <span>Return</span>
+                    <span>{t("Return")}</span>
                 </button>
             }
             <div className='w-full'>

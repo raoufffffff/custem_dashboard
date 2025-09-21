@@ -6,27 +6,30 @@ import {
     LogOut,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const AccountPanel = ({ user, hide }) => {
+    const { t } = useTranslation("constanst");
+
     const menu = [
         {
             link: "/Settings",
-            label: "Store Owner Settings",
+            label: t("StoreOwnerSettings"),
             icon: <Settings className="w-4 h-4 text-purple-600" />,
         },
         {
             link: "/ContactUs",
-            label: "Contact Us",
+            label: t("ContactUs"),
             icon: <MessageCircle className="w-4 h-4 text-purple-600" />,
         },
         {
             link: "/FAQ",
-            label: "FAQ",
+            label: t("FAQ"),
             icon: <HelpCircle className="w-4 h-4 text-purple-600" />,
         },
         {
             link: "/login",
-            label: "Log Out",
+            label: t("LogOut"),
             icon: <LogOut className="w-4 h-4 text-purple-600" />,
         },
     ];
@@ -39,7 +42,7 @@ const AccountPanel = ({ user, hide }) => {
                     {user.name}
                 </h2>
                 <p className="text-gray-500 text-center flex justify-center text-sm items-center">
-                    Store Owner
+                    {t("StoreOwner")}
                     <Check className="mx-2 w-4 h-4 text-teal-500" />
                 </p>
             </div>
@@ -74,7 +77,7 @@ const AccountPanel = ({ user, hide }) => {
                 onClick={hide}
                 className="ml-auto mt-4 px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-xl transition-all shadow-md"
             >
-                Close
+                {t("Close")}
             </button>
         </div>
     );

@@ -15,8 +15,12 @@ import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from 'react';
 import { HiBars3BottomLeft } from "react-icons/hi2";
+import { useTranslation } from 'react-i18next';
 
 export default function Sidebar({ SemalHarder, toggleHeader, open, name, website, link }) {
+    const { i18n, t } = useTranslation("constanst");
+    const currentLang = i18n.language; // detect active language
+
     const [show, setShow] = useState({
         store: false,
         orders: false,
@@ -35,7 +39,7 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
             transition={{ duration: 0.2, type: "spring" }}
             className={`${SemalHarder ? "w-0 overflow-hidden md:w-[9%]  lg:w-[7%]" : "w-8/12 md:w-3/12"} 
                 bg-white/90 backdrop-blur-md border-l border-gray-200 shadow-xl 
-                flex flex-col z-[500] fixed top-0 left-0 h-full transition-all duration-300`}
+                flex flex-col z-[500] fixed top-0 ${currentLang === "ar" ? "right-0" : "left-0"}  h-full transition-all duration-300`}
         >
             {/* Toggle Button */}
             <button
@@ -53,7 +57,7 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
                     target='_blank'
                     href={`https://${link}`}
                     className="mt-3 inline-block bg-teal-600 text-xs text-white px-3 py-1 rounded-full shadow-sm">
-                    your website
+                    {t("yourWebsite")}
                 </a>
             </div>
 
@@ -61,10 +65,10 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
             {/* Navigation */}
             <nav className="flex-1 px-2 py-6 text-gray-700 text-sm space-y-1 overflow-y-auto">
 
-                <NavItem toggleHeader={toggleHeader} icon={<Home className="w-5 h-5" />} label="Home" to="/" collapsed={SemalHarder} />
+                <NavItem toggleHeader={toggleHeader} icon={<Home className="w-5 h-5" />} label={t("Home")} to="/" collapsed={SemalHarder} />
 
                 <Dropdown
-                    label="Store"
+                    label={t("Store")}
                     icon={<Store className="w-5 h-5" />}
                     open={show.store}
                     toggle={() => {
@@ -73,15 +77,15 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
                     }}
                     collapsed={SemalHarder}
                 >
-                    <NavItem toggleHeader={toggleHeader} side label="Logo" to="/update/logo" collapsed={SemalHarder} />
-                    <NavItem toggleHeader={toggleHeader} side label="Theme" to="/update/theme" collapsed={SemalHarder} />
-                    <NavItem toggleHeader={toggleHeader} side label="Contact information" to="/update/Contact-information" collapsed={SemalHarder} />
-                    <NavItem toggleHeader={toggleHeader} side label="Faqs page" to="/update/faqs" collapsed={SemalHarder} />
-                    <NavItem toggleHeader={toggleHeader} side label="Store settings" to="/update/settings" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("Logo")} to="/update/logo" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("Theme")} to="/update/theme" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("Contactinformation")} to="/update/Contact-information" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("Faqspage")} to="/update/faqs" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("Storesettings")} to="/update/settings" collapsed={SemalHarder} />
                 </Dropdown>
 
                 <Dropdown
-                    label="Orders"
+                    label={t("Orders")}
                     icon={<Box className="w-5 h-5" />}
                     open={show.orders}
                     toggle={() => {
@@ -90,10 +94,10 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
                     }}
                     collapsed={SemalHarder}
                 >
-                    <NavItem toggleHeader={toggleHeader} side label="All Orders" to="/orders" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("AllOrders")} to="/orders" collapsed={SemalHarder} />
                 </Dropdown>
                 <Dropdown
-                    label="Products"
+                    label={t("Products")}
                     icon={<Tag className="w-5 h-5" />}
                     open={show.Products}
                     toggle={() => {
@@ -102,13 +106,13 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
                     }}
                     collapsed={SemalHarder}
                 >
-                    <NavItem toggleHeader={toggleHeader} side label="Products" to="/items" collapsed={SemalHarder} />
-                    <NavItem toggleHeader={toggleHeader} side label="Add Products" to="/additems" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("Products")} to="/items" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("AddProducts")} to="/additems" collapsed={SemalHarder} />
                 </Dropdown>
 
 
                 <Dropdown
-                    label="Categories"
+                    label={t("Categories")}
                     icon={<Layers className="w-5 h-5" />}
                     open={show.categories}
                     toggle={() => {
@@ -117,12 +121,12 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
                     }}
                     collapsed={SemalHarder}
                 >
-                    <NavItem toggleHeader={toggleHeader} side label=" Categories" to="/Categories" collapsed={SemalHarder} />
-                    <NavItem toggleHeader={toggleHeader} side label="Add  Categories" to="/AddCategories" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("Categories")} to="/Categories" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("AddCategories")} to="/AddCategories" collapsed={SemalHarder} />
                 </Dropdown>
 
                 <Dropdown
-                    label="Delivery"
+                    label={t("Delivery")}
                     icon={<Truck className="w-5 h-5" />}
                     open={show.delivery}
                     toggle={() => {
@@ -131,11 +135,11 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
                     }}
                     collapsed={SemalHarder}
                 >
-                    <NavItem toggleHeader={toggleHeader} side label="Delivery Companies" to="/LivCompany" collapsed={SemalHarder} />
-                    <NavItem toggleHeader={toggleHeader} side label="Delivery Prices" to="/LivrisionPrice" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("DeliveryCompanies")} to="/LivCompany" collapsed={SemalHarder} />
+                    <NavItem toggleHeader={toggleHeader} side label={t("DeliveryPrices")} to="/LivrisionPrice" collapsed={SemalHarder} />
                 </Dropdown>
                 <Dropdown
-                    label="marketing Tools"
+                    label={t("marketingTools")}
                     icon={<Megaphone className="w-5 h-5" />}
                     open={show.marketing}
                     toggle={() => {
@@ -145,9 +149,10 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
                     collapsed={SemalHarder}
                 >
                     <NavItem toggleHeader={toggleHeader} icon={
-                        <FaFacebook className="w-5 h-5" />} label="facebook Pixals" to="/AddFacebookPixel" collapsed={SemalHarder} />
+                        <FaFacebook className="w-5 h-5" />} label={t("facebookPixals")} to="/AddFacebookPixel" collapsed={SemalHarder} />
                     <NavItem toggleHeader={toggleHeader} icon={
-                        <FaTiktok className="w-5 h-5" />} label=" Tiktok Pixals" to="/AddTiktokPixel" collapsed={SemalHarder} />
+                        <FaTiktok className="w-5 h-5" />}
+                        label={t("TiktokPixals")} to="/AddTiktokPixel" collapsed={SemalHarder} />
                 </Dropdown>
 
             </nav>

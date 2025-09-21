@@ -39,6 +39,7 @@ import UpdateEmail from './pages/Account/UpdateEmail.jsx';
 import UpdatePassword from './pages/Account/UpdatePassword.jsx';
 import UpdatePhone from './pages/Account/UpdatePhone.jsx';
 import EdeteItem from './pages/EdeteItem.jsx';
+import "./i18n"; // 👈 important
 
 const router = createBrowserRouter(
   createRoutesFromElements(

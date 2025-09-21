@@ -8,9 +8,13 @@ import LanguagePanel from "./compunent/App/LanguagePanel";
 import AccountPanel from "./compunent/App/AccountPanel";
 import useUser from "./hooks/useUser";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 
 function App() {
+  const { i18n } = useTranslation("constanst");
+  const currentLang = i18n.language; // detect active language
+
   const { loading, website, name, email, phone, password, link, repoName, Categories, _id } = useUser()
   const [SemalHarder, setSemalHarder] = useState(true)
   const toggleHeader = () => setSemalHarder(p => !p)
@@ -34,7 +38,7 @@ function App() {
   let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link }
   return (
     <div
-      className="min-h-screen w-full  flex justify-end"
+      dir={currentLang === "ar" ? "rtl" : "ltr"} className="min-h-screen w-full  flex justify-end"
     >
       {showPanels.LanguagePanel && <Model
         onclose={hide}

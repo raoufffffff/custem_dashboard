@@ -1,0 +1,21 @@
+{
+    "welcome": "welcome 👋",
+    "Overview": "Overview",
+    "SoldProducts": "Sold Products",
+    "NewOrders": "New Orders",
+    "Visits": "Visits",
+    "Earnings": "Earnings",
+    "OrderSummary": "Order Summary",
+    "Status": "Status",
+    "Total": "Total",
+    "Value": "Value",
+    "pending": "Pending",
+    "Connectionfailed1": "Connection failed 1",
+    "Connectionfailed2": "Connection failed 2",
+    "Connectionfailed3": "Connection failed 3",
+    "confirmed": "Confirmed",
+    "ready": "Ready",
+    "Postponed": "Postponed",
+    "cancelled": "Cancelled",
+    "failed": "Failed"
+}

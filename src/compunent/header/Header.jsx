@@ -1,10 +1,14 @@
 import { Globe, User, Menu } from 'lucide-react';
 import { motion } from "motion/react";
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 
 export default function Header({ toggleHeader, openLanguagePanel,
     openAccountPanel }) {
+    const { i18n } = useTranslation("constanst");
+    const currentLang = i18n.language; // detect active language
+
     return (
         <motion.header
             initial={{ y: -20, opacity: 0 }}
@@ -43,7 +47,7 @@ export default function Header({ toggleHeader, openLanguagePanel,
                     onClick={openLanguagePanel}
                     className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors">
                     <Globe className="w-5 h-5" />
-                    <span className="text-sm">english</span>
+                    <span className="text-sm">{currentLang === "ar" ? "العربية" : "english"} </span>
                 </button>
 
             </div>
