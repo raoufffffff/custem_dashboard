@@ -14,6 +14,7 @@ import {
     MouseSensor,
     TouchSensor
 } from "@dnd-kit/core";
+import { useTranslation } from 'react-i18next';
 
 import {
     arrayMove,
@@ -28,6 +29,8 @@ import UseUpdateStore from '../../hooks/UseUpdateStore';
 import toast from 'react-hot-toast';
 
 const UpdateFaqs = () => {
+    const { t } = useTranslation("store");
+
     const { loading, UpdateStore } = UseUpdateStore()
     const user = useOutletContext() // get websiteStyle from context
     const { website } = user
@@ -111,7 +114,7 @@ const UpdateFaqs = () => {
                 {err && faq.question.length < 5 && (
                     <div className="bg-red-100 rounded-lg flex items-center px-2 py-1.5 mt-1.5 text-red-500">
                         <BiSolidError className='mr-2' />
-                        The question must contain between 5 and 120 characters.
+                        {t("faqsErr")}
                     </div>
                 )}
                 <textarea
@@ -124,7 +127,7 @@ const UpdateFaqs = () => {
                 {err && faq.answer.length < 5 && (
                     <div className="bg-red-100 rounded-lg flex items-center px-2 py-1.5 my-1.5 text-red-500">
                         <BiSolidError className='mr-2' />
-                        The answer must contain between 5 and 500 characters.
+                        {t("faqsErr")}
                     </div>
                 )}
                 <button
@@ -138,7 +141,7 @@ const UpdateFaqs = () => {
             {/* Delete Confirm Modal */}
             {deleteTarget && (
                 <Model onclose={() => setDeleteTarget(null)} classname={"p-5 relative"}>
-                    <p className="text-lg font-semibold mb-4">Are you sure you want to delete this FAQ?</p>
+                    <p className="text-lg font-semibold mb-4">{t("deletefaq")}</p>
                     <div className="flex gap-3 justify-end">
                         <button
                             onClick={() => setDeleteTarget(null)}
@@ -158,13 +161,13 @@ const UpdateFaqs = () => {
 
             <BoxCard about={"Frequently Asked Questions"} small={true} className={`py-1`}>
                 <p className='text-sm text-gray-600'>
-                    Add FAQs to answer your customers' most frequently asked questions. They will be displayed on your store's FAQ page.
+                    {t("faqtext")}
                 </p>
                 <button
                     onClick={() => setshow(true)}
                     className='w-fit my-3 bg-teal-600 text-white px-3 py-2 rounded-lg text-sm shadow-teal-700 hover:bg-teal-700 transition flex items-center'
                 >
-                    Add
+                    {t("Add")}
                     <Plus className='ml-2 ' size={20} />
                 </button>
 
@@ -207,7 +210,9 @@ const UpdateFaqs = () => {
                         }}
                         className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                     >
-                        {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
+                        {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> :
+                            t("Save")}
+                    </button>
                 </div>
             </BoxCard>
         </div>

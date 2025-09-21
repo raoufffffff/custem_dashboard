@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import PageContainer from '../../CustomUi/PageContainer'
 import BoxCard from '../../CustomUi/BoxCard'
 import { useOutletContext } from 'react-router-dom'
+import { useTranslation } from "react-i18next";
 
 const UpdatePassword = () => {
+    const { t } = useTranslation("Account");
+
     const user = useOutletContext()
     const [Password, setPassword] = useState({
         Password: user.Password,
@@ -23,8 +26,8 @@ const UpdatePassword = () => {
     return (
         <PageContainer
             back={true}
-            titel={"Modify "}
-            about={"your password"}
+            titel={t("Modify")}
+            about={t("password")}
         >
             <BoxCard className=" bg-white rounded-2xl shadow p-6 space-y-4">
                 {/* Pixel Name */}
@@ -63,7 +66,7 @@ const UpdatePassword = () => {
                     onClick={handleSubmit}
                     className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
-                    Confirm
+                    {t("Confirm")}
                 </button>
             </BoxCard>
 

@@ -2,7 +2,11 @@ import React, { useState } from 'react'
 import PageContainer from '../../CustomUi/PageContainer'
 import BoxCard from '../../CustomUi/BoxCard'
 import { useOutletContext } from 'react-router-dom'
+import { useTranslation } from "react-i18next";
+
 const UpdateEmail = () => {
+    const { t } = useTranslation("Account");
+
     const user = useOutletContext()
     const [Email, setEmail] = useState({
         email: user.email,
@@ -20,14 +24,14 @@ const UpdateEmail = () => {
     return (
         <PageContainer
             back={true}
-            titel={"Modify "}
-            about={"your email "}
+            titel={t("Modify")}
+            about={t("your email")}
         >
             <BoxCard className=" bg-white rounded-2xl shadow p-6 space-y-4">
                 {/* Pixel Name */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Current Email
+                        {t("Current Email")}
                     </label>
                     <input
                         type="text"
@@ -43,7 +47,7 @@ const UpdateEmail = () => {
                 {/* Pixel ID */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        new email
+                        {t("newemail")}
                     </label>
                     <input
                         type="email"
@@ -60,7 +64,7 @@ const UpdateEmail = () => {
                     onClick={handleSubmit}
                     className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
-                    Confirm
+                    {t("Confirm")}
                 </button>
             </BoxCard>
 

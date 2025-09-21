@@ -1,41 +1,43 @@
 import BoxCard from '../../CustomUi/BoxCard'
 import { NavLink, Outlet, useLocation, useOutletContext } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const UpdateTheme = () => {
     const location = useLocation();
     const user = useOutletContext() // get websiteStyle from context
+    const { t } = useTranslation("store");
 
 
     const links = [
         {
-            name: 'colors',
+            name: t("colors"),
             link: '',
-            titel: 'Colors',
-            description: 'Choose your store colors'
+            titel: t("colors"),
+            description: t("ChooseStoreColors")
         },
         {
-            name: 'products',
+            name: t("products"),
             link: 'products',
-            titel: 'Product appearance',
-            description: 'Choose how the product will look in your store.'
+            titel: t('Productappearance'),
+            description: t("ChooseProductLook")
         },
         {
-            name: 'categories',
+            name: t("categories"),
             link: 'categories',
-            titel: 'Classification appearance',
-            description: 'Choose how the category will look in your store.'
+            titel: t('Classificationappearance'),
+            description: t("ChooseCategoryLook")
         },
         {
-            name: 'header',
+            name: t("header"),
             link: 'header',
-            titel: 'Navigation bar appearance',
-            description: 'Configure and design the navigation bar.'
+            titel: t('Navigationbarappearance'),
+            description: t("ConfigureNavbar")
         },
         {
-            name: 'thanks-page',
+            name: t('thanks-page'),
             link: 'thanks-page',
-            titel: 'Thank you page appearance',
-            description: 'Create and design a thank you page'
+            titel: t('Thankyoupageappearance'),
+            description: t("CreateThankYouPage")
         }
     ];
 
@@ -51,11 +53,11 @@ const UpdateTheme = () => {
 
     return (
         <BoxCard
-            about={"theme"}
+            about={t("theme")}
             small={true}
         >
             <p className='text-sm text-gray-600'>
-                Control the look and feel of your store.
+                {t("themtext")}
             </p>
             <div className='border-t border-[#ddd] py-5 mt-4'>
                 <div className='flex flex-wrap mb-3 gap-3 '>

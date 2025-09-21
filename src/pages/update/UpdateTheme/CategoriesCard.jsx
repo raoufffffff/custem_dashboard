@@ -1,6 +1,9 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next';
 
 const CategoriesCard = () => {
+    const { t } = useTranslation("store");
+
     const [type, setType] = React.useState('default') // 'shadow' or 'flat'
     return (
         <div
@@ -17,7 +20,7 @@ const CategoriesCard = () => {
                         className='mb-2 flex items-center'
                         onClick={() => setType('default')}
                     >
-                        default
+                        {t("default")}
                         <span
                             className='rounded-full w-6 h-6 border border-black flex justify-center items-center  ml-2 cursor-pointer'
                         >
@@ -38,7 +41,7 @@ const CategoriesCard = () => {
                         className='mb-2 flex items-center'
                         onClick={() => setType('shadow')}
                     >
-                        shadow
+                        {t("shadow")}
                         <span
                             className='rounded-full w-6 h-6 border border-black flex justify-center items-center  ml-2 cursor-pointer'
                         >
@@ -59,7 +62,7 @@ const CategoriesCard = () => {
                         className='mb-2 flex items-center'
                         onClick={() => setType('normal')}
                     >
-                        normal
+                        {t("normal")}
                         <span
                             className='rounded-full w-6 h-6 border border-black flex justify-center items-center  ml-2 cursor-pointer'
                         >
@@ -78,7 +81,7 @@ const CategoriesCard = () => {
                 <button
                     className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
-                    Save
+                    {t("Save")}
                 </button>
             </div>
         </div>

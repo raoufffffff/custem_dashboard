@@ -4,6 +4,7 @@ import { useOutletContext } from 'react-router-dom';
 import UseUpdateStore from '../../hooks/UseUpdateStore';
 import toast from 'react-hot-toast';
 import { Loader2 } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 const UpdateSettings = () => {
     const user = useOutletContext() // get websiteStyle from context
@@ -21,6 +22,8 @@ const UpdateSettings = () => {
 
 
 const UpdateSettingsForm = ({ store, repoName }) => {
+    const { t } = useTranslation("store");
+
     const [storeSetting, setStoreSetting] = useState({
         name: store.store_name || "",
         language: store.language || "ar", // default
@@ -39,19 +42,19 @@ const UpdateSettingsForm = ({ store, repoName }) => {
 
     return (
         <BoxCard
-            about={"Store Settings"}
+            about={t("StoreSettings")}
             small={true}
             className={`py-1`}
         >
             <p className='text-sm text-gray-600'>
-                Control your store settings.
+                {t("Controlsettings.")}
             </p>
 
             <div className='border-t border-[#ddd] py-5 mt-4 space-y-5'>
 
                 {/* Store Name */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Store Name</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t("StoreName")}</label>
                     <input
                         type="text"
                         value={storeSetting.name}
@@ -63,7 +66,7 @@ const UpdateSettingsForm = ({ store, repoName }) => {
 
                 {/* Language Select */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Choose Store Language</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t("ChooseStoreLanguage")}</label>
                     <select
                         value={storeSetting.language}
                         onChange={(e) => handleChange("language", e.target.value)}
@@ -81,7 +84,7 @@ const UpdateSettingsForm = ({ store, repoName }) => {
                 <div className="space-y-3">
                     <label className="flex items-center justify-between">
                         <span className="text-sm text-gray-700">
-                            Enable <span className="text-purple-600">Delevry to  </span> The berue
+                            {t("Enable")} <span className="text-purple-600">{t("Delevryto")}  </span> {t("Theberue")}
                         </span>
                         <input
                             type="checkbox"
@@ -112,7 +115,7 @@ const UpdateSettingsForm = ({ store, repoName }) => {
                     }}
                     className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
-                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
+                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Save")}                </button>
             </div>
         </BoxCard>
     )

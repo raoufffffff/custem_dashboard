@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import PageContainer from '../../CustomUi/PageContainer'
 import BoxCard from '../../CustomUi/BoxCard'
 import { useOutletContext } from 'react-router-dom'
+import { useTranslation } from "react-i18next";
 
 const UpdateName = () => {
+    const { t } = useTranslation("Account");
+
     const user = useOutletContext()
     const [name, setName] = useState({
         name: user.name,
@@ -21,14 +24,14 @@ const UpdateName = () => {
     return (
         <PageContainer
             back={true}
-            titel={"Modify "}
-            about={"name and surname"}
+            titel={t("Modify")}
+            about={t("name")}
         >
             <BoxCard className=" bg-white rounded-2xl shadow p-6 space-y-4">
                 {/* Pixel Name */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Name
+                        {t("Name")}
                     </label>
                     <input
                         type="text"
@@ -43,7 +46,7 @@ const UpdateName = () => {
                 {/* Pixel ID */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        surname
+                        {t("surname")}
                     </label>
                     <input
                         type="text"
@@ -60,7 +63,7 @@ const UpdateName = () => {
                     onClick={handleSubmit}
                     className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
-                    Confirm
+                    {t("Confirm")}
                 </button>
             </BoxCard>
 

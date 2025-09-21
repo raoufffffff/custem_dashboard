@@ -1,27 +1,30 @@
 import { IoIosArrowForward } from "react-icons/io";
 import { Link, useOutletContext } from 'react-router-dom'
+import { useTranslation } from "react-i18next";
 
 const Settings = () => {
+    const { t } = useTranslation("Account");
+
     const user = useOutletContext()
     const SettingsLinks = [
         {
             to: "/settings/Update-name",
-            title: "name and last name",
+            title: t("name"),
             value: user.name
         },
         {
             to: "/settings/Update-phone",
-            title: "phone number",
+            title: t("phonenumber"),
             value: user.phone
         },
         {
             to: "/settings/Update-email",
-            title: "email",
+            title: t("email"),
             value: user.email
         },
         {
             to: "/settings/Update-password",
-            title: "password",
+            title: t("password"),
             value: user.password
         },
     ]
@@ -31,16 +34,16 @@ const Settings = () => {
         >
             <h1
                 className='mt-3 md:px-5  w-full   text-2xl md:text-3xl font-bold text-neutral-900 ltr:first-letter:uppercase '
-            >Store Owner
+            >{t("StoreOwner")}
                 <span
                     className='text-teal-500 mx-3'
                 >
-                    Settings
+                    {t("Settings")}
                 </span>
             </h1>
             <p
-                className='text-gray-600 mx-auto text-sm my-2'
-            >We will be happy to answer your questions or provide you with more information.</p>
+                className='text-gray-600 md:px-5 mx-auto text-sm my-2'
+            >{t("text")}</p>
             <div
                 className='w-full border-t flex justify-center items-center pt-5 flex-col gap-4 border-t-gray-300 mt-5'
             >

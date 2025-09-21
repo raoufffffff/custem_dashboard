@@ -4,8 +4,11 @@ import { useOutletContext } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
 import UseUpdateStore from "../../../hooks/UseUpdateStore";
 import toast from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
 
 const ThanksPage = () => {
+    const { t } = useTranslation("store");
+
     const user = useOutletContext(); // get websiteStyle from context
     const [change, SetChange] = useState(false)
     const { loading, UpdateStore } = UseUpdateStore()
@@ -32,7 +35,7 @@ const ThanksPage = () => {
                         checked={thanks.img}
                         onChange={() => toggleOption("img")}
                     />
-                    <span>Show Image?</span>
+                    <span>{t("ShowImage")}?</span>
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer">
@@ -41,7 +44,7 @@ const ThanksPage = () => {
                         checked={thanks.title}
                         onChange={() => toggleOption("title")}
                     />
-                    <span>Show title?</span>
+                    <span>{t("Showtitle")}?</span>
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer">
@@ -50,7 +53,7 @@ const ThanksPage = () => {
                         checked={thanks.about}
                         onChange={() => toggleOption("about")}
                     />
-                    <span>Show side title?</span>
+                    <span>{t("Showsidetitle")}?</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -58,7 +61,7 @@ const ThanksPage = () => {
                         checked={thanks.phone}
                         onChange={() => toggleOption("phone")}
                     />
-                    <span>Show your phone Number?</span>
+                    <span>{t("ShowyourphoneNumber")}?</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -66,7 +69,7 @@ const ThanksPage = () => {
                         checked={thanks.homebutton}
                         onChange={() => toggleOption("homebutton")}
                     />
-                    <span>Show home page redirect button?</span>
+                    <span>{t("Showhomepageredirectbutton")}?</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -74,7 +77,7 @@ const ThanksPage = () => {
                         checked={thanks.media}
                         onChange={() => toggleOption("media")}
                     />
-                    <span>Show social media link buttons?</span>
+                    <span>{t("Showsocialmedialinkbuttons")}?</span>
                 </label>
             </div>
 
@@ -126,7 +129,7 @@ const ThanksPage = () => {
                                 boxShadow: `0 4px 14px ${user.website.main_color}80` // 80 = opacity in hex
                             }}
                         >
-                            Home Page
+                            {t("HomePage")}
                             <ArrowRight />
                         </button>}
                     </div>
@@ -134,7 +137,7 @@ const ThanksPage = () => {
                 {thanks.media && <div
                     className=" py-3 px-5 flex flex-col justify-between items-center text-sm text-gray-600"
                 >
-                    <h3>Follow us on</h3>
+                    <h3>{t("Followuson")}</h3>
                     <div
                         className="flex gap-4 mt-4"
                     >
@@ -153,7 +156,7 @@ const ThanksPage = () => {
                     <label
                         className="block text-sm font-medium text-gray-700"
                     >
-                        Title
+                        {t("Title")}
                     </label>
                     <input
                         type="text"
@@ -173,7 +176,7 @@ const ThanksPage = () => {
                     <label
                         className="block text-sm font-medium text-gray-700"
                     >
-                        About
+                        {t("About")}
                     </label>
                     <textarea
                         type="text"
@@ -207,7 +210,7 @@ const ThanksPage = () => {
                     }}
                     className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
-                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
+                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Save")}                </button>
             </div>
         </div>
     )

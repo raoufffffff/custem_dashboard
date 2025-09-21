@@ -5,8 +5,10 @@ import { useOutletContext } from 'react-router-dom';
 import UseUpdateStore from '../../hooks/UseUpdateStore';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const UpdateContactInfos = () => {
+    const { t } = useTranslation("store");
     const user = useOutletContext()
     let { website, repoName } = user || {}
     const [change, SetChange] = useState(false)
@@ -30,27 +32,22 @@ const UpdateContactInfos = () => {
         }));
     };
 
-
-
-
-
-
     return (
         <div className='w-full'>
             <BoxCard
-                about={"Contact information"}
+                about={t("Contactinformation")}
                 small={true}
                 className={`py-1`}
             >
                 <p className='text-sm text-gray-600'>
-                    These details will be displayed in your store on the “Contact Us” page so your customers can contact you.
+                    {t("contactText")}
                 </p>
 
                 <div className='border-t border-[#ddd] py-5 mt-4 space-y-4'>
 
                     {/* Email */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">{t("Email")}</label>
                         <input
                             type="email"
                             value={form.email}
@@ -62,7 +59,7 @@ const UpdateContactInfos = () => {
 
                     {/* Phone Numbers */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Phone Numbers</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">{t("PhoneNumbers")}</label>
 
                         <input
                             type="text"
@@ -78,7 +75,7 @@ const UpdateContactInfos = () => {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
-                                <FaWhatsapp className="text-green-500 h-6 w-6" /> WhatsApp
+                                <FaWhatsapp className="text-green-500 h-6 w-6" /> {t("WhatsApp")}
                             </label>
                             <input
                                 type="text"
@@ -90,7 +87,7 @@ const UpdateContactInfos = () => {
                         </div>
                         <div>
                             <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
-                                <FaViber className="text-purple-600 h-6 w-6" /> Viber
+                                <FaViber className="text-purple-600 h-6 w-6" /> {t("Viber")}
                             </label>
                             <input
                                 type="text"
@@ -104,7 +101,7 @@ const UpdateContactInfos = () => {
 
                     {/* Social Media Links */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Social Media</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t("SocialMedia")}</label>
                         <div className="space-y-3">
 
                             <div className="flex items-center gap-2">
@@ -171,7 +168,10 @@ const UpdateContactInfos = () => {
                         }}
                         className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                     >
-                        {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
+                        {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> :
+                            t("Save")
+                        }
+                    </button>
                 </div>
             </BoxCard>
         </div>

@@ -7,8 +7,11 @@ import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom';
 import UseUpdateStore from '../../hooks/UseUpdateStore'
 import { Loader2 } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 const UpdateLogo = () => {
+    const { t } = useTranslation("store");
+
     const user = useOutletContext() // get websiteStyle from context
     const { loading, UpdateStore } = UseUpdateStore()
     let { website, repoName } = user || {}
@@ -38,19 +41,19 @@ const UpdateLogo = () => {
             className='w-full'
         >
             <BoxCard
-                about={"Logo"}
+                about={t("Logo")}
                 small={true}
                 className={`py-1`}
             >
                 <p
                     className='text-sm text-gray-600'
-                >Upload your logo and introduce your store.</p>
+                >{t("logotext")}</p>
                 <div
                     className='border-t border-[#ddd] py-5 mt-4'
                 >
                     <p
                         className='text-xs text-gray-600'
-                    >It is best if the logo is in PNG format with a transparent background for better visibility and is square in shape, for example 250x250 pixels.</p>
+                    >{t("logoabout")}</p>
                     <div
 
                     >
@@ -89,7 +92,7 @@ const UpdateLogo = () => {
                         }}
                         className='w-full bg-purple-600 text-white px-4 py-2 rounded-xl shadow-purple-700 hover:bg-purple-700 transition'
                     >
-                        {loading ? <Loader2 className="animate-spin h-8 w-8 " /> : "Save"}
+                        {loading ? <Loader2 className="animate-spin h-8 w-8 " /> : t("Save")}
                     </button>
 
                 </div>

@@ -3,8 +3,11 @@ import { useOutletContext } from "react-router-dom";
 import { Search, Menu, Loader2 } from "lucide-react"; // icons
 import UseUpdateStore from "../../../hooks/UseUpdateStore";
 import toast from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
 
 const StoreHeader = () => {
+    const { t } = useTranslation("store");
+
     const user = useOutletContext(); // get websiteStyle from context
     const [change, SetChange] = useState(false)
     const { loading, UpdateStore } = UseUpdateStore()
@@ -28,7 +31,7 @@ const StoreHeader = () => {
                         checked={header.logo}
                         onChange={() => toggleOption("logo")}
                     />
-                    <span>Show logo?</span>
+                    <span>{t("Showlogo")}?</span>
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer">
@@ -37,7 +40,7 @@ const StoreHeader = () => {
                         checked={header.name}
                         onChange={() => toggleOption("name")}
                     />
-                    <span>Show store name?</span>
+                    <span>{t("Showstorename")}?</span>
                 </label>
 
 
@@ -46,10 +49,10 @@ const StoreHeader = () => {
                 className="w-11/12 mx-auto flex flex-wrap gap-3 items-start "
             >
                 <div>
-                    <strong>The bar</strong>
+                    <strong>{t("Thebar")}</strong>
                     <p
                         className="text-sm mb-3 text-gray-600"
-                    >background color</p>
+                    >{t("backgroundcolor")}</p>
                     <div
                         className='border w-fit flex items-center px-5 py-3 rounded-xl border-gray-300 relative'
                     >
@@ -68,10 +71,10 @@ const StoreHeader = () => {
                     </div>
                 </div>
                 <div>
-                    <strong>Menu button</strong>
+                    <strong>{t("Menubutton")}</strong>
                     <p
                         className="text-sm mb-3 text-gray-600"
-                    >text color</p>
+                    >{t("textcolor")}</p>
                     <div
                         className='border w-fit flex items-center px-5 py-3 rounded-xl border-gray-300 relative'
                     >
@@ -90,10 +93,10 @@ const StoreHeader = () => {
                     </div>
                 </div>
                 <div>
-                    <strong>Store Name</strong>
+                    <strong>{t("StoreName")}</strong>
                     <p
                         className="text-sm mb-3 text-gray-600"
-                    >text color</p>
+                    >{t("textcolor")}</p>
                     <div
                         className='border w-fit flex items-center px-5 py-3 rounded-xl border-gray-300 relative'
                     >
@@ -189,7 +192,7 @@ const StoreHeader = () => {
                     }}
                     className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
-                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
+                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Save")}                </button>
             </div>
         </div>
     );

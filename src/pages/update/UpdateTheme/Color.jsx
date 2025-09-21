@@ -3,8 +3,10 @@ import toast from 'react-hot-toast';
 import { useOutletContext } from 'react-router-dom'
 import UseUpdateStore from '../../../hooks/UseUpdateStore';
 import { Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Color = () => {
+    const { t } = useTranslation("store");
     const user = useOutletContext() // get websiteStyle from context
     const [color, setColor] = useState(user.website.main_color || '#ffffff');
     const [change, SetChange] = useState(false)
@@ -19,7 +21,7 @@ const Color = () => {
             >
                 <h2
                     className='text-lg font-[400] capitalize'
-                >main color</h2>
+                >{t("maincolor")}</h2>
                 <div
                     className='border-2 flex items-center p-3 rounded-xl border-gray-300 relative'
                 >
@@ -57,7 +59,7 @@ const Color = () => {
                     }}
                     className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
                 >
-                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
+                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Save")}                </button>
             </div>
         </div>
     )
