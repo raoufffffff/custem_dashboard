@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 
 const companies = [
 
@@ -6,6 +7,7 @@ const companies = [
 ];
 
 const DeliveryCompanySelector = ({ onSelect }) => {
+    const { t } = useTranslation("DelevryComapnesAndPixals");
 
     return (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4">
@@ -22,9 +24,9 @@ const DeliveryCompanySelector = ({ onSelect }) => {
                     <h2 className="text-sm font-semibold mb-3">{company.name}</h2>
                     <button
                         onClick={() => onSelect(company.name, company.logo)}
-                        className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+                        className="bg-purple-500 text-white px-4 py-1 rounded hover:bg-purple-600"
                     >
-                        ربط الآن
+                        {t("Connectnow")}
                     </button>
                 </div>
             ))}

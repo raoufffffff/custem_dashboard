@@ -12,7 +12,6 @@ import Login from './pages/Login.jsx';
 import Sinin from './pages/Sinin.jsx';
 import { Toaster } from 'react-hot-toast';
 import Notifications from './pages/Notifications.jsx';
-import CreateWebsite from './pages/CreateWebsite.jsx';
 import TruckOrder from './pages/TruckOrder.jsx';
 import LivCompany from './pages/LivCompany.jsx';
 import LivrisionPrice from './pages/LivrisionPrice.jsx';
@@ -67,9 +66,6 @@ const router = createBrowserRouter(
         } />
         <Route path="Notifications" element={
           <ProtectedRoute><Notifications /></ProtectedRoute>
-        } />
-        <Route path="create-website" element={
-          <ProtectedRoute><CreateWebsite /></ProtectedRoute>
         } />
         <Route path="update" element={<ProtectedRoute
         ><Update /></ProtectedRoute>

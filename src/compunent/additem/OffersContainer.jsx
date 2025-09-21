@@ -1,7 +1,9 @@
-import React from "react";
 import { Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const OffersContainer = ({ Offers, setOffers, err }) => {
+    const { t } = useTranslation("ProductsAndCategories");
+
     return (
         <div className="space-y-6 w-full overflow-hidden">
             {Offers.map((offer, index) => (
@@ -19,7 +21,7 @@ const OffersContainer = ({ Offers, setOffers, err }) => {
                         <div className="flex w-10/12 flex-col sm:flex-row gap-3 flex-1 pr-2">
                             <input
                                 type="text"
-                                placeholder="Offer Name"
+                                placeholder={t("OfferName")}
                                 value={offer.name}
                                 onChange={(e) => {
                                     const newOffers = [...Offers];
@@ -30,7 +32,7 @@ const OffersContainer = ({ Offers, setOffers, err }) => {
                             />
                             <input
                                 type="text"
-                                placeholder="Offer Quantity"
+                                placeholder={t("OfferQuantity")}
                                 value={offer.Quantity}
                                 onChange={(e) => {
                                     const newOffers = [...Offers];
@@ -41,7 +43,7 @@ const OffersContainer = ({ Offers, setOffers, err }) => {
                             />
                             <input
                                 type="text"
-                                placeholder="Offer Price"
+                                placeholder={t("OfferPrice")}
                                 value={offer.price}
                                 onChange={(e) => {
                                     const newOffers = [...Offers];
@@ -76,7 +78,7 @@ const OffersContainer = ({ Offers, setOffers, err }) => {
                                 }}
                                 className="toggle-checkbox"
                             />
-                            Mark this offer as best offer?
+                            {t("Markoffer")}?
                         </label>
 
                         <label className="flex items-center gap-2 text-gray-700">
@@ -90,7 +92,7 @@ const OffersContainer = ({ Offers, setOffers, err }) => {
                                 }}
                                 className="toggle-checkbox"
                             />
-                            Free delivery for this offer?
+                            {t("Freedelivery")}?
                         </label>
                     </div>
                 </div>

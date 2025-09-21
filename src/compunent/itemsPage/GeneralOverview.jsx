@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const SummaryCard = ({ label, value, bg }) => (
     <div
@@ -10,23 +11,26 @@ const SummaryCard = ({ label, value, bg }) => (
 );
 
 const GeneralOverview = ({ stats, type }) => {
-    console.log(stats);
+    const { t } = useTranslation("ProductsAndCategories");
 
     return (
         <div className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <SummaryCard
-                    label={type == "Categories" ? "Total des Categories" : "Total des produits"}
+                    label={type == "Categories" ? t("TotalCategories") : t("Totalproducts")}
                     value={stats.length}
                     bg="bg-blue-100"
                 />
                 <SummaryCard
-                    label={type == "Categories" ? "Categories visibles" : "Produits visibles"}
+                    label={type == "Categories" ?
+                        t("Categoriesvisible") :
+                        t("productsvisible")}
                     value={stats.filter(e => e.show).length}
                     bg="bg-green-100"
                 />
                 <SummaryCard
-                    label={type == "Categories" ? "Categories cachés" : "Produits cachés"}
+                    label={type == "Categories" ?
+                        t("Categorieshidden") : t("productshidden")}
                     value={stats.filter(e => !e.show).length}
                     bg="bg-yellow-100"
                 />

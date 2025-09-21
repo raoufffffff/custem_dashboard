@@ -5,12 +5,17 @@ import EnConstanst from "./locales/en/constanst.json";
 import EnDashboard from "./locales/en/dashboard.json";
 import EnAccount from "./locales/en/Account.json";
 import EnStore from "./locales/en/store.json";
+import EnProductsAndCategories from "./locales/en/ProductsAndCategories.json";
+import EnDelevryComapnesAndPixals from "./locales/en/DelevryComapnesAndPixals.json";
 
 // arabic
 import ArConstanst from "./locales/ar/constanst.json";
 import ArDashboard from "./locales/ar/dashboard.json";
 import ArAccount from "./locales/ar/Account.json";
 import ArStore from "./locales/ar/store.json";
+import ArProductsAndCategories from "./locales/ar/ProductsAndCategories.json";
+import ArDelevryComapnesAndPixals from "./locales/ar/DelevryComapnesAndPixals.json";
+
 
 i18n
     .use(LanguageDetector) // detects language
@@ -21,17 +26,21 @@ i18n
                 constanst: EnConstanst,
                 dashboard: EnDashboard,
                 Account: EnAccount,
-                store: EnStore
+                store: EnStore,
+                ProductsAndCategories: EnProductsAndCategories,
+                DelevryComapnesAndPixals: EnDelevryComapnesAndPixals
             },
             ar: {
                 constanst: ArConstanst,
                 dashboard: ArDashboard,
                 Account: ArAccount,
-                store: ArStore
+                store: ArStore,
+                ProductsAndCategories: ArProductsAndCategories,
+                DelevryComapnesAndPixals: ArDelevryComapnesAndPixals
             }
         },
         fallbackLng: "en", // default language
-        ns: ["constanst", "dashboard", "Account", "store"], // list of namespaces
+        ns: ["constanst", "dashboard", "Account", "store", "ProductsAndCategories", "DelevryComapnesAndPixals"], // list of namespaces
         defaultNS: "constanst", // default namespace
         interpolation: {
             escapeValue: false // react already escapes

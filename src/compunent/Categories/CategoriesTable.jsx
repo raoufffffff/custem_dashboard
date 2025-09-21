@@ -2,8 +2,11 @@ import { useState } from "react";
 import { ExternalLink, Edit, Trash2 } from "lucide-react";
 import Model from "../../CustomUi/Model";
 import Empty from "../../CustomUi/Empty";
+import { useTranslation } from "react-i18next";
 
 const CategoriesTable = ({ Categories, repoName, handleUpdateCategory, id }) => {
+    const { t } = useTranslation("ProductsAndCategories");
+
     const [show, setShow] = useState({
         show: false,
         id: null,
@@ -40,23 +43,22 @@ const CategoriesTable = ({ Categories, repoName, handleUpdateCategory, id }) => 
         <div className="w-full bg-white rounded-2xl p-4">
             {show.showDelete && (
                 <Model classname="py-3 px-6" onclose={hide}>
-                    <h2 className="text-lg font-bold mb-4">Delete Category</h2>
+                    <h2 className="text-lg font-bold mb-4">{t("DeleteCategory")}</h2>
                     <p className="mb-6">
-                        Are you sure you want to delete category {show.name}? All data
-                        related to this category will be deleted.
+                        {t("Aredeletecategory")} {show.name}? {t("Alldata")}
                     </p>
                     <div className="flex justify-end gap-3">
                         <button
                             onClick={hide}
                             className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-all"
                         >
-                            Cancel
+                            {t("Cancel")}
                         </button>
                         <button
                             onClick={handleDeleteCategories}
                             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all"
                         >
-                            Delete
+                            {t("Delete")}
                         </button>
                     </div>
                 </Model>
@@ -65,7 +67,7 @@ const CategoriesTable = ({ Categories, repoName, handleUpdateCategory, id }) => 
             {show.show && (
                 <Model classname="py-3 px-6" onclose={hide}>
                     <h2 className="text-lg font-bold mb-4">
-                        Update the status of this category
+                        {t("Updatestatuscategory")}
                     </h2>
                     <div className="flex flex-col justify-end gap-3">
                         <div className="flex w-full">
@@ -73,7 +75,7 @@ const CategoriesTable = ({ Categories, repoName, handleUpdateCategory, id }) => 
                                 onClick={() => handleEditCategories(true)}
                                 className="px-4 flex-1 py-2 text-start text-green-600 bg-green-200 rounded-lg transition-all hover:scale-105"
                             >
-                                visible
+                                {t("visible")}
                             </button>
                         </div>
                         <div className="flex w-full">
@@ -81,7 +83,7 @@ const CategoriesTable = ({ Categories, repoName, handleUpdateCategory, id }) => 
                                 onClick={() => handleEditCategories(false)}
                                 className="px-4 flex-1 transition-all text-start py-2 text-red-600 bg-red-200 rounded-lg hover:scale-105"
                             >
-                                hidden
+                                {t("hidden")}
                             </button>
                         </div>
                     </div>
@@ -93,10 +95,10 @@ const CategoriesTable = ({ Categories, repoName, handleUpdateCategory, id }) => 
                     <table className="w-full text-sm text-gray-700">
                         <thead className="bg-gray-50">
                             <tr className="text-left border-b">
-                                <th className="py-3 px-4">Photo</th>
-                                <th className="px-4">Name</th>
-                                <th className="px-4">Status</th>
-                                <th className="px-4">Actions</th>
+                                <th className="py-3 px-4">{t("Photo")}</th>
+                                <th className="px-4">{t("Name")}</th>
+                                <th className="px-4">{t("Status")}</th>
+                                <th className="px-4">{t("Actions")}</th>
                             </tr>
                         </thead>
                         <tbody>

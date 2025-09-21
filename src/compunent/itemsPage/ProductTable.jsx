@@ -4,8 +4,11 @@ import { format } from "date-fns";
 import Model from "../../CustomUi/Model";
 import Empty from "../../CustomUi/Empty";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
+    const { t } = useTranslation("ProductsAndCategories");
+
     const [search, setSearch] = useState("");
     const [show, setShow] = useState({
         show: false,
@@ -25,27 +28,27 @@ const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
                 classname={"py-3 px-6"}
 
             >
-                <h2 className="text-lg font-bold mb-4">delete the product</h2>
-                <p className="mb-6">Are you sure you want to delete product <strong>{show.name}</strong> ? All data related to this product, such as sales statistics, etc., will be deleted.</p>
+                <h2 className="text-lg font-bold mb-4">{t("deletetheproduct")}</h2>
+                <p className="mb-6">{t("Areyousure")}<strong>{show.name}</strong> ? {t("Alldata")}</p>
                 <div
                     className="flex justify-end gap-3"
                 >
                     <button
                         onClick={hide}
-                        className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-all">Cancel</button>
+                        className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-all">{t("Cancel")}</button>
                     <button
                         onClick={() => {
                             hide()
                             deleteItem(show.id);
                         }}
-                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all">Delete</button>
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all">{t("Delete")}</button>
                 </div>
             </Model>}
             {show.show && <Model
                 onclose={hide}
                 classname={"py-3 px-6"}
             >
-                <h2 className="text-lg font-bold mb-4">Update the status of this product</h2>
+                <h2 className="text-lg font-bold mb-4">{t("Updatethestatus")}</h2>
 
                 <div className="flex flex-col justify-end gap-3">
                     <div
@@ -56,7 +59,7 @@ const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
                                 hide()
                                 changeStatus(show.id, true);
                             }}
-                            className="px-4 flex-1 py-2 text-start text-green-600 bg-green-200  rounded-lg transition-all hover:scale-105">visible</button>
+                            className="px-4 flex-1 py-2 text-start text-green-600 bg-green-200  rounded-lg transition-all hover:scale-105">{t("visible")}</button>
                     </div>
                     <div
                         className="flex w-full"
@@ -67,18 +70,18 @@ const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
                                 changeStatus(show.id, false);
                             }}
                             className="px-4 flex-1 transition-all text-start py-2 text-red-600 bg-red-200  rounded-lg hover:scale-105"
-                        >hidden</button>
+                        >{t("hidden")}</button>
                     </div>
                 </div>
             </Model>}
             {/* Search Bar */}
             {products.length > 0 ? (
                 <>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
-                        <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2 w-full sm:w-2/3">
+                    <div className="flex w-full flex-col sm:flex-row sm:items-center gap-3 mb-6">
+                        <div className="flex items-center bg-gray-100 flex-1 rounded-lg px-3 py-2 w-full sm:w-2/3">
                             <input
                                 type="text"
-                                placeholder="Recherchez par noms de produits"
+                                placeholder={t("Searchby")}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 className="flex-1 bg-transparent border-none outline-none text-sm"
@@ -93,7 +96,7 @@ const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
                             )}
                         </div>
                         <button className="bg-gray-800 text-white rounded-lg px-4 py-2 text-xs sm:text-sm font-medium">
-                            1-{filtered.length} SUR {products.length}
+                            1-{filtered.length} {t("ON")} {products.length}
                         </button>
                     </div>
 
@@ -102,13 +105,12 @@ const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
                         <table className="w-full text-sm text-gray-700">
                             <thead className="bg-gray-50">
                                 <tr className="text-left border-b">
-                                    <th className="py-3 px-4">Photo</th>
-                                    <th className="px-4">Produit</th>
-                                    <th className="px-4">Visites</th>
-                                    <th className="px-4">Prix</th>
-                                    <th className="px-4">État du produit</th>
-                                    <th className="px-4">Ajouté le</th>
-                                    <th className="px-4">Actions</th>
+                                    <th className="py-3 px-4">{t("Photo")}</th>
+                                    <th className="px-4">{t("Product")}</th>
+                                    <th className="px-4">{t("Price")}</th>
+                                    <th className="px-4">{t("ProductStatus")}</th>
+                                    <th className="px-4">{t("Addedon")}</th>
+                                    <th className="px-4">{t("Actions")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -125,7 +127,7 @@ const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
                                             />
                                         </td>
                                         <td className="px-4 font-medium text-gray-900">{p.name}</td>
-                                        <td className="px-4 text-center">{p.visits || 0}</td>
+
                                         <td className="px-4">
                                             <div className="flex flex-col">
                                                 <span className="font-bold text-gray-900">{p.price} DA</span>
@@ -136,7 +138,7 @@ const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
                                                 )}
                                                 {p.extraOffers && (
                                                     <span className="text-xs text-gray-500">
-                                                        +{p.extraOffers} offres
+                                                        +{p.extraOffers} {t("offers")}
                                                     </span>
                                                 )}
                                             </div>
@@ -187,7 +189,7 @@ const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
                     {/* Footer Pagination */}
                     <div className="flex justify-end mt-6">
                         <button className="bg-gray-800 text-white rounded-lg px-5 py-2 text-xs sm:text-sm font-medium">
-                            1-{filtered.length} SUR {products.length}
+                            1-{filtered.length} {t("ON")} {products.length}
                         </button>
                     </div>
                 </>

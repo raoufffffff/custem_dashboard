@@ -1,14 +1,18 @@
 import { useState } from "react";
 import DeliveryCompanySelector from "./DeliveryCompanySelector";
-import axios from 'axios'
+import axios from "axios";
+import { useTranslation } from "react-i18next";
+
 const DelevryComapnesContainer = ({ fetchUser }) => {
+    const { t } = useTranslation("DelevryComapnesAndPixals");
     const [selectedCompany, setSelectedCompany] = useState({
         name: "",
         img: "",
         key: "",
         token: "",
     });
-    const [Error, setError] = useState("")
+    const [Error, setError] = useState("");
+
     const handleCompanySelect = (name, img) => {
         setSelectedCompany({ name, img, key: "", token: "" });
     };
@@ -16,19 +20,20 @@ const DelevryComapnesContainer = ({ fetchUser }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`https://true-fit-dz-api.vercel.app/user/liv/check`, {
-                ...selectedCompany,
-                id: JSON.parse(localStorage.getItem("user"))._id
-            })
+            const res = await axios.post(
+                `https://true-fit-dz-api.vercel.app/user/liv/check`,
+                {
+                    ...selectedCompany,
+                    id: JSON.parse(localStorage.getItem("user"))._id,
+                }
+            );
             if (res.data.good) {
-                fetchUser()
+                fetchUser();
             }
-            setError("the key or token not currect")
+            setError(t("InvalidKeyOrToken"));
         } catch (error) {
-            setError("the key or token not currect")
-
+            setError(t("InvalidKeyOrToken"));
             console.log(error.message);
-
         }
     };
 
@@ -39,7 +44,7 @@ const DelevryComapnesContainer = ({ fetchUser }) => {
     return (
         <div className="relative min-h-screen bg-gray-50 py-10 px-4">
             <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
-                اختر شركة التوصيل الخاصة بك
+                {t("ChooseDeliveryCompany")}
             </h1>
 
             <DeliveryCompanySelector onSelect={handleCompanySelect} />
@@ -68,16 +73,22 @@ const DelevryComapnesContainer = ({ fetchUser }) => {
                                 {selectedCompany.name}
                             </h2>
                             <p className="text-center text-sm text-gray-600 mb-5 px-4">
-                                اربط متجرك مع حساب {selectedCompany.name} لتسهيل إدارة الطلبات.
+                                {t("ConnectStoreWithCompany", {
+                                    company: selectedCompany.name,
+                                })}
                             </p>
-                            {Error && <h2 className="text-xl font-semibold text-red-800 mb-1">
-                                {Error}
-                            </h2>}
+
+                            {Error && (
+                                <h2 className="text-xl font-semibold text-red-800 mb-1">
+                                    {Error}
+                                </h2>
+                            )}
+
                             {/* Form */}
                             <form onSubmit={handleSubmit} className="w-full space-y-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        API Key
+                                        {t("ApiKey")}
                                     </label>
                                     <input
                                         type="text"
@@ -88,15 +99,15 @@ const DelevryComapnesContainer = ({ fetchUser }) => {
                                                 key: e.target.value,
                                             }))
                                         }
-                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="ادخل مفتاح API"
+                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        placeholder={t("EnterApiKey")}
                                         required
                                     />
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Token
+                                        {t("Token")}
                                     </label>
                                     <input
                                         type="text"
@@ -107,8 +118,8 @@ const DelevryComapnesContainer = ({ fetchUser }) => {
                                                 token: e.target.value,
                                             }))
                                         }
-                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="ادخل التوكن"
+                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        placeholder={t("EnterToken")}
                                         required
                                     />
                                 </div>
@@ -119,13 +130,13 @@ const DelevryComapnesContainer = ({ fetchUser }) => {
                                         onClick={closeModal}
                                         className="flex-1 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium transition"
                                     >
-                                        إلغاء
+                                        {t("Cancel")}
                                     </button>
                                     <button
                                         type="submit"
-                                        className="flex-1 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition"
+                                        className="flex-1 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition"
                                     >
-                                        تأكيد الربط
+                                        {t("ConfirmConnection")}
                                     </button>
                                 </div>
                             </form>
@@ -134,7 +145,7 @@ const DelevryComapnesContainer = ({ fetchUser }) => {
                 </>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default DelevryComapnesContainer
+export default DelevryComapnesContainer;

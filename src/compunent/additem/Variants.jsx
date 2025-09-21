@@ -1,6 +1,9 @@
 import { Trash2, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const VariantsContainer = ({ Variants, setVariants, err }) => {
+    const { t } = useTranslation("ProductsAndCategories");
+
     return (
         <div
             className='space-y-4 w-full overflow-hidden'
@@ -25,7 +28,7 @@ const VariantsContainer = ({ Variants, setVariants, err }) => {
                     <div className="flex flex-wrap gap-4 items-center">
                         {/* Option Name */}
                         <div className="flex flex-col">
-                            <span className="text-sm font-medium text-gray-600">Option Name</span>
+                            <span className="text-sm font-medium text-gray-600">{t("OptionName")}</span>
                             <input
                                 type="text"
                                 value={variant.name}
@@ -41,7 +44,7 @@ const VariantsContainer = ({ Variants, setVariants, err }) => {
 
                         {/* Option Type */}
                         <div className="flex flex-col">
-                            <span className="text-sm font-medium text-gray-600">Option Style</span>
+                            <span className="text-sm font-medium text-gray-600">{t("OptionStyle")}</span>
                             <select
                                 value={variant.type}
                                 onChange={(e) => {
@@ -51,10 +54,10 @@ const VariantsContainer = ({ Variants, setVariants, err }) => {
                                 }}
                                 className={`px-3 py-2 mt-1 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none ${err && !variant.type ? "border-red-500 focus:ring-red-500" : ""}`}
                             >
-                                <option value="" disabled>Select type</option>
-                                <option value="size">Size</option>
-                                <option value="color">Color</option>
-                                <option value="dropdown">Dropdown</option>
+                                <option value="" disabled>{t("Selecttype")}</option>
+                                <option value="size">{t("Size")}</option>
+                                <option value="color">{t("Color")}</option>
+                                <option value="dropdown">{t("Dropdown")}</option>
                             </select>
                         </div>
 
@@ -99,7 +102,7 @@ const VariantsContainer = ({ Variants, setVariants, err }) => {
                                             style={{ backgroundColor: opt.color }}
                                         >
                                             {/* Accessibility text (screen readers only) */}
-                                            <span className="sr-only">Choose color</span>
+                                            <span className="sr-only">{t("Choosecolor")}</span>
                                             <input
                                                 id={`color-${i}`}
                                                 type="color"
