@@ -10,6 +10,7 @@ import UseLivOrder from "../hooks/UseLivOrder";
 import OrdersSummary from "../compunent/orders/OrdersSummary";
 import { FaFilter } from "react-icons/fa";
 import Model from '../CustomUi/Model';
+import { useTranslation } from 'react-i18next';
 
 const OrderPage = () => {
     // State for UI controls
@@ -17,6 +18,7 @@ const OrderPage = () => {
     const [searchParams, setsearchParams] = useSearchParams()
     // Data hooks
     const { sendtoLiv } = UseLivOrder()
+    const { t } = useTranslation("dashboard");
 
     const { orders, loading, edite, fetchOrders, deleteOrder } = useOrders();
     const {
@@ -68,8 +70,8 @@ const OrderPage = () => {
 
     return (
         <PageContainer
-            about={"Management"}
-            titel={"Order"}
+            about={t("Management")}
+            titel={t("Orders")}
             className={"gap-2 relative"}
         >
             {showFillters && <Model
@@ -86,7 +88,7 @@ const OrderPage = () => {
             </Model>}
             <div
                 onClick={() => setShowFillters(true)}
-                className='fixed bottom-7 right-5 flex md:hidden bg-blue-600 rounded-full p-3 cursor-pointer'
+                className='fixed bottom-7 right-5 flex md:hidden bg-purple-600 rounded-full p-3 cursor-pointer'
             >
                 <FaFilter className='text-white' size={20} />
             </div>

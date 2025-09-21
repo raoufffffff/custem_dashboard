@@ -8,9 +8,11 @@ import ProductTable from "../compunent/itemsPage/ProductTable";
 import toast from "react-hot-toast";
 import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 
 const Items = () => {
+    const { t } = useTranslation("ProductsAndCategories");
     const [save, setSave] = useState(false)
     const { Items, loading, fetchItems } = useItem()
     const user = useOutletContext()
@@ -65,17 +67,17 @@ const Items = () => {
     }
     return (
         <PageContainer
-            titel={'products'}
-            about={"management"}
+            titel={t('products')}
+            about={t("management")}
 
         >
             <BoxCard
-                about={"General overview"}
+                about={t("Generaloverview")}
             >
                 <GeneralOverview stats={Items} />
             </BoxCard>
             <BoxCard
-                about={"Product list"}>
+                about={t("Productlist")}>
                 <ProductTable
                     link={user.link}
                     products={Items}
@@ -86,7 +88,7 @@ const Items = () => {
             {save && <button
                 onClick={SaveInStore}
                 className="fixed py-1 rounded-lg px-4 bottom-4 right-3 bg-teal-500 text-white"
-            >save</button>}
+            >{t("save")}</button>}
         </PageContainer>
     );
 };

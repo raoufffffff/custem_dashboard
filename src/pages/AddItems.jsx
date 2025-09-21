@@ -14,9 +14,11 @@ import OffersContainer from '../compunent/additem/OffersContainer';
 import UseUpdateStore from '../hooks/UseUpdateStore';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const AddItems = () => {
     const router = useNavigate()
+    const { t } = useTranslation("ProductsAndCategories");
 
     const { loading, Categories, _id, repoName } = UseUpdateStore()
     const [formData, setFormData] = useState({
@@ -167,23 +169,23 @@ const AddItems = () => {
 
     return (
         <PageContainer
-            about={"Add"}
-            titel={"Products"}
+            about={t("Add")}
+            titel={t("Products")}
             className={"px-4"}
         >
 
             <BoxCard
                 small={true}
-                about={"General"}
+                about={t("General")}
             >
                 <div
                     className='my-2'
                 >
-                    <label className="block mb-2 font-medium text-gray-600">Product name</label>
+                    <label className="block mb-2 font-medium text-gray-600">{t("Productname")}</label>
                     <input
                         type="text"
                         name="name"
-                        placeholder="Product name"
+                        placeholder={t("Productname")}
                         value={formData.name}
                         onChange={handleChange}
                         required
@@ -193,10 +195,10 @@ const AddItems = () => {
                 <div
                     className='my-2'
                 >
-                    <label className="block mb-2 font-medium text-gray-600">Product Short Description (Optional)</label>
+                    <label className="block mb-2 font-medium text-gray-600">{t("ProductShort")}</label>
                     <textarea
                         type="text"
-                        name="Description"
+                        name={t("Description")}
                         placeholder="Product Description"
                         value={formData.Description}
                         onChange={handleChange}
@@ -204,25 +206,16 @@ const AddItems = () => {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
                     />
                 </div>
-                {/* <div
-                    className='my-2'
-                >
-                    <label className="block mb-2 font-medium text-gray-600">Product Short Description (Optional)</label>
-                    <ProductDescriptionEditor
-                        value={formData.Description}
-                        onChange={setValue}
 
-                    />
-                </div> */}
             </BoxCard>
             <BoxCard
                 small={true}
-                about={"Images"}
+                about={t("Photo")}
                 className={err && images.length === 0 ? "border-red-500" : ""}
             >
                 {images.length === 0 && <p
                     className='text-sm text-gray-500 mb-2'
-                >Product images should preferably be square, for example 700x700 pixels.</p>}
+                >{t("Productimagesshould")}</p>}
                 <div
                     layout
                     className="flex flex-wrap justify-center gap-3 mt-3"
@@ -242,11 +235,11 @@ const AddItems = () => {
             </BoxCard>
             <BoxCard
                 small={true}
-                about={"Landing Pages (Optional)"}
+                about={t("LandingPages")}
             >
                 <p
                     className='text-sm text-gray-500 mb-2'
-                >Your landing page images will be displayed below the order form or add to cart button.</p>
+                >{t("Yourlandingpage")}</p>
                 <div
                     layout
                     className="flex flex-wrap gap-3 mt-3"
@@ -270,7 +263,7 @@ const AddItems = () => {
             </BoxCard>
             <BoxCard
                 small={true}
-                about={"Prices"}
+                about={t("Prices")}
             >
                 <div
                     className='my-2 flex flex-col  md:flex-row gap-4'
@@ -279,11 +272,11 @@ const AddItems = () => {
                     <div
                         className='flex-1'
                     >
-                        <label className="block  mb-2 font-medium text-gray-600">Price</label>
+                        <label className="block  mb-2 font-medium text-gray-600">{t("Price")}</label>
                         <input
                             type="text"
                             name="price"
-                            placeholder="price"
+                            placeholder={t("Price")}
                             value={formData.price}
                             onChange={handleChange}
                             required
@@ -294,11 +287,11 @@ const AddItems = () => {
                         className='flex-1'
 
                     >
-                        <label className="block mb-2 font-medium text-gray-600">Comparison price (optional)</label>
+                        <label className="block mb-2 font-medium text-gray-600">{t("Comparisonprice")}</label>
                         <input
                             type="text"
                             name="oldPrice"
-                            placeholder="Comparison price"
+                            placeholder={t("Comparisonprice")}
                             value={formData.oldPrice}
                             onChange={handleChange}
                             required
@@ -310,14 +303,14 @@ const AddItems = () => {
             <BoxCard
                 className={'relative'}
                 small={true}
-                about={"Variants"}
-                button={"Add Variants"}
+                about={t("Variants")}
+                button={t("Add Variants")}
                 buttonicon={<IoMdAdd className='size-6 md:size-8' />}
                 onclick={addVariant}
             >
                 {Variants.length === 0 ? (<p
                     className={'text-sm text-center mt-10 text-teal-500'}>
-                    You haven't added any variants yet.
+                    {t("Youvariantsyet")}
                 </p>) : (
                     <VariantsContainer err={err} Variants={Variants} setVariants={setVariants} />
                 )}
@@ -325,25 +318,25 @@ const AddItems = () => {
             <BoxCard
                 className={'relative'}
                 small={true}
-                about={"Offers"}
-                button={"Add Offer"}
+                about={t("Offers")}
+                button={t("AddOffer")}
                 buttonicon={<IoMdAdd className='size-6 md:size-8' />}
                 onclick={addOffers}
             >
                 {Offers.length === 0 ? (<p
                     className={'text-sm text-center mt-10 text-teal-500'}>
-                    You haven't added any Offers yet.
+                    {t("YouOffersyet")}
                 </p>) : (
                     <OffersContainer err={err} Offers={Offers} setOffers={setOffers} />
                 )}
             </BoxCard>
             <BoxCard
                 small={true}
-                about={"Categories (Optional)"}
+                about={t("CategoriesOptional")}
             >
                 {Categories.length === 0 ? (<p
                     className={'text-sm text-center mt-10 text-teal-500'}>
-                    You haven't added any Offers yet.
+                    {("YouCategoriesyet")}
                 </p>) : (
 
                     <select
@@ -353,7 +346,7 @@ const AddItems = () => {
                         }}
                         className={`px-3 py-2 mt-1 w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none ${err && !formData.type ? "border-red-500 focus:ring-red-500" : ""}`}
                     >
-                        <option value="" disabled>Products type</option>
+                        <option value="" disabled>{t("Productstype")}</option>
                         {Categories.map((e, i) => (
                             <option
                                 value={e.name}
@@ -367,7 +360,7 @@ const AddItems = () => {
                     handleSubmit()
                 }}
                 className='bg-teal-600 ml-auto hover:bg-teal-700 text-white px-6 py-2 rounded-lg mt-6 mb-10 transition-all shadow-md shadow-teal-300 flex items-center'
-            >Save</button>
+            >{t("Save")}</button>
         </PageContainer>
     );
 };

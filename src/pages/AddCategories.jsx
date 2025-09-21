@@ -8,8 +8,11 @@ import CustomImg from '../CustomUi/CustomImg'
 import { useOutletContext } from 'react-router-dom'
 import UseUpdateStore from '../hooks/UseUpdateStore'
 import { Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const AddCategories = () => {
+    const { t } = useTranslation("ProductsAndCategories");
+
     const user = useOutletContext()
     const [Categori, setCategori] = useState({
         name: "",
@@ -51,17 +54,17 @@ const AddCategories = () => {
     };
     return (
         <PageContainer
-            titel={'add'}
-            about={"Categories"}
+            titel={t('Add')}
+            about={t("Categories")}
         >
             <div
                 className='flex flex-col sm:flex-row gap-3'
             >
                 <BoxCard
-                    about={"general"}
+                    about={t("General")}
                     className={"h-fit"}
                 >
-                    <label>Categori Name</label>
+                    <label>{t("CategoriName")}</label>
                     <input
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 mb-5 mt-2 focus:ring-blue-500 focus:outline-none"
                         value={Categori.name}
@@ -70,7 +73,7 @@ const AddCategories = () => {
                     />
                     <label className="flex items-center justify-between">
                         <span className="text-sm text-gray-700">
-                            Enable <span className="text-purple-500">Navigatiob bar</span> Product page
+                            {t("Enable")} <span className="text-purple-500">{t("Navigatiobbar")}</span> {t("inhomepage")}
                         </span>
                         <input
                             type="checkbox"
@@ -81,12 +84,11 @@ const AddCategories = () => {
                     </label>
                 </BoxCard>
                 <BoxCard
-                    about={"image"}
-
+                    about={t("Photo")}
                 >
                     <p
                         className='text-sm text-gray-600 mb-3'
-                    >The category image should preferably be square, for example 500x500 pixels.</p>
+                    >{t("Thecategoryimage")}</p>
                     {Categori.image && <CustomImg
                         logo={[Categori.image]}
                         removeImage={removeImage}
@@ -98,7 +100,7 @@ const AddCategories = () => {
                 onClick={update}
                 className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
             >
-                {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : "Save"}                </button>
+                {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("save")}                </button>
         </PageContainer>
     )
 }

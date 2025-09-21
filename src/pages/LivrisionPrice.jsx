@@ -4,38 +4,43 @@ import states from "../constanst/states.json";
 import useUser from "../hooks/useUser";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
-import { Save } from "lucide-react";
-import { Loader2 } from "lucide-react";
+import { Save, Loader2 } from "lucide-react";
 import PageContainer from "../CustomUi/PageContainer";
+import { useTranslation } from "react-i18next";
 
 const LivrisionPrice = () => {
+
+    const { t, i18n } = useTranslation("DelevryComapnesAndPixals");
+    const currentLang = i18n.language; // detect active language
+
     const [liv, setLiv] = useState(states);
     const [loadingg, setLoading] = useState(true);
     const [Ucan, setUcan] = useState(false);
-    const { _id, website, loading } = useUser()
+    const { _id, website, loading } = useUser();
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const localUser = localStorage.getItem("user");
-                if (!localUser) throw new Error("User not found in localStorage");
+                if (!localUser) throw new Error(t("UserNotFound"));
 
                 const userId = JSON.parse(localUser)._id;
-                const res = await axios.get(`https://true-fit-dz-api.vercel.app/liv/${userId}`);
+                const res = await axios.get(
+                    `https://true-fit-dz-api.vercel.app/liv/${userId}`
+                );
                 if (res.data.good) {
                     setLiv(res.data.result[0].LivPrice);
-                    return
+                    return;
                 }
                 setLiv(states);
             } catch {
-                toast.success("تم التعديل بنجاح ✅");
-
+                toast.success(t("UpdateSuccess"));
             } finally {
                 setLoading(false);
             }
         };
         fetchUser();
-    }, []);
+    }, [t]);
 
     const handleInputChange = (id, field, value) => {
         setLiv((prev) =>
@@ -43,35 +48,39 @@ const LivrisionPrice = () => {
                 item.id === id ? { ...item, [field]: +value } : item
             )
         );
-        setUcan(true)
+        setUcan(true);
     };
 
-    if (loading || loadingg) return <div className="flex justify-center items-center min-h-[200px]">
-        <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
-    </div>
+    if (loading || loadingg)
+        return (
+            <div className="flex justify-center items-center min-h-[200px]">
+                <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
+            </div>
+        );
+
     const UpdateWebsete = async () => {
-        setLoading(true)
-        setUcan(false)
+        setLoading(true);
+        setUcan(false);
         try {
-            const res = await axios.put(`https://next-website-server.vercel.app/update-livprice`, {
-                id: _id,
-                name: website.repoName,
-                livprice: liv
-            })
+            const res = await axios.put(
+                `https://next-website-server.vercel.app/update-livprice`,
+                {
+                    id: _id,
+                    name: website.repoName,
+                    livprice: liv,
+                }
+            );
             if (res.data.success) {
-                setLoading(false)
-                toast.success("تم التعديل بنجاح ✅");
+                setLoading(false);
+                toast.success(t("UpdateSuccess"));
             }
         } catch (error) {
             console.log(error);
-
         }
-    }
+    };
+
     return (
-        <PageContainer
-            titel={"delivery"}
-            about={"Prices"}
-        >
+        <PageContainer titel={t("delivery")} about={t("Prices")}>
             {Ucan && (
                 <motion.button
                     initial={{ opacity: 0, y: 20 }}
@@ -82,7 +91,7 @@ const LivrisionPrice = () => {
                     whileTap={{ scale: 0.95 }}
                 >
                     <Save className="h-5 w-5" />
-                    <span>Save to Website</span>
+                    <span>{t("SaveToWebsite")}</span>
                 </motion.button>
             )}
 
@@ -92,10 +101,18 @@ const LivrisionPrice = () => {
                         {/* Sticky header */}
                         <thead className="bg-purple-500 text-white sticky top-0 z-10 shadow-sm">
                             <tr>
-                                <th className="px-4 py-3 text-left text-xs font-semibold  uppercase tracking-wider">#</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold  uppercase tracking-wider">الولاية</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold  uppercase tracking-wider">إلى المنزل</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold  uppercase tracking-wider">إلى المكتب</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">
+                                    #
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">
+                                    {t("State")}
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">
+                                    {t("ToHome")}
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">
+                                    {t("ToOffice")}
+                                </th>
                             </tr>
                         </thead>
 
@@ -107,14 +124,20 @@ const LivrisionPrice = () => {
                                         key={state.id}
                                         className="hover:bg-blue-50/50 transition-all duration-200 ease-in-out hover:shadow-sm"
                                     >
-                                        <td className="px-4 py-3 font-medium text-gray-700">{index + 1}</td>
-                                        <td className="px-6 py-3 font-semibold text-gray-900">{info?.ar_name || state.name}</td>
+                                        <td className="px-4 py-3 font-medium text-gray-700">
+                                            {index + 1}
+                                        </td>
+                                        <td className="px-6 py-3 font-semibold text-gray-900">
+                                            {currentLang === "ar" ? info?.ar_name || state.name : info.name}
+                                        </td>
                                         <td className="px-6 py-3">
                                             <input
                                                 type="number"
                                                 className="w-28 text-center border border-gray-300 rounded-lg px-2 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                                 value={state.prix_initial}
-                                                onChange={(e) => handleInputChange(state.id, "prix_initial", e.target.value)}
+                                                onChange={(e) =>
+                                                    handleInputChange(state.id, "prix_initial", e.target.value)
+                                                }
                                             />
                                         </td>
                                         <td className="px-6 py-3">
@@ -122,7 +145,9 @@ const LivrisionPrice = () => {
                                                 type="number"
                                                 className="w-28 text-center border border-gray-300 rounded-lg px-2 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                                 value={state.stop_back}
-                                                onChange={(e) => handleInputChange(state.id, "stop_back", e.target.value)}
+                                                onChange={(e) =>
+                                                    handleInputChange(state.id, "stop_back", e.target.value)
+                                                }
                                             />
                                         </td>
                                     </tr>
@@ -132,8 +157,6 @@ const LivrisionPrice = () => {
                     </table>
                 </div>
             </div>
-
-
         </PageContainer>
     );
 };

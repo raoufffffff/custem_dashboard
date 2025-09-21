@@ -4,8 +4,11 @@ import GeneralOverview from '../compunent/itemsPage/GeneralOverview';
 import { Loader2 } from 'lucide-react';
 import CategoriesTable from '../compunent/Categories/CategoriesTable';
 import UseUpdateStore from '../hooks/UseUpdateStore'
+import { useTranslation } from 'react-i18next';
 
 const Categories = () => {
+    const { t } = useTranslation("ProductsAndCategories");
+
     const { loading, UpdateCategories, Categories, repoName, _id } = UseUpdateStore()
     if (loading) {
         return (
@@ -16,18 +19,18 @@ const Categories = () => {
     }
     return (
         <PageContainer
-            titel={'Categories'}
-            about={"management"}
+            titel={t('Categories')}
+            about={t("management")}
         >
             <BoxCard
-                about={"General overview"}
+                about={t("Generaloverview")}
             >
                 <GeneralOverview
                     type={"Categories"}
                     stats={Categories} />
             </BoxCard>
             <BoxCard
-                about={"Categories list"}>
+                about={t("Categorieslist")}>
                 <CategoriesTable
                     type={"Categories"}
                     repoName={repoName}

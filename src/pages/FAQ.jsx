@@ -1,8 +1,37 @@
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const FAQ = () => {
-    const OurFAQ = [
+    const { i18n, t } = useTranslation("constanst");
+    const currentLang = i18n.language; // detect active language
+    const OurFAQ = currentLang === "ar" ? [
+        {
+            question: "هل تفرض Next-Commerce عمولة على كل طلب؟",
+            answer:
+                "لا، نحن لا نفرض أي عمولة على طلباتك. هذا هو الحال وسيبقى دائمًا كذلك.",
+        },
+        {
+            question: "كيف تعمل اشتراكات Next-Commerce؟",
+            answer:
+                "مع خطط Next-Commerce، يمكنك تحديد سعر اشتراكك بنفسك، لذلك تدفع فقط مقابل ما تحتاجه. كل ما عليك فعله هو اختيار عدد الطلبات الشهرية التي تناسبك، وعدد بيكسلات فيسبوك التي تحتاجها، وعدد النطاقات المخصصة، وعدد الموظفين الذين ترغب في إضافتهم للعمل معك، وسيتم حساب السعر تلقائيًا.",
+        },
+        {
+            question: "ماذا يحدث إذا استلمت طلبات جديدة بعد انتهاء اشتراكي؟",
+            answer:
+                "على عكس المنصات الأخرى التي تحذف طلباتك عند انتهاء الاشتراك، تحتفظ Next-Commerce بطلباتك لمدة يومين إضافيين حتى تتمكن من شراء جميع الطلبات أو فقط الطلبات التي تختارها.",
+        },
+        {
+            question: "ما هي طرق الدفع المتاحة لدفع قيمة الاشتراك؟",
+            answer:
+                "حاليًا، يمكنك الدفع عبر CCP، أو BaridiMob، أو حساب Wise.",
+        },
+        {
+            question: "هل أحتاج إلى مهارات برمجية أو تصميم لإنشاء متجري على Next-Commerce؟",
+            answer:
+                "لا، لست بحاجة إلى ذلك. في الواقع، تم تصميم Next-Commerce لهذا الغرض تحديدًا: أي شخص يمكنه إنشاء متجر إلكتروني أنيق وفعّال، ونحن نتكفل بجميع الأمور البرمجية والتصميمية.",
+        },
+    ] : [
         {
             question: "Does Next-Commerce charge a commission on each order?",
             answer:
@@ -40,8 +69,8 @@ const FAQ = () => {
     return (
         <div className="w-full max-w-2xl mx-auto py-6">
             <h1 className="text-center text-2xl md:text-3xl font-bold text-neutral-900 mb-6">
-                Frequently Asked{" "}
-                <span className="text-teal-500">Questions</span>
+                {t("FrequentlyAsked")}{" "}
+                <span className="text-teal-500">{t("Questions")}</span>
             </h1>
 
             <div className="space-y-3">

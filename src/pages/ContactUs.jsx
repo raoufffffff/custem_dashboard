@@ -1,22 +1,25 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next';
 
 const ContactUs = () => {
+    const { t } = useTranslation("constanst");
+
     return (
         <div
             className='w-full pt-4'
         >
             <h1
                 className=' flex justify-center px-5 md:px-0 w-full  mx-auto text-2xl md:text-3xl font-bold text-neutral-900 ltr:first-letter:uppercase '
-            >Contact
+            >{t("Contact")}
                 <span
                     className='text-teal-500 mx-3'
                 >
-                    Us
+                    {t("Us")}
                 </span>
             </h1>
             <p
                 className='text-gray-600 w-10/12 mx-auto text-sm text-center my-5'
-            >We will be happy to answer your questions or provide you with more information.</p>
+            >{t("contacttext")}</p>
             <div
                 className='flex gap-5 justify-center'
             >
