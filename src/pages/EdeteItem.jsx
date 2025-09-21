@@ -171,7 +171,7 @@ const EdeteItem = () => {
             userId: _id
         }
         try {
-            const result = await axios.put(`http://localhost:3010/item/edete/${id}`, {
+            const result = await axios.put(`https://true-fit-dz-api.vercel.app/item/edete/${id}`, {
                 item: item,
                 repoName: repoName,
                 userId: _id
@@ -188,7 +188,7 @@ const EdeteItem = () => {
 
     return (
         <PageContainer
-            titel={"Edete Product"}
+            titel={"Edite Product"}
             about={formData?.name}
             className={"px-4"}
         >

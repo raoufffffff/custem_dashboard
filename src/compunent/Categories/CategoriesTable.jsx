@@ -135,8 +135,6 @@ const CategoriesTable = ({ Categories, repoName, handleUpdateCategory, id }) => 
 
                                     <td className="px-4">
                                         <div className="flex gap-3">
-                                            <ExternalLink className="w-4 h-4 cursor-pointer text-gray-600 hover:text-gray-900" />
-                                            <Edit className="w-4 h-4 cursor-pointer text-blue-500 hover:text-blue-700" />
                                             <Trash2
                                                 onClick={() =>
                                                     setShow({

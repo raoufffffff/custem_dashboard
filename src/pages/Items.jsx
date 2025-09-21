@@ -16,7 +16,7 @@ const Items = () => {
     const user = useOutletContext()
     const deleteItem = async (id) => {
         try {
-            await axios.put(`http://localhost:3010/item/delete/${id}`,
+            await axios.put(`https://true-fit-dz-api.vercel.app/item/delete/${id}`,
                 {
                     repoName: user.repoName,
                     userId: user.id
