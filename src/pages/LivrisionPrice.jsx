@@ -66,7 +66,7 @@ const LivrisionPrice = () => {
                 `https://next-website-server.vercel.app/update-livprice`,
                 {
                     id: _id,
-                    name: website.repoName,
+                    repoName: website.repoName,
                     livprice: liv,
                 }
             );
@@ -162,3 +162,4 @@ const LivrisionPrice = () => {
 };
 
 export default LivrisionPrice;
+
