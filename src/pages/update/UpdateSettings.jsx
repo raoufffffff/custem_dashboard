@@ -8,11 +8,6 @@ import { useTranslation } from 'react-i18next';
 
 const UpdateSettings = () => {
     const user = useOutletContext() // get websiteStyle from context
-
-
-
-
-
     return (
         <div className='w-full'>
             <UpdateSettingsForm store={user.website} repoName={user.repoName} />

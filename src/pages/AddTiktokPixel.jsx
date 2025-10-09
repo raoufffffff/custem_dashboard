@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import PageContainer from '../CustomUi/PageContainer'
 import BoxCard from '../CustomUi/BoxCard'
-import { useOutletContext } from 'react-router-dom'
 import UseUpdateStore from '../hooks/UseUpdateStore'
 import toast from 'react-hot-toast'
 import { Loader2 } from 'lucide-react'
@@ -10,9 +9,7 @@ import { useTranslation } from 'react-i18next'
 const AddTiktokPixel = () => {
     const { t } = useTranslation("DelevryComapnesAndPixals");
 
-    const user = useOutletContext()
-    const { website } = user
-    const { loading, UpdateStore } = UseUpdateStore()
+    const { loading, UpdateStore, website, repoName } = UseUpdateStore()
     const [TiktokPixel, setTiktokPixel] = useState({
         name: "",
         id: ""
@@ -50,7 +47,7 @@ const AddTiktokPixel = () => {
                                         onClick={() => {
                                             UpdateStore({
                                                 ...website,
-                                                repoName: user.repoName,
+                                                repoName: repoName,
                                                 TiktokPixel: {
                                                     name: "",
                                                     id: ""
@@ -109,7 +106,7 @@ const AddTiktokPixel = () => {
                             if (TiktokPixel.name != "" || TiktokPixel.id != "") {
                                 UpdateStore({
                                     ...website,
-                                    repoName: user.repoName,
+                                    repoName: repoName,
                                     TiktokPixel: TiktokPixel
                                 })
                                 return

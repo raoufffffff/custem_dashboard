@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 // This is the main component for the login page
 const App = () => {
+    const [loading, setLoading] = useState(false)
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -16,7 +19,7 @@ const App = () => {
             });
             return;
         }
-
+        setLoading(true)
         try {
             // Make the POST request to the API for the user role
             const res = await axios.post("https://true-fit-dz-api.vercel.app/user/auth", { email, password });
@@ -38,6 +41,8 @@ const App = () => {
             toast.error("Connection to server failed. Please try again later.", {
                 style: { border: "1px solid #ef4444" },
             });
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -113,12 +118,14 @@ const App = () => {
 
                 {/* Login button with animation */}
                 <motion.button
+                    disabled={loading}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={handleLogin}
                     className="w-full rounded-xl bg-purple-600 py-3 font-semibold text-white shadow-lg transition duration-300 hover:bg-purple-700"
                 >
-                    Login
+                    {loading ? <Loader2 className="animate-spin h-8 w-8 mx-auto" /> : 'Login'}
+
                 </motion.button>
 
                 {/* Links for password reset and sign up */}

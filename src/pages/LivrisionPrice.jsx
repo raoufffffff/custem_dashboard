@@ -63,7 +63,7 @@ const LivrisionPrice = () => {
         setUcan(false);
         try {
             const res = await axios.put(
-                `https://next-website-server.vercel.app/update-livprice`,
+                `http://localhost:3010/update-livprice`,
                 {
                     id: _id,
                     repoName: website.repoName,
@@ -162,4 +162,3 @@ const LivrisionPrice = () => {
 };
 
 export default LivrisionPrice;
-

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 // This is the main component for the two-step sign-up page
 const App = () => {
@@ -16,7 +17,7 @@ const App = () => {
     const [language, setLanguage] = useState("arabic");
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [domainAvailable, setDomainAvailable] = useState(null);
-
+    const [loading, setLoading] = useState(false)
     // Validation and move to next step
     const handleNextStep = () => {
         if (!name || !phone || !email || !password || !confirmPassword) {
@@ -77,10 +78,10 @@ const App = () => {
             email,
             password,
             repoName: domain,
-            storeName,
+            store_name: storeName,
             language,
         };
-
+        setLoading(true)
         try {
             const res = await axios.post("https://next-website-server.vercel.app", body);
             // NOTE: The API endpoint must be updated on the server to handle the new fields (domain, storeName, language).
@@ -96,6 +97,8 @@ const App = () => {
             toast.error("Connection to server failed.", {
                 style: { border: "1px solid #ef4444" },
             });
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -140,9 +143,9 @@ const App = () => {
                         damping: 20,
                         delay: 0.5,
                     }}
-                    src="https://storage.googleapis.com/gcn-files/NF3fP5WHYqDNWWx37B_5e-1721729360528.jpg"
+                    src="/logo.png"
                     alt="Next Commerce Logo"
-                    className="mx-auto -mt-24 mb-6 block rounded-full drop-shadow-lg md:hidden"
+                    className="mx-auto w-24 h-24 -mt-16 mb-6 block rounded-full drop-shadow-lg md:hidden"
                     style={{ boxShadow: "0 0 20px rgba(139, 92, 246, 0.5)" }}
                 />
 
@@ -318,12 +321,14 @@ const App = () => {
                                 Back
                             </motion.button>
                             <motion.button
+                                disabled={loading}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={handleFinalRegister}
                                 className="rounded-xl bg-purple-600 py-3 px-6 font-semibold text-white shadow-lg transition duration-300 hover:bg-purple-700"
                             >
-                                Create Account
+                                {loading ? <Loader2 className="animate-spin h-8 w-8 mx-auto" /> : 'Create Account'}
+
                             </motion.button>
                         </div>
                     </>
