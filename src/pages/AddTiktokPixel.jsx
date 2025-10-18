@@ -14,6 +14,9 @@ const AddTiktokPixel = () => {
         name: "",
         id: ""
     })
+    if (loading) return <p>loading... </p>
+
+
     const handleChange = (e) => {
         const { name, value } = e.target
         setTiktokPixel((prev) => ({ ...prev, [name]: value }))

@@ -1,29 +1,45 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
 import { Search, Menu, Loader2 } from "lucide-react"; // icons
 import UseUpdateStore from "../../../hooks/UseUpdateStore";
 import toast from "react-hot-toast";
 import { useTranslation } from 'react-i18next';
+import useUser from "../../../hooks/useUser";
 
 const StoreHeader = () => {
+    const { website, repoName, loading: userLoading } = useUser();
+    if (userLoading) {
+        return (
+            <div className="flex justify-center py-10">
+                <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
+            </div>
+        );
+    }
+
+    return (
+        <div className="w-full border-t border-[#ddd] pt-4  flex flex-col gap-6">
+            <UpdateHeader repoName={repoName} website={website} />
+        </div>
+    );
+};
+
+const UpdateHeader = ({ website, repoName }) => {
     const { t } = useTranslation("store");
 
-    const user = useOutletContext(); // get websiteStyle from context
     const [change, SetChange] = useState(false)
     const { loading, UpdateStore } = UseUpdateStore()
     const [header, setHeader] = useState({
-        name: user.website.header.name,
-        logo: user.website.header.logo,
-        headercolor: user.website.header.headercolor,
-        namecolor: user.website.header.namecolor,
-        barcolor: user.website.header.barcolor,
+        name: website.header.name,
+        logo: website.header.logo,
+        headercolor: website.header.headercolor,
+        namecolor: website.header.namecolor,
+        barcolor: website.header.barcolor,
     });
     const toggleOption = (key) => {
         SetChange(true)
         setHeader((prev) => ({ ...prev, [key]: !prev[key] }));
     };
     return (
-        <div className="w-full border-t border-[#ddd] pt-4  flex flex-col gap-6">
+        <>
             <div className="grid w-[95%] mx-auto mb-5 grid-cols-2 gap-4 text-sm text-gray-700">
                 <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -139,14 +155,14 @@ const StoreHeader = () => {
                     <div className="flex items-center gap-2">
                         {header.logo && (
                             <img
-                                src={user.website.logo}
+                                src={website.logo}
                                 alt="logo"
                                 className="w-8 h-8 object-cover rounded-full"
                             />
                         )}
                         {header.name && <span
                             style={{ color: header.namecolor }}
-                            className="font-medium text-xs md:text-lg">{user.website.store_name}</span>}
+                            className="font-medium text-xs md:text-lg">{website.store_name}</span>}
 
                     </div>
 
@@ -181,8 +197,8 @@ const StoreHeader = () => {
                     onClick={() => {
                         if (change) {
                             UpdateStore({
-                                ...user.website,
-                                repoName: user.repoName,
+                                ...website,
+                                repoName: repoName,
                                 header: header
                             })
                             return
@@ -194,8 +210,8 @@ const StoreHeader = () => {
                 >
                     {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Save")}                </button>
             </div>
-        </div>
-    );
-};
+        </>
+    )
+}
 
 export default StoreHeader;

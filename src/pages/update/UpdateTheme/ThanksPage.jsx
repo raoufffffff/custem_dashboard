@@ -1,15 +1,30 @@
 import { useState } from "react";
 import { ArrowRight, BookmarkCheck, Copy, Loader2 } from 'lucide-react';
-import { useOutletContext } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
 import UseUpdateStore from "../../../hooks/UseUpdateStore";
 import toast from "react-hot-toast";
 import { useTranslation } from 'react-i18next';
+import useUser from "../../../hooks/useUser";
 
 const ThanksPage = () => {
-    const { t } = useTranslation("store");
+    const { website, repoName, loading: userLoading } = useUser();
+    if (userLoading) {
+        return (
+            <div className="flex justify-center py-10">
+                <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
+            </div>
+        );
+    }
 
-    const user = useOutletContext(); // get websiteStyle from context
+    return (
+        <div className="w-full  pt-4  flex flex-col gap-6">
+            <UpdateThanksPage repoName={repoName} website={website} />
+        </div>
+    )
+}
+
+const UpdateThanksPage = ({ website, repoName }) => {
+    const { t } = useTranslation("store");
     const [change, SetChange] = useState(false)
     const { loading, UpdateStore } = UseUpdateStore()
     const [thanks, setthanks] = useState({
@@ -27,7 +42,7 @@ const ThanksPage = () => {
         setthanks((prev) => ({ ...prev, [key]: !prev[key] }));
     };
     return (
-        <div className="w-full  pt-4  flex flex-col gap-6">
+        <>
             <div className="grid w-[95%] mx-auto mb-5 grid-cols-2 gap-4 text-sm text-gray-700">
                 <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -120,13 +135,13 @@ const ThanksPage = () => {
                                 className="border border-gray-200  font-semibold flex items-center  shadow-2xl px-4 py-2 rounded-xl text-gray-700 text-xs md:text-sm cursor-pointer mt-3"
                             >
                                 <Copy className="mr-2" />
-                                {user.website.phone}</p>
+                                {website.phone}</p>
                         </>}
                         {thanks.homebutton && <button
                             className=" text-white px-4 py-2 rounded-xl text-xs     transition mt-5 flex items-center shadow-2xl "
                             style={{
-                                backgroundColor: user.website.main_color, // ✅ dynamic color from JSON
-                                boxShadow: `0 4px 14px ${user.website.main_color}80` // 80 = opacity in hex
+                                backgroundColor: website.main_color, // ✅ dynamic color from JSON
+                                boxShadow: `0 4px 14px ${website.main_color}80` // 80 = opacity in hex
                             }}
                         >
                             {t("HomePage")}
@@ -199,8 +214,8 @@ const ThanksPage = () => {
                     onClick={() => {
                         if (change) {
                             UpdateStore({
-                                ...user.website,
-                                repoName: user.repoName,
+                                ...website,
+                                repoName: repoName,
                                 thanks: thanks
                             })
                             return
@@ -212,7 +227,7 @@ const ThanksPage = () => {
                 >
                     {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Save")}                </button>
             </div>
-        </div>
+        </>
     )
 }
 

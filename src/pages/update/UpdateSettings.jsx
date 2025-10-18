@@ -1,16 +1,23 @@
 import { useState } from 'react';
 import BoxCard from '../../CustomUi/BoxCard';
-import { useOutletContext } from 'react-router-dom';
 import UseUpdateStore from '../../hooks/UseUpdateStore';
 import toast from 'react-hot-toast';
 import { Loader2 } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import useUser from '../../hooks/useUser';
 
 const UpdateSettings = () => {
-    const user = useOutletContext() // get websiteStyle from context
+    const { website, repoName, loading: userLoading } = useUser();
+    if (userLoading) {
+        return (
+            <div className="flex justify-center py-10">
+                <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
+            </div>
+        );
+    }
     return (
         <div className='w-full'>
-            <UpdateSettingsForm store={user.website} repoName={user.repoName} />
+            <UpdateSettingsForm store={website} repoName={repoName} />
         </div>
     );
 };

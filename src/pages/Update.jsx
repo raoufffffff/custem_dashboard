@@ -1,9 +1,8 @@
-import { Outlet, useOutletContext } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import PageContainer from '../CustomUi/PageContainer'
 import { useTranslation } from 'react-i18next';
 
 const Update = () => {
-    const user = useOutletContext() // get websiteStyle from context
     const { t } = useTranslation("store");
 
     return (
@@ -12,7 +11,7 @@ const Update = () => {
             about={t("Store")}
             className={"py-2"}
         >
-            <Outlet context={user} />
+            <Outlet />
         </PageContainer>
     )
 }

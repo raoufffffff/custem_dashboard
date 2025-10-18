@@ -1,21 +1,38 @@
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
-import { useOutletContext } from 'react-router-dom'
 import UseUpdateStore from '../../../hooks/UseUpdateStore';
 import { Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import useUser from '../../../hooks/useUser';
 
 const Color = () => {
-    const { t } = useTranslation("store");
-    const user = useOutletContext() // get websiteStyle from context
-    const [color, setColor] = useState(user.website.main_color || '#ffffff');
-    const [change, SetChange] = useState(false)
-    const { loading, UpdateStore } = UseUpdateStore()
+    const { website, repoName, loading: userLoading } = useUser();
+    if (userLoading) {
+        return (
+            <div className="flex justify-center py-10">
+                <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
+            </div>
+        );
+    }
+
     return (
         <div
             className='w-full flex flex-col gap-6'
         >
 
+            <UpdateColor website={website} repoName={repoName} />
+        </div>
+    )
+}
+
+const UpdateColor = ({ website, repoName }) => {
+    const { t } = useTranslation("store");
+
+    const [color, setColor] = useState(website.main_color || '#ffffff');
+    const [change, SetChange] = useState(false)
+    const { loading, UpdateStore } = UseUpdateStore()
+    return (
+        <>
             <div
                 className='w-full flex justify-between items-center'
             >
@@ -47,8 +64,8 @@ const Color = () => {
                     onClick={() => {
                         if (change) {
                             UpdateStore({
-                                ...user.website,
-                                repoName: user.repoName,
+                                ...website,
+                                repoName: repoName,
                                 main_color: color,
 
                             })
@@ -61,7 +78,7 @@ const Color = () => {
                 >
                     {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Save")}                </button>
             </div>
-        </div>
+        </>
     )
 }
 

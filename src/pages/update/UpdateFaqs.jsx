@@ -24,16 +24,35 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Empty from '../../CustomUi/Empty';
-import { useOutletContext } from 'react-router-dom';
 import UseUpdateStore from '../../hooks/UseUpdateStore';
 import toast from 'react-hot-toast';
+import useUser from '../../hooks/useUser';
 
 const UpdateFaqs = () => {
+
+    const { website, repoName, loading: userLoading } = useUser();
+    if (userLoading) {
+        return (
+            <div className="flex justify-center py-10">
+                <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
+            </div>
+        );
+    }
+    return (
+        <div className='w-full'>
+            {/* Add/Edit Modal */}
+            <FaqComponent
+                website={website}
+                repoName={repoName}
+            />
+        </div>
+    )
+}
+
+const FaqComponent = ({ website, repoName }) => {
     const { t } = useTranslation("store");
 
     const { loading, UpdateStore } = UseUpdateStore()
-    const user = useOutletContext() // get websiteStyle from context
-    const { website } = user
     const [faqs, setfaqs] = useState(website.faqs || [])
     const [faq, setfaq] = useState({ question: "", answer: "", id: null })
     const [err, seterr] = useState(false)
@@ -100,8 +119,7 @@ const UpdateFaqs = () => {
 
 
     return (
-        <div className='w-full'>
-            {/* Add/Edit Modal */}
+        <>
             {show && <Model onclose={hide} classname={"p-4 relative"}>
                 <p className='font-medium'>{isEditing ? "Edit FAQ" : "Add a question and answer"}</p>
                 <input
@@ -200,7 +218,7 @@ const UpdateFaqs = () => {
                             if (change) {
                                 UpdateStore({
                                     ...website,
-                                    repoName: user.repoName,
+                                    repoName: repoName,
                                     faqs: faqs
                                 })
                                 return
@@ -215,7 +233,7 @@ const UpdateFaqs = () => {
                     </button>
                 </div>
             </BoxCard>
-        </div>
+        </>
     )
 }
 

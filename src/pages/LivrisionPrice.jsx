@@ -34,7 +34,7 @@ const LivrisionPrice = () => {
                 }
                 setLiv(states);
             } catch {
-                toast.success(t("UpdateSuccess"));
+                toast.error(t("ErrorFetchingData"));
             } finally {
                 setLoading(false);
             }
@@ -63,7 +63,7 @@ const LivrisionPrice = () => {
         setUcan(false);
         try {
             const res = await axios.put(
-                `http://localhost:3010/update-livprice`,
+                `https://next-website-server.vercel.app/update-livprice`,
                 {
                     id: _id,
                     repoName: website.repoName,

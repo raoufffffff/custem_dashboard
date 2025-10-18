@@ -4,21 +4,40 @@ import CustomImg from '../../CustomUi/CustomImg'
 import InputImg from '../../CustomUi/InputImg'
 import handleImageUpload from '../../utility/UploadImages'
 import { useState } from 'react'
-import { useOutletContext } from 'react-router-dom';
 import UseUpdateStore from '../../hooks/UseUpdateStore'
 import { Loader2 } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import useUser from '../../hooks/useUser'
 
 const UpdateLogo = () => {
+
+    const { website, repoName, loading: userLoading } = useUser();
+
+
+    if (userLoading) {
+        return (
+            <div className="flex justify-center py-10">
+                <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
+            </div>
+        );
+    }
+
+    return (
+        <div
+            className='w-full'
+        >
+            <Logo website={website} repoName={repoName} />
+        </div>
+    )
+}
+
+
+const Logo = ({ website, repoName }) => {
     const { t } = useTranslation("store");
 
-    const user = useOutletContext() // get websiteStyle from context
     const { loading, UpdateStore } = UseUpdateStore()
-    let { website, repoName } = user || {}
     const [logo, setlogo] = useState(null);
     const [uploading, setUploading] = useState(false);
-
-
     const ImageUpload = async (event) => {
         setUploading(true);
         try {
@@ -37,67 +56,63 @@ const UpdateLogo = () => {
         setlogo(null);
     };
     return (
-        <div
-            className='w-full'
+        <BoxCard
+            about={t("Logo")}
+            small={true}
+            className={`py-1`}
         >
-            <BoxCard
-                about={t("Logo")}
-                small={true}
-                className={`py-1`}
+            <p
+                className='text-sm text-gray-600'
+            >{t("logotext")}</p>
+            <div
+                className='border-t border-[#ddd] py-5 mt-4'
             >
                 <p
-                    className='text-sm text-gray-600'
-                >{t("logotext")}</p>
+                    className='text-xs text-gray-600'
+                >{t("logoabout")}</p>
                 <div
-                    className='border-t border-[#ddd] py-5 mt-4'
+
                 >
-                    <p
-                        className='text-xs text-gray-600'
-                    >{t("logoabout")}</p>
+
                     <div
-
+                        layout
+                        className="flex flex-wrap gap-3 mt-3"
                     >
-
-                        <div
-                            layout
-                            className="flex flex-wrap gap-3 mt-3"
-                        >
-                            <CustomImg tabel={logo ? false : true} big logo={logo ? [logo] : [website.logo]} removeImage={removeImage} />
-                        </div>
-                        {!logo && <div
-                            className='mt-4'
-                        >
-                            <InputImg label='' uploading={uploading} ImageUpload={ImageUpload} />
-                        </div>}
+                        <CustomImg tabel={logo ? false : true} big logo={logo ? [logo] : [website.logo]} removeImage={removeImage} />
                     </div>
-                </div>
-                <div
-                    className='flex justify-between items-center mt-5'
-                >
-
-
-                </div>
-                <div
-                    className='mt-5 flex justify-end'
-                >
-
-
-                    <button
-                        onClick={() => {
-                            if (logo) {
-                                UpdateStore({ ...website, logo: logo, repoName: repoName })
-                                return
-                            }
-                            toast.error("upload your logo")
-                        }}
-                        className='w-full bg-purple-600 text-white px-4 py-2 rounded-xl shadow-purple-700 hover:bg-purple-700 transition'
+                    {!logo && <div
+                        className='mt-4'
                     >
-                        {loading ? <Loader2 className="animate-spin h-8 w-8 " /> : t("Save")}
-                    </button>
-
+                        <InputImg label='' uploading={uploading} ImageUpload={ImageUpload} />
+                    </div>}
                 </div>
-            </BoxCard>
-        </div>
+            </div>
+            <div
+                className='flex justify-between items-center mt-5'
+            >
+
+
+            </div>
+            <div
+                className='mt-5 flex justify-end'
+            >
+
+
+                <button
+                    onClick={() => {
+                        if (logo) {
+                            UpdateStore({ ...website, logo: logo, repoName: repoName })
+                            return
+                        }
+                        toast.error("upload your logo")
+                    }}
+                    className='w-full bg-purple-600 text-white px-4 py-2 rounded-xl shadow-purple-700 hover:bg-purple-700 transition'
+                >
+                    {loading ? <Loader2 className="animate-spin h-8 w-8 mx-auto" /> : t("Save")}
+                </button>
+
+            </div>
+        </BoxCard>
     )
 }
 
