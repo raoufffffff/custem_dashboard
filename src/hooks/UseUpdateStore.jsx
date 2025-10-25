@@ -54,15 +54,38 @@ const UseUpdateStore = () => {
     let {
         _id = '',
         Categories = [],
-        repoName
+        website = {},
+        name = '',
+        email = '',
+        phone = '',
+        type = '',
+        password = '',
+        Notifications = [],
+        AlartNotification = false,
+        NotificationsCurrentNumber = 0,
+        companyLiv = {},
+        repoName = "",
+        link = "",
     } = user || {};
     return {
-        loading,
         UpdateStore,
         UpdateCategories,
+        companyLiv,
         Categories,
+        _id,
+        name,
+        email,
+        phone,
+        type,
+        Notifications,
+        AlartNotification,
+        NotificationsCurrentNumber,
+        loading,
+        website,
+        fetchUser,
+        password,
         repoName,
-        _id
+        link
     }
 }
 

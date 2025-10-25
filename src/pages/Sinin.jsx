@@ -271,7 +271,23 @@ const App = () => {
                             className={domainInputClass}
                             value={domain}
                             onBlur={checkDomainAvailability}
-                            onChange={(e) => setDomain(e.target.value.toLowerCase())}
+                            onChange={(e) => {
+                                const inputValue = e.target.value;
+
+                                // Regex now includes the digit shorthand \d (or 0-9) alongside the special characters.
+                                // The characters inside the brackets [] define the set of forbidden characters.
+                                const forbiddenCharsRegex = /[-.@_+*&^%$!)(\d]/;
+
+                                // Check if the input value contains any forbidden character OR any number
+                                if (forbiddenCharsRegex.test(inputValue)) {
+                                    // If a forbidden character or a number is found, block the state update.
+                                    console.log("Forbidden character/number detected and blocked.");
+                                    return;
+                                }
+
+                                // If only allowed characters (letters) are present, update the state.
+                                setDomain(inputValue.toLowerCase());
+                            }}
                         />
                         <p className="text-sm text-gray-400 mb-3 mt-1">
                             Your future domain:{" "}

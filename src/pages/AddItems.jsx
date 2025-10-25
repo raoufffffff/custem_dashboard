@@ -29,6 +29,8 @@ const AddItems = () => {
         Description: '',
         type: "",
     });
+
+
     const [Variants, setVariants] = useState([]);
     const [err, seterr] = useState(false);
     const [Offers, setOffers] = useState([]);
@@ -48,7 +50,7 @@ const AddItems = () => {
     //     setFormData((prev) => ({ ...prev, Description: e }))
     // }
 
-    const [lanImg, setlanImg] = useState([]);
+    const [LadingPages, setLadingPages] = useState([]);
     const [images, setImages] = useState([]);
     const [uploading, setUploading] = useState(false);
 
@@ -71,7 +73,7 @@ const AddItems = () => {
         setUploading(true);
         try {
             const res = await handleImageUpload(event)
-            setlanImg((prev) => [...prev, res])
+            setLadingPages((prev) => [...prev, res])
         } catch (err) {
             console.error('Upload error:', err);
 
@@ -113,8 +115,8 @@ const AddItems = () => {
     const removeImage = (url) => {
         setImages((prev) => prev.filter((img) => img !== url));
     };
-    const removelanImg = (url) => {
-        setlanImg((prev) => prev.filter((img) => img !== url));
+    const removeLadingPages = (url) => {
+        setLadingPages((prev) => prev.filter((img) => img !== url));
     };
 
     const handleSubmit = async () => {
@@ -147,7 +149,7 @@ const AddItems = () => {
             ...formData,
             Variants,
             Offers,
-            lanImg,
+            LadingPages: LadingPages,
             images,
             userId: _id
         }
@@ -198,9 +200,9 @@ const AddItems = () => {
                     <label className="block mb-2 font-medium text-gray-600">{t("ProductShort")}</label>
                     <textarea
                         type="text"
-                        name={t("Description")}
+                        name={"ShortDescription"}
                         placeholder="Product Description"
-                        value={formData.Description}
+                        value={formData.ShortDescription}
                         onChange={handleChange}
                         rows={3}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
@@ -244,7 +246,7 @@ const AddItems = () => {
                     layout
                     className="flex flex-wrap gap-3 mt-3"
                 >
-                    <CustomImg big logo={lanImg} removeImage={removelanImg} />
+                    <CustomImg big logo={LadingPages} removeImage={removeLadingPages} />
 
 
 

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 const companies = [
 
-    { name: "ZR Express", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWyLN--D_i9G36pzasGNaNa260Fr8sUWWkBcHwQBFQRQ&s=10" },
+    { name: "ZR Express", logo: "https://eco-oran.com/wp-content/uploads/2023/08/logo-200x200-05-1.jpg" },
 
 ];
 
@@ -35,4 +35,3 @@ const DeliveryCompanySelector = ({ onSelect }) => {
 };
 
 export default DeliveryCompanySelector;
-

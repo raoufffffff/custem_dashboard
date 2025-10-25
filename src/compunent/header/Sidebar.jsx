@@ -9,13 +9,14 @@ import {
     ChevronDown,
     ChevronUp,
 } from 'lucide-react';
-import { FaPix } from "react-icons/fa6";
 import { FaFacebook, FaTiktok } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from 'react';
 import { HiBars3BottomLeft } from "react-icons/hi2";
 import { useTranslation } from 'react-i18next';
+import { FaSheetPlastic } from "react-icons/fa6";
+import { IoIosMore } from "react-icons/io";
 
 export default function Sidebar({ SemalHarder, toggleHeader, open, name, website, link }) {
     const { i18n, t } = useTranslation("constanst");
@@ -28,6 +29,7 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
         categories: false,
         delivery: false,
         marketing: false,
+        more: false,
     });
     console.log(website);
 
@@ -154,7 +156,20 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
                         <FaTiktok className="w-5 h-5" />}
                         label={t("TiktokPixals")} to="/AddTiktokPixel" collapsed={SemalHarder} />
                 </Dropdown>
+                <Dropdown
+                    label={t("others")}
+                    icon={<IoIosMore className="w-5 h-5" />}
+                    open={show.more}
+                    toggle={() => {
+                        open()
+                        setShow({ ...show, more: !show.more })
+                    }}
+                    collapsed={SemalHarder}
+                >
+                    <NavItem toggleHeader={toggleHeader} icon={
+                        <FaSheetPlastic className="w-5 h-5 text-green-600" />} label={t("googlesheet")} to="/sheet" collapsed={SemalHarder} />
 
+                </Dropdown>
             </nav>
         </motion.aside>
     );

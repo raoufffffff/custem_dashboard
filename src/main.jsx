@@ -39,6 +39,7 @@ import UpdatePassword from './pages/Account/UpdatePassword.jsx';
 import UpdatePhone from './pages/Account/UpdatePhone.jsx';
 import EdeteItem from './pages/EdeteItem.jsx';
 import "./i18n"; // 👈 important
+import Sheet from './pages/Sheet.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -138,7 +139,9 @@ const router = createBrowserRouter(
         ><UpdatePassword /></ProtectedRoute>
         } />
 
-
+        <Route path="sheet" element={
+          <ProtectedRoute><Sheet /></ProtectedRoute>
+        } />
       </Route>
       <Route path="login" element={<Login />} />
       <Route path="sinin" element={<Sinin />} />
