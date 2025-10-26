@@ -44,5 +44,9 @@
     "Actions": "Actions",
     "ShearchBy": "Search by: order number, name, surname, phone number...",
     "Management": "Management",
-    "Order": "Order"
+    "Order": "Order",
+    "visits": "website visits",
+    "Page": "Page",
+    "No Product Visits": "No Product Visits",
+    "Products Visited": "Products Visited"
 }

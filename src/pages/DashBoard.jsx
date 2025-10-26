@@ -4,11 +4,13 @@ import Stats from '../compunent/DashBoard/Stats'
 import StatusSummary from '../compunent/DashBoard/StatusSummary';
 import PageContainer from '../CustomUi/PageContainer';
 import { useTranslation } from "react-i18next";
+import { useOutletContext } from 'react-router-dom';
+import Visits from '../compunent/DashBoard/Visits';
 
 const DashBoard = () => {
     const { loading, panddingOrder, ConfirmedOrder, Allorders } = useOrders();
     const { t } = useTranslation("dashboard");
-
+    const user = useOutletContext()
 
     if (loading) return <DashboardSkeleton />
     return (
@@ -16,7 +18,8 @@ const DashBoard = () => {
             about={JSON.parse(localStorage.getItem("user")).name}
             titel={t("welcome")}
         >
-            <Stats panddingOrder={panddingOrder} ConfirmedOrder={ConfirmedOrder} />
+            <Stats panddingOrder={panddingOrder} ConfirmedOrder={ConfirmedOrder} visit={user.visit.length} />
+            <Visits visit={user.visit} />
             <StatusSummary Allorders={Allorders} />
         </PageContainer>
     )
