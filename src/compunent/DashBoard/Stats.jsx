@@ -2,7 +2,7 @@
 import BoxCard from "../../CustomUi/BoxCard";
 import { useTranslation } from "react-i18next";
 
-const Stats = ({ ConfirmedOrder, panddingOrder }) => {
+const Stats = ({ ConfirmedOrder, panddingOrder, visit }) => {
     const Earnings = () => {
         let a = 0
         for (let i = 0; i < ConfirmedOrder.length; i++) {
@@ -35,7 +35,7 @@ const Stats = ({ ConfirmedOrder, panddingOrder }) => {
                 {/* Visits */}
                 <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
                     <p className="text-sm text-gray-600">{t("Visits")}</p>
-                    <p className="text-xl font-bold text-gray-800">0</p>
+                    <p className="text-xl font-bold text-gray-800">{visit}</p>
                 </div>
 
                 {/* Earnings */}
