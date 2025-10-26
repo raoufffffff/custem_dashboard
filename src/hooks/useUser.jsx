@@ -79,9 +79,11 @@ const useUser = () => {
         companyLiv = {},
         repoName = "",
         link = "",
+        visit = []
     } = user || {};
 
     return {
+        visit,
         companyLiv,
         Categories,
         _id,
