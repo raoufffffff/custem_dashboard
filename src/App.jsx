@@ -15,7 +15,7 @@ function App() {
   const { i18n } = useTranslation("constanst");
   const currentLang = i18n.language; // detect active language
 
-  const { loading, website, name, email, phone, password, link, repoName, Categories, _id } = useUser()
+  const { loading, website, name, email, phone, password, link, repoName, Categories, _id, visit } = useUser()
   const [SemalHarder, setSemalHarder] = useState(true)
   const toggleHeader = () => setSemalHarder(p => !p)
   const openSidebar = () => setSemalHarder(false)
@@ -35,7 +35,7 @@ function App() {
       <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
     </div>
   );
-  let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link }
+  let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link, visit }
   return (
     <div
       dir={currentLang === "ar" ? "rtl" : "ltr"} className="min-h-screen w-full  flex justify-end"
