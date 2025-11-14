@@ -79,7 +79,10 @@ const UpdateHeader = ({ website, repoName }) => {
                             <input
                                 type="color"
                                 value={header.headercolor}
-                                onChange={(e) => setHeader((prev) => ({ ...prev, headercolor: e.target.value }))
+                                onChange={(e) => {
+                                    SetChange(true)
+                                    setHeader((prev) => ({ ...prev, headercolor: e.target.value }))
+                                }
                                 }
                                 className="absolute w-0 h-0 opacity-0"
                             />
@@ -101,7 +104,10 @@ const UpdateHeader = ({ website, repoName }) => {
                             <input
                                 type="color"
                                 value={header.headercolor}
-                                onChange={(e) => setHeader((prev) => ({ ...prev, barcolor: e.target.value }))
+                                onChange={(e) => {
+                                    SetChange(true)
+                                    setHeader((prev) => ({ ...prev, barcolor: e.target.value }))
+                                }
                                 }
                                 className="absolute w-0 h-0 opacity-0"
                             />

@@ -18,8 +18,10 @@ const App = () => {
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [domainAvailable, setDomainAvailable] = useState(null);
     const [loading, setLoading] = useState(false)
+    const [Checkloading, setCheckLoading] = useState(false)
     // Validation and move to next step
-    const handleNextStep = () => {
+    const handleNextStep = async () => {
+        setCheckLoading(true)
         if (!name || !phone || !email || !password || !confirmPassword) {
             toast.error("Please fill in all fields", { style: { border: "1px solid #ef4444" } });
             return;
@@ -33,7 +35,24 @@ const App = () => {
             toast.error("Please enter a valid email address", { style: { border: "1px solid #ef4444" } });
             return;
         }
-        setStep(2);
+        try {
+            const response = await axios.post(`https://true-fit-dz-api.vercel.app/user/check/emailphone`, {
+                phone: phone,
+                email: email
+            });
+
+            if (response.data.available) {
+                toast.success("email and phone is available! ✅", { style: { border: "1px solid #10b981" } });
+                setStep(2);
+            } else {
+                toast.error(`${response.data.message} 😔`, { style: { border: "1px solid #ef4444" } });
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Connection to email and phone check failed.", { style: { border: "1px solid #ef4444" } });
+        } finally {
+            setCheckLoading(false)
+        }
     };
 
     // Function to check if the entered domain is available
@@ -253,7 +272,8 @@ const App = () => {
                             onClick={handleNextStep}
                             className="w-full rounded-xl bg-purple-600 py-3 font-semibold text-white shadow-lg transition duration-300 hover:bg-purple-700"
                         >
-                            Continue
+                            {Checkloading ? <Loader2 className="animate-spin h-8 w-8 mx-auto" /> : 'Continue'}
+
                         </motion.button>
                     </>
                 ) : (
@@ -272,21 +292,12 @@ const App = () => {
                             value={domain}
                             onBlur={checkDomainAvailability}
                             onChange={(e) => {
-                                const inputValue = e.target.value;
+                                const value = e.target.value;
 
-                                // Regex now includes the digit shorthand \d (or 0-9) alongside the special characters.
-                                // The characters inside the brackets [] define the set of forbidden characters.
-                                const forbiddenCharsRegex = /[-.@_+*&^%$!)(\d]/;
-
-                                // Check if the input value contains any forbidden character OR any number
-                                if (forbiddenCharsRegex.test(inputValue)) {
-                                    // If a forbidden character or a number is found, block the state update.
-                                    console.log("Forbidden character/number detected and blocked.");
-                                    return;
+                                // Allow only letters (no spaces, no numbers, no symbols)
+                                if (/^[A-Za-z]*$/.test(value)) {
+                                    setDomain(value.toLowerCase());
                                 }
-
-                                // If only allowed characters (letters) are present, update the state.
-                                setDomain(inputValue.toLowerCase());
                             }}
                         />
                         <p className="text-sm text-gray-400 mb-3 mt-1">
@@ -322,7 +333,8 @@ const App = () => {
                             />
                             <label htmlFor="terms" className="text-gray-500 text-sm">
                                 I agree to the{" "}
-                                <a href="/terms" className="text-teal-500 hover:underline" onClick={(e) => e.preventDefault()}>
+                                <a href="/terms"
+                                    target="_blank" className="text-teal-500 hover:underline">
                                     Terms and Conditions
                                 </a>
                             </label>
