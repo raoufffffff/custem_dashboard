@@ -40,6 +40,8 @@ import UpdatePhone from './pages/Account/UpdatePhone.jsx';
 import EdeteItem from './pages/EdeteItem.jsx';
 import "./i18n"; // 👈 important
 import Sheet from './pages/Sheet.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
+import Terms from './pages/Terms.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -145,6 +147,8 @@ const router = createBrowserRouter(
       </Route>
       <Route path="login" element={<Login />} />
       <Route path="sinin" element={<Sinin />} />
+      <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="terms" element={<Terms />} />
     </>
   )
 );
