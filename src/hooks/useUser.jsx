@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const useUser = () => {
     const [user, setUser] = useState(null);
@@ -13,6 +14,7 @@ const useUser = () => {
             const userId = JSON.parse(localUser)._id;
             const res = await axios.get(`https://true-fit-dz-api.vercel.app/user/${userId}`);
             setUser(res.data.result);
+            localStorage.setItem("user", JSON.stringify(res.data.result))
         } catch (err) {
             setError(err.response?.data?.message || err.message || "Failed to fetch user");
         } finally {
@@ -63,7 +65,24 @@ const useUser = () => {
             setLoading(false)
         }
     }
+    const updateUser = async (body) => {
+        setLoading(true)
+        try {
+            const localUser = localStorage.getItem("user");
+            if (!localUser) throw new Error("User not found in localStorage");
 
+            const userId = JSON.parse(localUser)._id;
+            await axios.put(`https://true-fit-dz-api.vercel.app/user/${userId}`, body).then(() => {
+                fetchUser()
+                toast.success("your website updated successfuly")
+
+            })
+        } catch (error) {
+            setError(error.response?.data?.message || error.message || "Failed to fetch user");
+        } finally {
+            setLoading(false)
+        }
+    }
     let {
         _id = '',
         Categories = [],
@@ -102,7 +121,8 @@ const useUser = () => {
         fetchUser,
         password,
         repoName,
-        link
+        link,
+        updateUser
     };
 };
 

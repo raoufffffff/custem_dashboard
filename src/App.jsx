@@ -7,8 +7,8 @@ import Model from "./CustomUi/Model";
 import LanguagePanel from "./compunent/App/LanguagePanel";
 import AccountPanel from "./compunent/App/AccountPanel";
 import useUser from "./hooks/useUser";
-import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import LoadingBar from "./CustomUi/LoadingBar";
 
 
 function App() {
@@ -29,12 +29,7 @@ function App() {
     AccountPanel: false,
     LanguagePanel: false
   })
-
-  if (loading) return (
-    <div className="flex justify-center items-center min-h-[200px]">
-      <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
-    </div>
-  );
+  if (loading) return <LoadingBar />
   let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link, visit }
   return (
     <div

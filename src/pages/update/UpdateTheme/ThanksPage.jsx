@@ -5,16 +5,12 @@ import UseUpdateStore from "../../../hooks/UseUpdateStore";
 import toast from "react-hot-toast";
 import { useTranslation } from 'react-i18next';
 import useUser from "../../../hooks/useUser";
+import LoadingBar from "../../../CustomUi/LoadingBar";
 
 const ThanksPage = () => {
     const { website, repoName, loading: userLoading } = useUser();
-    if (userLoading) {
-        return (
-            <div className="flex justify-center py-10">
-                <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
-            </div>
-        );
-    }
+    if (userLoading) return <LoadingBar />
+
 
     return (
         <div className="w-full  pt-4  flex flex-col gap-6">

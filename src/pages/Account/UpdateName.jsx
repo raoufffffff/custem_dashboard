@@ -3,24 +3,24 @@ import PageContainer from '../../CustomUi/PageContainer'
 import BoxCard from '../../CustomUi/BoxCard'
 import { useOutletContext } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
+import useUser from '../../hooks/useUser';
+import { Loader2 } from 'lucide-react';
 
 const UpdateName = () => {
     const { t } = useTranslation("Account");
-
+    const { updateUser, loading } = useUser()
     const user = useOutletContext()
+    const [save, setsave] = useState(false)
     const [name, setName] = useState({
         name: user.name,
-        surname: user.surname || ""
     })
     const handleChange = (e) => {
+        setsave(true)
         const { name, value } = e.target
         setName((prev) => ({ ...prev, [name]: value }))
     }
 
-    const handleSubmit = () => {
-        console.log("Facebook Pixel Data:", name)
-        // 👉 here you can send to API or handle logic
-    }
+
     return (
         <PageContainer
             back={true}
@@ -43,27 +43,15 @@ const UpdateName = () => {
                     />
                 </div>
 
-                {/* Pixel ID */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {t("surname")}
-                    </label>
-                    <input
-                        type="text"
-                        name="surname"
-                        value={name.surname}
-                        onChange={handleChange}
-                        placeholder="Enter pixel ID"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    />
-                </div>
 
                 {/* Add Button */}
                 <button
-                    onClick={handleSubmit}
-                    className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
+                    disabled={!save}
+                    onClick={() => updateUser(name)}
+                    className={`w-full  text-white px-4 py-2 rounded-xl  transition ${save ? "bg-teal-600 shadow-teal-700 hover:bg-teal-700" : "bg-[#616161]"}`}
                 >
-                    {t("Confirm")}
+                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Confirm")}
+
                 </button>
             </BoxCard>
 

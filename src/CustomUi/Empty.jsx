@@ -1,5 +1,6 @@
+import Lottie from "lottie-react";
 import { useTranslation } from "react-i18next";
-
+import empthyAnimation from '../assets/animation/Empty Order.json'
 const Empty = () => {
     const { t } = useTranslation("constanst");
 
@@ -7,7 +8,10 @@ const Empty = () => {
         <div
             className='w-full'
         >
-            <img className='w-6/12 mx-auto' src='/empty.png' alt='empty' />
+            <Lottie
+                alt="empty"
+                className="w-68 h-68 mx-auto"
+                animationData={empthyAnimation} loop={true} />
             <p className='text-gray-600 text-center'>{t("Nodata")}</p>
         </div>
     )

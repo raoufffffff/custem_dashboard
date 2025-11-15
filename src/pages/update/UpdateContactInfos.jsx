@@ -13,19 +13,15 @@ import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import useUser from '../../hooks/useUser';
+import LoadingBar from '../../CustomUi/LoadingBar';
 
 const UpdateContactInfos = () => {
     const { t } = useTranslation("store");
     const { website, repoName, loading: userLoading } = useUser();
     const { loading: updateLoading, UpdateStore } = UseUpdateStore();
 
-    if (userLoading) {
-        return (
-            <div className="flex justify-center py-10">
-                <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
-            </div>
-        );
-    }
+    if (userLoading) return <LoadingBar />
+
 
     const handleSave = (form, changed) => {
         if (!changed) {

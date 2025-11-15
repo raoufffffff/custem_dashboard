@@ -3,9 +3,13 @@ import PageContainer from '../../CustomUi/PageContainer'
 import BoxCard from '../../CustomUi/BoxCard'
 import { useOutletContext } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
+import useUser from '../../hooks/useUser';
+import { Loader2 } from 'lucide-react';
 
 const UpdatePhone = () => {
     const { t } = useTranslation("Account");
+    const { updateUser, loading } = useUser()
+    const [save, setsave] = useState(false)
 
     const user = useOutletContext()
     const [Phone, setPhone] = useState({
@@ -13,14 +17,13 @@ const UpdatePhone = () => {
         newPhone: ""
     })
     const handleChange = (e) => {
+        setsave(true)
         const { name, value } = e.target
         setPhone((prev) => ({ ...prev, [name]: value }))
+
     }
 
-    const handleSubmit = () => {
-        console.log("Facebook Pixel Data:", Phone)
-        // 👉 here you can send to API or handle logic
-    }
+
     return (
         <PageContainer
             back={true}
@@ -61,10 +64,18 @@ const UpdatePhone = () => {
 
                 {/* Add Button */}
                 <button
-                    onClick={handleSubmit}
-                    className='w-full bg-teal-600 text-white px-4 py-2 rounded-xl shadow-teal-700 hover:bg-teal-700 transition'
+                    disabled={!save}
+                    onClick={() => {
+                        updateUser({ phone: Phone.newPhone })
+                        setPhone({
+                            phone: Phone.newPhone,
+                            newPhone: ""
+                        })
+                    }}
+                    className={`w-full  text-white px-4 py-2 rounded-xl  transition ${save ? "bg-teal-600 shadow-teal-700 hover:bg-teal-700" : "bg-[#616161]"}`}
                 >
-                    {t("Confirm")}
+                    {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Confirm")}
+
                 </button>
             </BoxCard>
 
