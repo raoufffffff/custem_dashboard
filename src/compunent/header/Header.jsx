@@ -47,7 +47,7 @@ export default function Header({ toggleHeader, openLanguagePanel,
                     onClick={openLanguagePanel}
                     className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors">
                     <Globe className="w-5 h-5" />
-                    <span className="text-sm">{currentLang === "ar" ? "العربية" : "english"} </span>
+                    <span className="text-sm">{currentLang === "ar" ? "العربية" : currentLang === "fr" ? "Fr" : "En"} </span>
                 </button>
 
             </div>

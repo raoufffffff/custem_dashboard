@@ -33,6 +33,18 @@ const LanguagePanel = ({ hide }) => {
                     {currentLang === "en" && <Check className="w-5 h-5" />}
                 </button>
 
+                <button
+                    onClick={() => changeLang("fr")}
+                    className={`flex justify-between items-center px-4 py-3 rounded-xl text-lg transition-all shadow-sm 
+            ${currentLang === "fr"
+                            ? "bg-purple-500 text-white"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
+                >
+                    France
+                    {currentLang === "en" && <Check className="w-5 h-5" />}
+                </button>
+
                 {/* Arabic */}
                 <button
                     onClick={() => changeLang("ar")}

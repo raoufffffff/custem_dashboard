@@ -17,6 +17,17 @@ import ArProductsAndCategories from "./locales/ar/ProductsAndCategories.json";
 import ArDelevryComapnesAndPixals from "./locales/ar/DelevryComapnesAndPixals.json";
 
 
+// france
+import FrConstanst from "./locales/fr/constanst.json";
+import FrDashboard from "./locales/fr/dashboard.json";
+import FrAccount from "./locales/fr/Account.json";
+import FrStore from "./locales/fr/store.json";
+import FrProductsAndCategories from "./locales/fr/ProductsAndCategories.json";
+import FrDelevryComapnesAndPixals from "./locales/fr/DelevryComapnesAndPixals.json";
+
+
+
+
 i18n
     .use(LanguageDetector) // detects language
     .use(initReactI18next) // passes i18n down to react-i18next
@@ -37,6 +48,14 @@ i18n
                 store: ArStore,
                 ProductsAndCategories: ArProductsAndCategories,
                 DelevryComapnesAndPixals: ArDelevryComapnesAndPixals
+            },
+            fr: {
+                constanst: FrConstanst,
+                dashboard: FrDashboard,
+                Account: FrAccount,
+                store: FrStore,
+                ProductsAndCategories: FrProductsAndCategories,
+                DelevryComapnesAndPixals: FrDelevryComapnesAndPixals
             }
         },
         fallbackLng: "en", // default language
