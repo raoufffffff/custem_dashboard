@@ -33,7 +33,8 @@ function App() {
   let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link, visit }
   return (
     <div
-      dir={currentLang === "ar" ? "rtl" : "ltr"} className="min-h-screen w-full  flex justify-end"
+      dir={currentLang === "ar" ? "rtl" : "ltr"}
+      className="min-h-screen w-full  flex justify-end"
     >
       {showPanels.LanguagePanel && <Model
         onclose={hide}

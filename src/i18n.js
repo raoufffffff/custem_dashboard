@@ -7,6 +7,7 @@ import EnAccount from "./locales/en/Account.json";
 import EnStore from "./locales/en/store.json";
 import EnProductsAndCategories from "./locales/en/ProductsAndCategories.json";
 import EnDelevryComapnesAndPixals from "./locales/en/DelevryComapnesAndPixals.json";
+import EnAuth from "./locales/en/auth.json";
 
 // arabic
 import ArConstanst from "./locales/ar/constanst.json";
@@ -15,6 +16,7 @@ import ArAccount from "./locales/ar/Account.json";
 import ArStore from "./locales/ar/store.json";
 import ArProductsAndCategories from "./locales/ar/ProductsAndCategories.json";
 import ArDelevryComapnesAndPixals from "./locales/ar/DelevryComapnesAndPixals.json";
+import ArAuth from "./locales/ar/auth.json";
 
 
 // france
@@ -24,6 +26,7 @@ import FrAccount from "./locales/fr/Account.json";
 import FrStore from "./locales/fr/store.json";
 import FrProductsAndCategories from "./locales/fr/ProductsAndCategories.json";
 import FrDelevryComapnesAndPixals from "./locales/fr/DelevryComapnesAndPixals.json";
+import FrAuth from "./locales/fr/Auth.json";
 
 
 
@@ -39,7 +42,8 @@ i18n
                 Account: EnAccount,
                 store: EnStore,
                 ProductsAndCategories: EnProductsAndCategories,
-                DelevryComapnesAndPixals: EnDelevryComapnesAndPixals
+                DelevryComapnesAndPixals: EnDelevryComapnesAndPixals,
+                auth: EnAuth
             },
             ar: {
                 constanst: ArConstanst,
@@ -47,7 +51,8 @@ i18n
                 Account: ArAccount,
                 store: ArStore,
                 ProductsAndCategories: ArProductsAndCategories,
-                DelevryComapnesAndPixals: ArDelevryComapnesAndPixals
+                DelevryComapnesAndPixals: ArDelevryComapnesAndPixals,
+                auth: ArAuth
             },
             fr: {
                 constanst: FrConstanst,
@@ -55,7 +60,8 @@ i18n
                 Account: FrAccount,
                 store: FrStore,
                 ProductsAndCategories: FrProductsAndCategories,
-                DelevryComapnesAndPixals: FrDelevryComapnesAndPixals
+                DelevryComapnesAndPixals: FrDelevryComapnesAndPixals,
+                auth: FrAuth
             }
         },
         fallbackLng: "en", // default language
