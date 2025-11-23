@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
-import { Loader2 } from "lucide-react";
+import { Loader2, Globe } from "lucide-react";
+import { useTranslation } from 'react-i18next';
+import { Link } from "react-router-dom";
+import Model from "../CustomUi/Model";
+import LanguagePanel from "../compunent/App/LanguagePanel";
 
 // This is the main component for the two-step sign-up page
 const App = () => {
+    const { t, i18n } = useTranslation("auth");
+    const currentLang = i18n.language; // detect active language
+
     const [step, setStep] = useState(1);
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
@@ -19,20 +26,24 @@ const App = () => {
     const [domainAvailable, setDomainAvailable] = useState(null);
     const [loading, setLoading] = useState(false)
     const [Checkloading, setCheckLoading] = useState(false)
+    const [showPanels, setshowPanels] = useState(false)
+
+    const hide = () => setshowPanels(false)
+
     // Validation and move to next step
     const handleNextStep = async () => {
         setCheckLoading(true)
         if (!name || !phone || !email || !password || !confirmPassword) {
-            toast.error("Please fill in all fields", { style: { border: "1px solid #ef4444" } });
+            toast.error(t("Please"), { style: { border: "1px solid #ef4444" } });
             return;
         }
         if (password !== confirmPassword) {
-            toast.error("Passwords do not match", { style: { border: "1px solid #ef4444" } });
+            toast.error(t("Passwords"), { style: { border: "1px solid #ef4444" } });
             return;
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            toast.error("Please enter a valid email address", { style: { border: "1px solid #ef4444" } });
+            toast.error(t("Pleaseenteravalidemailaddress"), { style: { border: "1px solid #ef4444" } });
             return;
         }
         try {
@@ -42,14 +53,14 @@ const App = () => {
             });
 
             if (response.data.available) {
-                toast.success("email and phone is available! ✅", { style: { border: "1px solid #10b981" } });
+                toast.success(t("emailandphone"), { style: { border: "1px solid #10b981" } });
                 setStep(2);
             } else {
                 toast.error(`${response.data.message} 😔`, { style: { border: "1px solid #ef4444" } });
             }
         } catch (error) {
             console.log(error);
-            toast.error("Connection to email and phone check failed.", { style: { border: "1px solid #ef4444" } });
+            toast.error(t("Connection"), { style: { border: "1px solid #ef4444" } });
         } finally {
             setCheckLoading(false)
         }
@@ -66,28 +77,28 @@ const App = () => {
             const response = await axios.put(`https://true-fit-dz-api.vercel.app/user/check/domain`, { name: `${domain}-nc` });
             setDomainAvailable(response.data.available);
             if (response.data.available) {
-                toast.success("Domain is available! ✅", { style: { border: "1px solid #10b981" } });
+                toast.success(t("Domainisavailable"), { style: { border: "1px solid #10b981" } });
             } else {
-                toast.error("Domain is not available. 😔", { style: { border: "1px solid #ef4444" } });
+                toast.error(t("Domainisnotavailable"), { style: { border: "1px solid #ef4444" } });
             }
         } catch {
             setDomainAvailable(false);
-            toast.error("Connection to domain check failed.", { style: { border: "1px solid #ef4444" } });
+            toast.error(t("Connection"), { style: { border: "1px solid #ef4444" } });
         }
     };
 
     // Final registration and API call
     const handleFinalRegister = async () => {
         if (!domain || !storeName) {
-            toast.error("Please fill in all fields", { style: { border: "1px solid #ef4444" } });
+            toast.error(t("Please"), { style: { border: "1px solid #ef4444" } });
             return;
         }
         if (!agreedToTerms) {
-            toast.error("You must agree to the terms and conditions", { style: { border: "1px solid #ef4444" } });
+            toast.error(t("Youmustagreetothetermsandconditions"), { style: { border: "1px solid #ef4444" } });
             return;
         }
         if (domainAvailable === false) {
-            toast.error("Please choose an available domain.", { style: { border: "1px solid #ef4444" } });
+            toast.error(t("Pleasechooseanavailabledomain"), { style: { border: "1px solid #ef4444" } });
             return;
         }
 
@@ -105,15 +116,15 @@ const App = () => {
             const res = await axios.post("https://next-website-server.vercel.app", body);
             // NOTE: The API endpoint must be updated on the server to handle the new fields (domain, storeName, language).
             if (res.data?.success || res.data?._id) {
-                toast.success("Account created successfully ✅");
+                toast.success(t("Accountcreatedsuccessfully"));
                 window.location.replace("/login");
             } else {
-                toast.error("An error occurred, please check the information.", {
+                toast.error(t("Anerroroccurredpleasechecktheinformation"), {
                     style: { border: "1px solid #ef4444" },
                 });
             }
         } catch {
-            toast.error("Connection to server failed.", {
+            toast.error(t("Connection"), {
                 style: { border: "1px solid #ef4444" },
             });
         } finally {
@@ -127,9 +138,22 @@ const App = () => {
 
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4 py-8 text-gray-800 md:flex-row md:gap-16">
-            <Toaster position="top-center" />
+        <div
+            dir={currentLang === "ar" ? "rtl" : "ltr"}
 
+            className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4 py-8 text-gray-800 md:flex-row md:gap-16">
+            <Toaster position="top-center" />
+            <div
+                className={`fixed top-5 z-[10000000] ${currentLang === "ar" ? "right-5" : "left-5"} `}
+                onClick={() => setshowPanels(true)}
+            >
+                <Globe size={30} className="text-teal-600" />
+            </div>
+            {showPanels && <Model
+                onclose={hide}
+            >
+                <LanguagePanel hide={hide} />
+            </Model>}
             {/* Mascot Container - only visible on medium screens and up */}
             <motion.div
                 className="hidden max-w-sm md:block"
@@ -179,7 +203,7 @@ const App = () => {
                         >
                             1
                         </motion.div>
-                        <span className="mt-2 text-xs font-semibold text-center w-24">Account Details</span>
+                        <span className="mt-2 text-xs font-semibold text-center w-24">{t("AccountDetails")}</span>
                     </div>
                     <div className="flex-1 h-1 bg-gray-300 mx-2 rounded-full relative">
                         <motion.div
@@ -212,22 +236,22 @@ const App = () => {
                         >
                             2
                         </motion.div>
-                        <span className="mt-2 text-xs font-semibold text-center w-24">Store Details</span>
+                        <span className="mt-2 text-xs font-semibold text-center w-24">{t("StoreDetails")}</span>
                     </div>
                 </div>
 
                 {step === 1 ? (
                     <>
                         <h2 className="mb-2 text-center text-3xl font-extrabold text-purple-600 drop-shadow-md">
-                            Create New Account
+                            {t("CreateNewAccount")}
                         </h2>
                         <p className="mb-8 text-center text-sm text-gray-500">
-                            Enter your personal details to get started.
+                            {t("Enteryourpersonaldetailstogetstarted")}
                         </p>
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="text"
-                            placeholder="Full Name"
+                            placeholder={t("FullName")}
                             className="w-full mb-3 rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-800 placeholder-gray-400 shadow-sm transition duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -235,7 +259,7 @@ const App = () => {
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="tel"
-                            placeholder="Phone Number"
+                            placeholder={t("PhoneNumber")}
                             className="w-full mb-3 rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-800 placeholder-gray-400 shadow-sm transition duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
@@ -243,7 +267,7 @@ const App = () => {
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="email"
-                            placeholder="Email Address"
+                            placeholder={t("Emailaddress")}
                             className="w-full mb-3 rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-800 placeholder-gray-400 shadow-sm transition duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -252,7 +276,7 @@ const App = () => {
                             <motion.input
                                 whileFocus={{ scale: 1.02 }}
                                 type="password"
-                                placeholder="Password"
+                                placeholder={t("Password")}
                                 className="w-full rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-800 placeholder-gray-400 shadow-sm transition duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -261,7 +285,7 @@ const App = () => {
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="password"
-                            placeholder="Confirm Password"
+                            placeholder={t("ConfirmPassword")}
                             className="w-full mb-6 rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-800 placeholder-gray-400 shadow-sm transition duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -272,17 +296,17 @@ const App = () => {
                             onClick={handleNextStep}
                             className="w-full rounded-xl bg-purple-600 py-3 font-semibold text-white shadow-lg transition duration-300 hover:bg-purple-700"
                         >
-                            {Checkloading ? <Loader2 className="animate-spin h-8 w-8 mx-auto" /> : 'Continue'}
+                            {Checkloading ? <Loader2 className="animate-spin h-8 w-8 mx-auto" /> : t('Continue')}
 
                         </motion.button>
                     </>
                 ) : (
                     <>
                         <h2 className="mb-2 text-center text-3xl font-extrabold text-purple-600 drop-shadow-md">
-                            Store Details
+                            {t("StoreDetails")}
                         </h2>
                         <p className="mb-8 text-center text-sm text-gray-500">
-                            Tell us about your new website and store.
+                            {t("Tellusaboutyournewwebsiteandstore")}
                         </p>
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
@@ -301,7 +325,7 @@ const App = () => {
                             }}
                         />
                         <p className="text-sm text-gray-400 mb-3 mt-1">
-                            Your future domain:{" "}
+                            {t("Yourfuturedomain")}:{" "}
                             <span className="font-mono text-purple-600">
                                 {domain ? `${domain}-nc` : "your-domain-name-nc"}
                             </span>
@@ -309,19 +333,19 @@ const App = () => {
                         <motion.input
                             whileFocus={{ scale: 1.02 }}
                             type="text"
-                            placeholder="Store Name"
+                            placeholder={t("StoreName")}
                             className="w-full mb-3 rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-800 placeholder-gray-400 shadow-sm transition duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             value={storeName}
                             onChange={(e) => setStoreName(e.target.value)}
                         />
-                        <label className="text-gray-600 mb-2 block">Website Language</label>
+                        <label className="text-gray-600 mb-2 block">{t("WebsiteLanguage")}</label>
                         <select
                             className="w-full mb-3 rounded-xl border border-gray-300 bg-white px-6 py-3 text-gray-800 shadow-sm transition duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             value={language}
                             onChange={(e) => setLanguage(e.target.value)}
                         >
-                            <option value="arabic">Arabic</option>
-                            <option value="french">French</option>
+                            <option value="ar">{t("Arabic")}</option>
+                            <option value="fr">{t("French")}</option>
                         </select>
                         <div className="mb-6 flex items-center gap-2">
                             <input
@@ -332,11 +356,11 @@ const App = () => {
                                 onChange={(e) => setAgreedToTerms(e.target.checked)}
                             />
                             <label htmlFor="terms" className="text-gray-500 text-sm">
-                                I agree to the{" "}
-                                <a href="/terms"
+                                {t("Iagreetothe")}{" "}
+                                <Link to="/terms"
                                     target="_blank" className="text-teal-500 hover:underline">
-                                    Terms and Conditions
-                                </a>
+                                    {t("TermsandConditions")}
+                                </Link>
                             </label>
                         </div>
                         <div className="flex justify-between">
@@ -346,7 +370,7 @@ const App = () => {
                                 onClick={() => setStep(1)}
                                 className="rounded-xl border border-purple-600 py-3 px-6 font-semibold text-purple-600 transition duration-300 hover:bg-purple-100"
                             >
-                                Back
+                                {t("Back")}
                             </motion.button>
                             <motion.button
                                 disabled={loading}
@@ -355,7 +379,7 @@ const App = () => {
                                 onClick={handleFinalRegister}
                                 className="rounded-xl bg-purple-600 py-3 px-6 font-semibold text-white shadow-lg transition duration-300 hover:bg-purple-700"
                             >
-                                {loading ? <Loader2 className="animate-spin h-8 w-8 mx-auto" /> : 'Create Account'}
+                                {loading ? <Loader2 className="animate-spin h-8 w-8 mx-auto" /> : t('CreateAccount')}
 
                             </motion.button>
                         </div>
@@ -364,13 +388,13 @@ const App = () => {
 
                 <div className="mt-8 text-center text-sm text-gray-500">
                     <span className="mt-2 block">
-                        Already have an account?{" "}
-                        <a
-                            href="/login"
+                        {t("Alreadyhaveanaccount")}{" "}
+                        <Link
+                            to="/login"
                             className="text-teal-500 transition hover:underline"
                         >
-                            Login
-                        </a>
+                            {t("Login")}
+                        </Link>
                     </span>
                 </div>
             </motion.div>
