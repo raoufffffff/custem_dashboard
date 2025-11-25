@@ -20,9 +20,8 @@ import {
 import ShowNoteC from "./OrderRow/showNote";
 import ShowdeleteC from "./OrderRow/ShowdeleteC";
 
-const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, deleteOrder }) => {
+const OrderRow = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, isPaid }) => {
     const { t } = useTranslation("dashboard");
-
     const [myorder, setMyOrder] = useState(order);
     const [showStatusDropdown, setShowStatusDropdown] = useState(false);
     const [showdelete, setshowdelete] = useState(false);
@@ -78,7 +77,17 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
         const years = differenceInYears(now, past);
         return `${years}y`;
     };
-
+    const showorder = (a) => {
+        if (myorder.show) {
+            return a;
+        }
+        if (!myorder.show && !isPaid) {
+            return "**********";
+        }
+        if (!myorder.show && isPaid) {
+            return a;
+        }
+    }
     return (
         <>
             {/* Status Dropdown */}
@@ -151,7 +160,10 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
 
                 <td className="px-6 py-4 whitespace-nowrap border-l-2 border-l-white">
                     <div className="text-sm text-gray-900 font-medium">{myorder.name}</div>
-                    <div className="text-xs text-gray-500">{myorder.phone}</div>
+                    <div className="text-xs text-gray-500">
+                        {showorder(myorder.phone)}
+
+                    </div>
                 </td>
 
                 <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap border-l-2 border-l-white">
@@ -192,10 +204,8 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
                         <button className="rounded-full hover:bg-yellow-200 p-2" onClick={() => setShowNote({ show: true, status: myorder.status })}>
                             <Pencil className="text-yellow-600 cursor-pointer hover:scale-110 transition-transform" />
                         </button>
-                        <button onClick={() => EdetAllOrder(myorder._id)} className="rounded-full hover:bg-blue-200 p-2">
-                            <NotebookPen className="text-blue-600 cursor-pointer hover:scale-110 transition-transform" />
-                        </button>
-                        {myorder.status === "confirmed" && (
+
+                        {/* {myorder.status === "confirmed" && (
                             <button
                                 className="rounded-full hover:bg-green-200 p-2"
                                 onClick={() => {
@@ -207,7 +217,7 @@ const OrderRow = ({ order, index, edite, EdetAllOrder, sendtoLiv, fetchOrders, d
                             >
                                 <Truck className="text-green-600 cursor-pointer hover:scale-110 transition-transform" />
                             </button>
-                        )}
+                        )} */}
                         <button className="rounded-full hover:bg-red-200 p-2" onClick={() => setshowdelete(true)}>
                             <Trash className="text-red-600" />
                         </button>

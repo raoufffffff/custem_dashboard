@@ -15,7 +15,7 @@ function App() {
   const { i18n } = useTranslation("constanst");
   const currentLang = i18n.language; // detect active language
 
-  const { loading, website, name, email, phone, password, link, repoName, Categories, _id, visit } = useUser()
+  const { loading, website, name, email, phone, password, link, repoName, Categories, _id, visit, isPaid } = useUser()
   const [SemalHarder, setSemalHarder] = useState(true)
   const toggleHeader = () => setSemalHarder(p => !p)
   const openSidebar = () => setSemalHarder(false)
@@ -30,7 +30,7 @@ function App() {
     LanguagePanel: false
   })
   if (loading) return <LoadingBar />
-  let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link, visit }
+  let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link, visit, isPaid }
   return (
     <div
       dir={currentLang === "ar" ? "rtl" : "ltr"}

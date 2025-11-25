@@ -98,11 +98,13 @@ const useUser = () => {
         companyLiv = {},
         repoName = "",
         link = "",
-        visit = []
+        visit = [],
+        isPaid = false
     } = user || {};
 
     return {
         visit,
+        isPaid,
         companyLiv,
         Categories,
         _id,
