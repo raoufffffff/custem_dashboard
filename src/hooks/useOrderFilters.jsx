@@ -7,7 +7,10 @@ const useOrderFilters = (orders = []) => {
         status: "all",       // "all" | "pending" | "confirmed" | "cancelled"
         item: "all",         // "all" | "item-name"
         customer: "",
-        dateRange: { start: null, end: null },
+        dateStart: null,  // Date object or null
+        dateEnd: null,    // Date object or null
+        state: "all",       // "all" | "state-name"
+        delevetyType: "all", // "all" | "type-name"
         sortBy: "newest",    // "newest" | "oldest" | "priceHigh" | "priceLow"
     });
 
@@ -21,7 +24,11 @@ const useOrderFilters = (orders = []) => {
         if (filters.status !== "all") {
             result = result.filter(order => order.status === filters.status);
         }
-
+        if (filters.delevetyType !== "all") {
+            result = result.filter(order => {
+                return filters.delevetyType === "home" ? order.home : !order.home;
+            });
+        }
         // 2. Apply item filter
         if (filters.item !== "all") {
             result = result.filter(order => order.item.name === filters.item);
@@ -38,14 +45,16 @@ const useOrderFilters = (orders = []) => {
 
 
         // 4. Apply date range filter
-        if (filters.dateRange.start && filters.dateRange.end) {
+        if (filters.dateStart && filters.dateEnd) {
             result = result.filter(order =>
                 isWithinInterval(new Date(order.date), {
-                    start: filters.dateRange.start,
-                    end: filters.dateRange.end,
+                    start: filters.dateStart,
+                    end: filters.dateEnd,
                 })
             );
         }
+
+
 
         // 5. Apply sorting
         switch (filters.sortBy) {
@@ -62,11 +71,14 @@ const useOrderFilters = (orders = []) => {
         }
     }, [orders, filters]);
     const clearFilters = () => setFilters({
-        status: "all",
-        item: "all",
+        status: "all",       // "all" | "pending" | "confirmed" | "cancelled"
+        item: "all",         // "all" | "item-name"
         customer: "",
-        dateRange: { start: null, end: null },
-        sortBy: "newest",
+        dateStart: null,  // Date object or null
+        dateEnd: null,    // Date object or null
+        state: "all",       // "all" | "state-name"
+        delevetyType: "all", // "all" | "type-name"
+        sortBy: "newest",    // "newest" | "oldest" | "priceHigh" | "priceLow"
     })
     return { filteredOrders, filters, setFilters, clearFilters };
 };

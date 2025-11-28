@@ -73,15 +73,15 @@ const FilterPanel = ({
                         {t("Deliverylocation")}
                     </label>
                     <select
-                        value={filters.deliveryPlace}
+                        value={filters.delevetyType}
                         onChange={(e) =>
-                            setFilters({ ...filters, deliveryPlace: e.target.value })
+                            setFilters({ ...filters, delevetyType: e.target.value })
                         }
                         className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
                     >
                         <option value="all">{t("all")}</option>
                         <option value="home">{t("home")}</option>
-                        <option value="store">{t("berue")}</option>
+                        <option value="berue">{t("berue")}</option>
                     </select>
                 </div>
 
@@ -92,8 +92,8 @@ const FilterPanel = ({
                     </label>
                     <input
                         type="date"
-                        value={filters.startDate || ""}
-                        onChange={(e) => setFilters({ ...filters, startDate: e.target.value })}
+                        value={filters.dateStart || ""}
+                        onChange={(e) => setFilters({ ...filters, dateStart: e.target.value })}
                         className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
@@ -105,8 +105,8 @@ const FilterPanel = ({
                     </label>
                     <input
                         type="date"
-                        value={filters.endDate || ""}
-                        onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
+                        value={filters.dateEnd || ""}
+                        onChange={(e) => setFilters({ ...filters, dateEnd: e.target.value })}
                         className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
