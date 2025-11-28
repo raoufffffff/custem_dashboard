@@ -24,6 +24,10 @@ const useOrderFilters = (orders = []) => {
         if (filters.status !== "all") {
             result = result.filter(order => order.status === filters.status);
         }
+
+         if (filters.state !== "all") {
+            result = result.filter(order => order.state === filters.state);
+        }
         if (filters.delevetyType !== "all") {
             result = result.filter(order => {
                 return filters.delevetyType === "home" ? order.home : !order.home;
@@ -82,5 +86,6 @@ const useOrderFilters = (orders = []) => {
     })
     return { filteredOrders, filters, setFilters, clearFilters };
 };
+
 
 export default useOrderFilters;
