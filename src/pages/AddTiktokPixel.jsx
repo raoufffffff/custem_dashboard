@@ -5,29 +5,45 @@ import UseUpdateStore from '../hooks/UseUpdateStore'
 import toast from 'react-hot-toast'
 import { Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-
+import LoadingBar from '../CustomUi/LoadingBar'
+import Model from '../CustomUi/Model'
+import Tutorial from '../CustomUi/Tutorial'
 const AddTiktokPixel = () => {
     const { t } = useTranslation("DelevryComapnesAndPixals");
+    const [showTutorial, setShowTutorial] = useState(false);
 
     const { loading, UpdateStore, website, repoName } = UseUpdateStore()
     const [TiktokPixel, setTiktokPixel] = useState({
         name: "",
         id: ""
     })
-    if (loading) return <p>loading... </p>
+    if (loading) return <LoadingBar />
 
 
     const handleChange = (e) => {
         const { name, value } = e.target
         setTiktokPixel((prev) => ({ ...prev, [name]: value }))
     }
-
+    const showtutorial = () => {
+        setShowTutorial(true);
+    };
+    const hideTutorial = () => {
+        setShowTutorial(false);
+    }
 
     return (
         <PageContainer
+            onClick={showtutorial}
+            learn
             titel={t("add")}
             about={t("TiktokPixel")}
         >
+            {showTutorial && (
+                <Model
+                    onclose={hideTutorial}>
+                    <Tutorial about={"https://firebasestorage.googleapis.com/v0/b/tawssilatrest.appspot.com/o/%D8%A5%D8%B6%D8%A7%D9%81%D8%A9%20%D8%AA%D9%8A%D9%83%D8%AA%D9%88%D9%83%20pixel%20%D9%84%D9%85%D9%86%D8%B5%D8%A9%20next%20comerce.mp4?alt=media&token=29fe7f6e-d318-42fa-a3b0-b3de7b0a1ca4"} />
+                </Model>
+            )}
             {website?.TiktokPixel && <BoxCard
                 about={t("CurrentPixel")}
                 className="bg-white rounded-2xl shadow p-6 space-y-4"

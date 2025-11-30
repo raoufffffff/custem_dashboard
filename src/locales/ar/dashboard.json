@@ -51,5 +51,16 @@
     "LoadMoreOrders": "تحميل المزيد من الطلبات",
     "UpgradeNow": "قم بالترقية الآن",
     "UpgradeYourPlanToAccessOrderManagement": "قم بترقية خطتك للوصول إلى إدارة كل الطلبات",
-    "UnlockFullAccess": "افتح الوصول الكامل"
+    "UnlockFullAccess": "افتح الوصول الكامل",
+    "freeordersleft": "طلبات مجانية متبقية",
+    "changeOrderStatus": "تغيير حالة الطلب",
+    "ago": "منذ",
+    "HomeDelivery": "توصيل إلى المنزل",
+    "Office": "المكتب",
+    "TotalAmount": "المبلغ الإجمالي",
+    "AddNote": "إضافة ملاحظة",
+    "EditNote": "تعديل الملاحظة",
+    "NewOrder": "اضافة طلب",
+    "Grid": "شبكة",
+    "Table": "جدول"
 }

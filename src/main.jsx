@@ -42,6 +42,8 @@ import "./i18n"; // 👈 important
 import Sheet from './pages/Sheet.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import Terms from './pages/Terms.jsx';
+import Upgrade from './pages/Upgrade.jsx';
+import Checkout from './pages/Checkout.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -54,6 +56,12 @@ const router = createBrowserRouter(
           } />
         <Route path="Orders" element={
           <ProtectedRoute><Order /></ProtectedRoute>
+        } />
+        <Route path="upgrade" element={
+          <ProtectedRoute><Upgrade /></ProtectedRoute>
+        } />
+        <Route path="checkout" element={
+          <ProtectedRoute><Checkout /></ProtectedRoute>
         } />
         <Route path="TruckOrder" element={
           <ProtectedRoute><TruckOrder /></ProtectedRoute>
@@ -84,6 +92,7 @@ const router = createBrowserRouter(
             <Route path='categories' element={<ProtectedRoute
             ><CategoriesCard /></ProtectedRoute>
             } />
+
             <Route path='header' element={<ProtectedRoute
             ><StoreHeader /></ProtectedRoute>
             } />

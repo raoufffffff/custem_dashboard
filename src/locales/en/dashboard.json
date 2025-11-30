@@ -52,5 +52,16 @@
     "LoadMoreOrders": "Load More Orders",
     "UpgradeNow": "Upgrade Now",
     "UpgradeYourPlanToAccessOrderManagement": "Upgrade your plan to access all order management",
-    "UnlockFullAccess": "Unlock Full Access"
+    "UnlockFullAccess": "Unlock Full Access",
+    "freeordersleft": "free orders left",
+    "changeOrderStatus": "change Order Status",
+    "ago": "ago",
+    "HomeDelivery": "Home Delivery",
+    "Office": "Office",
+    "TotalAmount": "Total Amount",
+    "AddNote": "Add Note",
+    "EditNote": "Edit Note",
+    "NewOrder": "New Order",
+    "Grid": "Grid",
+    "Table": "Table"
 }

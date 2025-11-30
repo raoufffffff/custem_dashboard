@@ -15,11 +15,16 @@ import UseUpdateStore from '../hooks/UseUpdateStore';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import LoadingBar from '../CustomUi/LoadingBar';
+import Model from '../CustomUi/Model'
+import Tutorial from '../CustomUi/Tutorial'
 
 const AddItems = () => {
+    const [showTutorial, setShowTutorial] = useState(false);
+
     const router = useNavigate()
     const { t } = useTranslation("ProductsAndCategories");
-
+    const [submiting, setSubmitting] = useState(false);
     const { loading, Categories, _id, repoName } = UseUpdateStore()
     const [formData, setFormData] = useState({
         name: '',
@@ -55,13 +60,7 @@ const AddItems = () => {
     const [uploading, setUploading] = useState(false);
 
     // Tiptap Editor Setup
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center min-h-[200px]">
-                <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
-            </div>
-        );
-    }
+    if (loading) return <LoadingBar />;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -153,6 +152,7 @@ const AddItems = () => {
             images,
             userId: _id
         }
+        setSubmitting(true);
         try {
             const result = await axios.post(`https://true-fit-dz-api.vercel.app/item`, {
                 item: item,
@@ -165,17 +165,31 @@ const AddItems = () => {
             }
         } catch {
             toast.error("somthing went wrong");
+        } finally {
+            setSubmitting(false);
         }
 
     };
-
+    const showtutorial = () => {
+        setShowTutorial(true);
+    };
+    const hideTutorial = () => {
+        setShowTutorial(false);
+    }
     return (
         <PageContainer
+            onClick={showtutorial}
+            learn
             about={t("Add")}
-            titel={t("Products")}
+            titel={t("products")}
             className={"px-4"}
         >
-
+            {showTutorial && (
+                <Model
+                    onclose={hideTutorial}>
+                    <Tutorial about={"https://firebasestorage.googleapis.com/v0/b/tawssilatrest.appspot.com/o/%D9%83%D9%8A%D9%81%D9%8A%D8%A9%20%D8%A5%D8%B6%D8%A7%D9%81%D8%A9%20%D9%85%D9%86%D8%AA%D8%AC%20%D9%81%D9%8A%20%D9%85%D9%86%D8%B5%D8%A9%20next%20comerce.mp4?alt=media&token=c588ea6d-ec59-42b4-8d7e-72100652d418"} />
+                </Model>
+            )}
             <BoxCard
                 small={true}
                 about={t("General")}
@@ -362,7 +376,7 @@ const AddItems = () => {
                     handleSubmit()
                 }}
                 className='bg-teal-600 ml-auto hover:bg-teal-700 text-white px-6 py-2 rounded-lg mt-6 mb-10 transition-all shadow-md shadow-teal-300 flex items-center'
-            >{t("Save")}</button>
+            >{submiting ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Save")}</button>
         </PageContainer>
     );
 };

@@ -5,29 +5,47 @@ import UseUpdateStore from '../hooks/UseUpdateStore'
 import toast from 'react-hot-toast'
 import { Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import LoadingBar from '../CustomUi/LoadingBar'
+import Model from '../CustomUi/Model'
+import Tutorial from '../CustomUi/Tutorial'
 
 const AddFacebookPixel = () => {
     const { t } = useTranslation("DelevryComapnesAndPixals");
+    const [showTutorial, setShowTutorial] = useState(false);
 
     const { loading, UpdateStore, website, repoName } = UseUpdateStore()
     const [facebookPixel, setFacebookPixel] = useState({
         name: "",
         id: ""
     })
-    if (loading) return <p>loading... </p>
+    if (loading) return <LoadingBar />
     const handleChange = (e) => {
         const { name, value } = e.target
         setFacebookPixel((prev) => ({ ...prev, [name]: value }))
     }
-
+    const showtutorial = () => {
+        setShowTutorial(true);
+    };
+    const hideTutorial = () => {
+        setShowTutorial(false);
+    }
 
 
     return (
         <PageContainer
+            onClick={showtutorial}
+            learn
             titel={t("add")}
             about={t("FacebookPixel")}
-        >
+            className={"gap-6 relative"} // Increased gap for better breathing room
 
+        >
+            {showTutorial && (
+                <Model
+                    onclose={hideTutorial}>
+                    <Tutorial about={"https://firebasestorage.googleapis.com/v0/b/tawssilatrest.appspot.com/o/%D8%A5%D8%B6%D8%A7%D9%81%D8%A9%20facebook%20pixel%20%D9%84%D9%85%D9%86%D8%B5%D8%A9%20next%20comerce.mp4?alt=media&token=3bac7bd5-db6e-4a44-842d-0342b18acaa8"} />
+                </Model>
+            )}
             {website?.facebookPixel && <BoxCard
                 about={t("CurrentPixel")}
                 className="bg-white rounded-2xl shadow p-6 space-y-4"

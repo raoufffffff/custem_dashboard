@@ -11,17 +11,24 @@ import OrdersSummary from "../compunent/orders/OrdersSummary";
 import { FaFilter } from "react-icons/fa";
 import Model from '../CustomUi/Model';
 import { useTranslation } from 'react-i18next';
-import { Crown } from 'lucide-react';
+import { LayoutGrid, List } from 'lucide-react'; // Added Icons
+import OrdersGrid from '../compunent/OrderPageCompunents/OrdersGrid';
+import UpgradeYourPlan from '../compunent/OrderPageCompunents/UpgradeYourPlan';
+import Tutorial from '../CustomUi/Tutorial';
 
 const OrderPage = () => {
     // State for UI controls
-    const [showFillters, setShowFillters] = useState(false)
-    const [searchParams, setsearchParams] = useSearchParams()
+    const [viewType, setViewType] = useState("grid"); // Renamed for clarity
+    const [showFillters, setShowFillters] = useState(false);
+    const [searchParams, setsearchParams] = useSearchParams();
+    const [showTutorial, setShowTutorial] = useState(false);
     // Data hooks
-    const { sendtoLiv } = UseLivOrder()
-    const { t } = useTranslation("dashboard");
-    const user = useOutletContext()
-    const { isPaid } = user
+    const { sendtoLiv } = UseLivOrder();
+    const { t, i18n } = useTranslation("dashboard");
+    const currentLang = i18n.language; // detect active language
+
+    const user = useOutletContext();
+    const { isPaid, userOrderLemet } = user;
     const { orders, loading, edite, fetchOrders, deleteOrder } = useOrders();
     const {
         filteredOrders,
@@ -30,12 +37,13 @@ const OrderPage = () => {
         clearFilters,
     } = useOrderFilters(orders);
     const { visibleItems, hasMore, loadMore } = usePagination(filteredOrders);
+
     // Derived values
-    const hide = () => setShowFillters(false)
+    const hide = () => setShowFillters(false);
+
     const getUniqueItems = () => {
         const uniqueItems = [];
         const seen = new Set();
-
         for (const orderItem of orders) {
             const item = orderItem.item;
             if (!seen.has(item._id)) {
@@ -48,10 +56,10 @@ const OrderPage = () => {
         }
         return uniqueItems;
     };
+
     const getUniqueState = () => {
         const uniqueItems = [];
         const seen = new Set();
-
         for (const orderItem of orders) {
             const item = orderItem.state;
             if (!seen.has(item)) {
@@ -62,89 +70,149 @@ const OrderPage = () => {
         return uniqueItems;
     };
 
-
     const EdetAllOrder = (id) => {
         setsearchParams((searchParams) => {
             searchParams.set("edite", id);
             return searchParams;
-        })
-    }
+        });
+    };
 
+    const ordersUsed = userOrderLemet;
+
+    const showtutorial = () => {
+        setShowTutorial(true);
+    };
+    const hideTutorial = () => {
+        setShowTutorial(false);
+    }
     return (
         <PageContainer
+            learn
+            onClick={showtutorial}
             about={t("Management")}
             titel={t("Orders")}
-            className={"gap-2 relative"}
+            className={"gap-6 relative"} // Increased gap for better breathing room
         >
+            {/* --- PRO BANNER SECTION --- */}
+            {!isPaid && <UpgradeYourPlan ordersUsed={ordersUsed} />}
+            {showTutorial && (
+                <Model
 
-            {!isPaid && (
-                <div className="mb-6 rounded-xl border border-purple-100 bg-purple-50 p-4">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
-                                <Crown size={20} />
-                            </div>
-                            <div>
-                                <h3 className="text-sm font-bold text-gray-900">
-                                    {t("UnlockFullAccess")}
-                                </h3>
-                                <p className="text-sm text-gray-600 mt-0.5">
-                                    {t("UpgradeYourPlanToAccessOrderManagement")}
-                                </p>
-                            </div>
-                        </div>
+                    onclose={hideTutorial}>
+                    <Tutorial about={"https://firebasestorage.googleapis.com/v0/b/tawssilatrest.appspot.com/o/%D8%AA%D8%A3%D9%83%D9%8A%D8%AF%20%D8%A7%D9%84%D8%B7%D9%84%D8%A8%D9%8A%D8%A7%D8%AA%20%D9%81%D9%8A%20%D9%85%D9%86%D8%B5%D8%A9%20next%20comerce.mp4?alt=media&token=1e03cbc7-3d5c-4c80-8ae5-8f6ce26ce449"} />
+                </Model>
+            )}
+            {/* --- SUMMARY SECTION --- */}
+            <OrdersSummary Allorders={orders} />
 
-                        <a
-                            href="#"
-                            className="whitespace-nowrap rounded-lg bg-purple-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-purple-700 transition-all active:scale-95"
+            {/* --- CONTROLS SECTION (Filters + View Toggle) --- */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 w-full">
+
+                {/* Filter Panel (Desktop) */}
+                <div className="flex-1">
+                    <FilterPanel
+                        className={"hidden md:block"}
+                        clearFilters={clearFilters}
+                        filters={filters}
+                        setFilters={setFilters}
+                        uniqueItems={getUniqueItems()}
+                        getUniqueState={getUniqueState()}
+                    />
+                </div>
+
+                {/* View Switcher Toggle */}
+
+            </div>
+
+            {/* --- DATA SECTION (Conditional Render) --- */}
+            <div className="min-h-[500px] w-full relative">
+                {/* --- Compact View Switcher --- */}
+                <div className={`absolute z-10 mb-4 md:mb-0 w-fit ${currentLang === "ar" ? "left-5" : "right-5"} top-5`}>
+                    <div className="flex items-center bg-gray-100 p-0.5 rounded-lg border border-gray-200 shadow-sm">
+                        <button
+                            onClick={() => setViewType("grid")}
+                            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${viewType === "grid"
+                                ? "bg-white text-teal-700 shadow-sm ring-1 ring-black/5"
+                                : "text-gray-500 hover:text-gray-700 hover:bg-gray-200/50"
+                                }`}
+                            title="Grid View"
                         >
-                            {t("UpgradeNow")}
-                        </a>
+                            <LayoutGrid size={14} />
+                            <span className="hidden sm:inline">{t("Grid")}</span>
+                        </button>
+                        <button
+                            onClick={() => setViewType("table")}
+                            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${viewType === "table"
+                                ? "bg-white text-teal-700 shadow-sm ring-1 ring-black/5"
+                                : "text-gray-500 hover:text-gray-700 hover:bg-gray-200/50"
+                                }`}
+                            title="Table View"
+                        >
+                            <List size={14} />
+                            <span className="hidden sm:inline">{t("Table")}</span>
+                        </button>
                     </div>
                 </div>
+
+                {/* --- Content --- */}
+                <div className="pt-2 md:pt-0"> {/* Added padding top on mobile to prevent overlap */}
+                    {viewType === "table" ? (
+                        <OrdersTable
+                            deleteOrder={deleteOrder}
+                            EdetAllOrder={EdetAllOrder}
+                            edite={edite}
+                            filters={filters}
+                            setFilters={setFilters}
+                            orders={visibleItems}
+                            loading={loading}
+                            isPaid={isPaid}
+                            sendtoLiv={sendtoLiv}
+                            fetchOrders={fetchOrders}
+                            hasMore={hasMore}
+                            loadMore={loadMore}
+                            emptyMessage="No orders found matching your criteria"
+                        />
+                    ) : (
+                        <OrdersGrid
+                            deleteOrder={deleteOrder}
+                            EdetAllOrder={EdetAllOrder}
+                            edite={edite}
+                            filters={filters}
+                            setFilters={setFilters}
+                            orders={visibleItems}
+                            loading={loading}
+                            isPaid={isPaid}
+                            sendtoLiv={sendtoLiv}
+                            fetchOrders={fetchOrders}
+                            hasMore={hasMore}
+                            loadMore={loadMore}
+                            emptyMessage="No orders found matching your criteria"
+                        />
+                    )}
+                </div>
+            </div>
+
+            {/* --- MOBILE FLOATING FILTER --- */}
+            {showFillters && (
+                <Model onclose={hide}>
+                    <FilterPanel
+                        className={"block"}
+                        clearFilters={clearFilters}
+                        filters={filters}
+                        setFilters={setFilters}
+                        uniqueItems={getUniqueItems()}
+                        getUniqueState={getUniqueState()}
+                    />
+                </Model>
             )}
-            {showFillters && <Model
-                onclose={hide}
-            >
-                <FilterPanel
-                    className={"block "}
-                    clearFilters={clearFilters}
-                    filters={filters}
-                    setFilters={setFilters}
-                    uniqueItems={getUniqueItems()}
-                    getUniqueState={getUniqueState()}
-                />
-            </Model>}
+
             <div
                 onClick={() => setShowFillters(true)}
-                className='fixed bottom-7 right-5 flex md:hidden bg-purple-600 rounded-full p-3 cursor-pointer'
+                className='fixed bottom-7 right-5 flex md:hidden bg-teal-600 rounded-full p-4 shadow-xl shadow-teal-500/30 cursor-pointer z-50 hover:scale-105 active:scale-95 transition-transform'
             >
                 <FaFilter className='text-white' size={20} />
             </div>
-            <OrdersSummary Allorders={orders} />
-            <FilterPanel
-                className={"hidden md:block"}
-                clearFilters={clearFilters}
-                filters={filters}
-                setFilters={setFilters}
-                uniqueItems={getUniqueItems()}
-                getUniqueState={getUniqueState()}
-            />
-            <OrdersTable
-                deleteOrder={deleteOrder}
-                EdetAllOrder={EdetAllOrder}
-                edite={edite}
-                filters={filters}
-                setFilters={setFilters}
-                orders={visibleItems}
-                loading={loading}
-                isPaid={isPaid}
-                sendtoLiv={sendtoLiv}
-                fetchOrders={fetchOrders}
-                hasMore={hasMore}
-                loadMore={loadMore}
-                emptyMessage="No orders found matching your criteria"
-            />
+
         </PageContainer>
     );
 };

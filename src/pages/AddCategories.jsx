@@ -9,9 +9,11 @@ import { useOutletContext } from 'react-router-dom'
 import UseUpdateStore from '../hooks/UseUpdateStore'
 import { Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-
+import Model from '../CustomUi/Model'
+import Tutorial from '../CustomUi/Tutorial'
 const AddCategories = () => {
     const { t } = useTranslation("ProductsAndCategories");
+    const [showTutorial, setShowTutorial] = useState(false);
 
     const user = useOutletContext()
     const [Categori, setCategori] = useState({
@@ -52,11 +54,25 @@ const AddCategories = () => {
     const removeImage = () => {
         setCategori({ ...Categori, image: null })
     };
+    const showtutorial = () => {
+        setShowTutorial(true);
+    };
+    const hideTutorial = () => {
+        setShowTutorial(false);
+    }
     return (
         <PageContainer
+            onClick={showtutorial}
+            learn
             titel={t('Add')}
             about={t("Categories")}
         >
+            {showTutorial && (
+                <Model
+                    onclose={hideTutorial}>
+                    <Tutorial about={"https://firebasestorage.googleapis.com/v0/b/tawssilatrest.appspot.com/o/%D9%83%D9%8A%D9%81%D9%8A%D8%A9%20%D8%A5%D8%B8%D8%A7%D9%81%D8%A9%20%D8%A7%D9%84%D9%81%D8%A6%D8%A7%D8%AA%20%D8%A7%D9%84%D9%89%20%D9%85%D9%86%D8%B5%D8%A9%20next%20comerce.mp4?alt=media&token=86b3723e-7829-48be-8904-f60cf750aae2"} />
+                </Model>
+            )}
             <div
                 className='flex flex-col sm:flex-row gap-3'
             >

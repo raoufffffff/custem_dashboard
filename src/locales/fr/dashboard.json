@@ -52,5 +52,16 @@
     "LoadMoreOrders": "Charger plus de commandes",
     "UpgradeNow": "Mettre à niveau maintenant",
     "UpgradeYourPlanToAccessOrderManagement": "Mettez à niveau votre plan pour accéder à toute la gestion des commandes",
-    "UnlockFullAccess": "Débloquer l'accès complet"
+    "UnlockFullAccess": "Débloquer l'accès complet",
+    "freeordersleft": "commandes gratuites restantes",
+    "changeOrderStatus": "changer le statut de la commande",
+    "ago": "il y a",
+    "HomeDelivery": "Livraison à domicile",
+    "Office": "Bureau",
+    "TotalAmount": "Montant total",
+    "AddNote": "Ajouter une note",
+    "EditNote": "Modifier la note",
+    "NewOrder": "new order",
+    "Grid": "Grille",
+    "Table": "Tableau"
 }
