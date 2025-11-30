@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
+import { BookMarked } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-const PageContainer = ({ className, children, titel, about, back = false }) => {
+const PageContainer = ({ className, children, titel, about, back = false, learn = false, onClick }) => {
     const navigate = useNavigate();
     const { t } = useTranslation("constanst");
 
@@ -14,9 +15,9 @@ const PageContainer = ({ className, children, titel, about, back = false }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className={`
-                flex w-full flex-col items-center gap-6 md:gap-8
+                flex  flex-col items-center gap-6 md:gap-8
                 p-4 md:p-8 rounded-2xl shadow-lg
-                bg-white mx-auto max-w-4xl
+                bg-white mx-auto w-[90%] mt-2.5
                 ${className}
             `}
         >
@@ -41,11 +42,23 @@ const PageContainer = ({ className, children, titel, about, back = false }) => {
                     className='
                         text-3xl md:text-4xl font-extrabold
                         text-gray-900 leading-tight
-                        border-b-2 border-teal-500 pb-2
+                        border-b-2 border-teal-500 pb-2 flex justify-between
                     '
                 >
-                    {titel}
+                    <span>
+
+                        {titel}
+                    </span>
+                    {learn && (
+                        <button
+                            onClick={onClick}
+                            className=''
+                        >
+                            <BookMarked className='text-purple-600 cursor-pointer' />
+                        </button>
+                    )}
                 </h1>
+
                 {about && (
                     <p className='
                         mt-2 text-lg text-gray-500
@@ -53,6 +66,7 @@ const PageContainer = ({ className, children, titel, about, back = false }) => {
                         {about}
                     </p>
                 )}
+
             </div>
             {children}
         </motion.div>

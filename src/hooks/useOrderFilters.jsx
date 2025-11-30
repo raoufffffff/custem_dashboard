@@ -25,7 +25,7 @@ const useOrderFilters = (orders = []) => {
             result = result.filter(order => order.status === filters.status);
         }
 
-         if (filters.state !== "all") {
+        if (filters.state !== "all") {
             result = result.filter(order => order.state === filters.state);
         }
         if (filters.delevetyType !== "all") {

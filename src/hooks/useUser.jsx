@@ -99,10 +99,12 @@ const useUser = () => {
         repoName = "",
         link = "",
         visit = [],
+        orders = 0,
         isPaid = false
     } = user || {};
 
     return {
+        orders,
         visit,
         isPaid,
         companyLiv,
