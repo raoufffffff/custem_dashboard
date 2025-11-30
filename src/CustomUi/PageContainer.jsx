@@ -17,7 +17,7 @@ const PageContainer = ({ className, children, titel, about, back = false, learn 
             className={`
                 flex  flex-col items-center gap-6 md:gap-8
                 p-4 md:p-8 rounded-2xl shadow-lg
-                bg-white mx-auto w-[90%] mt-2.5
+                bg-white mx-auto w-full md:w-[90%] mt-2.5
                 ${className}
             `}
         >
@@ -72,5 +72,6 @@ const PageContainer = ({ className, children, titel, about, back = false, learn 
         </motion.div>
     )
 }
+
 
 export default PageContainer;
