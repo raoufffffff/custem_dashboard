@@ -34,7 +34,7 @@ const UpgradBanner = ({ toggleHeader, isPaid, orders }) => {
 
                                 {/* Small Manage Button in Top Right */}
                                 <NavLink
-                                    to="/settings/billing"
+                                    to="/"
                                     onClick={toggleHeader}
                                     className="flex items-center gap-1 text-[10px] font-medium text-gray-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-2 py-1 rounded-md"
                                 >
@@ -88,5 +88,6 @@ const UpgradBanner = ({ toggleHeader, isPaid, orders }) => {
         </div>
     )
 }
+
 
 export default UpgradBanner
