@@ -21,8 +21,8 @@ const PlanCard = ({
         >
             {/* Badge */}
             {badge && (
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <span className={`px-4 py-1 text-xs font-bold tracking-wide text-white uppercase rounded-full shadow-sm ${isPopular ? 'bg-purple-600' : 'bg-teal-500'
+                <div className="absolute top-0 translate-y-[-50%] w-full flex justify-center">
+                    <span className={`px-4 py-1 text-xs font-bold tracking-wide text-center text-white  uppercase rounded-full shadow-xs ${isPopular ? 'bg-purple-600' : 'bg-teal-500'
                         }`}>
                         {badge}
                     </span>
@@ -59,8 +59,8 @@ const PlanCard = ({
                 <button
                     onClick={onClick}
                     className={`w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-bold rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${isPopular
-                            ? 'bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500 shadow-lg hover:shadow-xl'
-                            : 'bg-teal-50 text-teal-700 hover:bg-teal-100 focus:ring-teal-500'
+                        ? 'bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500 shadow-lg hover:shadow-xl'
+                        : 'bg-teal-50 text-teal-700 hover:bg-teal-100 focus:ring-teal-500'
                         }`}
                 >
                     {buttonText}

@@ -35,5 +35,10 @@
     "FrequentlyAsked": "Questions",
     "Questions": "fréquentes",
     "others": "Autres",
-    "googlesheet": "Google Sheets"
+    "googlesheet": "Google Sheets",
+    "ProPlan": "Plan Pro",
+    "Manage": "Gérer",
+    "UnlimitedOrders": "Commandes illimitées",
+    "FreePlan": "Plan Gratuit",
+    "UpgradeNow": "Mettre à niveau maintenant"
 }

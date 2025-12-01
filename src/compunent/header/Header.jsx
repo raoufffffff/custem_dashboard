@@ -26,7 +26,7 @@ export default function Header({ toggleHeader, openLanguagePanel,
                 </button>
 
                 {/* Logo */}
-                <a href="/" className="flex items-center gap-2">
+                <Link to="/" className="flex items-center gap-2">
                     {/* Replaced img with a placeholder icon for the demo */}
                     <div className="h-16 w-16 rounded-xl flex items-center justify-center">
                         <img
@@ -40,7 +40,7 @@ export default function Header({ toggleHeader, openLanguagePanel,
                         />
                     </div>
                     <span className="text-xl font-bold text-gray-900 hidden sm:block">Next Commerce</span>
-                </a>
+                </Link>
             </div>
 
             {/* Right side icons */}

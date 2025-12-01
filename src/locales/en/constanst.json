@@ -35,5 +35,10 @@
     "FrequentlyAsked": "Frequently Asked",
     "Questions": "and answers",
     "others": "others",
-    "googlesheet": "google sheet"
+    "googlesheet": "google sheet",
+    "ProPlan": "pro plan",
+    "Manage": "manage",
+    "UnlimitedOrders": "unlimited orders",
+    "FreePlan": "free plan",
+    "UpgradeNow": "upgrade now"
 }

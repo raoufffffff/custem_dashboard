@@ -95,5 +95,7 @@
     "Total_to_Pay": "الإجمالي للدفع",
     "Price_frozen_for": "السعر مجمد لمدة",
     "minutes": "دقائق",
-    "Secure_Payment_&_Fast_Activation": "دفع آمن وتفعيل سريع"
+    "Secure_Payment_&_Fast_Activation": "دفع آمن وتفعيل سريع",
+    "api_access": "الوصول إلى API",
+    "everything_in_quarterly": "كل شيء في الخطة الربع سنوية"
 }

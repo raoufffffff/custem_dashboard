@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookMarked } from 'lucide-react';
+import { SquarePlay } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
@@ -52,9 +52,10 @@ const PageContainer = ({ className, children, titel, about, back = false, learn 
                     {learn && (
                         <button
                             onClick={onClick}
-                            className=''
+                            className='animate-bounce'
                         >
-                            <BookMarked className='text-purple-600 cursor-pointer' />
+                            <SquarePlay
+                                className='text-purple-600 cursor-pointer ' />
                         </button>
                     )}
                 </h1>
@@ -72,6 +73,5 @@ const PageContainer = ({ className, children, titel, about, back = false, learn 
         </motion.div>
     )
 }
-
 
 export default PageContainer;

@@ -10,8 +10,9 @@ import { HiBars3BottomLeft } from "react-icons/hi2";
 import { useTranslation } from 'react-i18next';
 import { FaSheetPlastic } from "react-icons/fa6";
 import { IoIosMore } from "react-icons/io";
+import UpgradBanner from './UpgradBanner';
 
-export default function Sidebar({ SemalHarder, toggleHeader, open, name, website, link }) {
+export default function Sidebar({ SemalHarder, toggleHeader, name, link, isPaid, orders }) {
     const { i18n, t } = useTranslation("constanst");
     const currentLang = i18n.language;
     const location = useLocation();
@@ -143,47 +144,12 @@ export default function Sidebar({ SemalHarder, toggleHeader, open, name, website
                 </Dropdown>
 
             </nav>
-
-            {/* --- 🌟 SUBSCRIPTION CARD (The "Something like this") --- */}
-            {/* Only visible when sidebar is fully open */}
+            {/* upgrade banner */}
             {!SemalHarder && (
-                <div className="px-4 mb-4 mt-2 shrink-0">
-                    <div className="relative overflow-hidden rounded-2xl bg-gray-900 p-4 text-white shadow-xl">
-                        {/* Background Effect */}
-                        <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-600/20 blur-2xl"></div>
-                        <div className="absolute -left-10 -bottom-10 h-32 w-32 rounded-full bg-teal-500/20 blur-2xl"></div>
-
-                        <div className="relative z-10">
-                            <div className="flex items-center justify-between mb-2">
-                                <div className="flex items-center gap-2">
-                                    <div className="p-1 bg-white/10 rounded-lg">
-                                        <Zap className="w-3.5 h-3.5 text-yellow-400" fill="currentColor" />
-                                    </div>
-                                    <span className="text-xs font-bold tracking-wide text-gray-200">Free Plan</span>
-                                </div>
-                                <span className="text-[10px] font-medium text-gray-400">20/30 Orders</span>
-                            </div>
-
-                            {/* Progress Bar */}
-                            <div className="h-1.5 w-full rounded-full bg-gray-700 mb-4 overflow-hidden">
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: "65%" }}
-                                    className="h-full rounded-full bg-gradient-to-r from-teal-400 to-purple-500"
-                                />
-                            </div>
-
-                            {/* Upgrade Button */}
-                            <NavLink
-                                to="/upgrade"
-                                onClick={toggleHeader} // Close sidebar on mobile when clicked
-                                className="block w-full rounded-lg bg-white py-2 text-center text-xs font-bold text-gray-900 transition-transform hover:scale-[1.02] active:scale-95"
-                            >
-                                {t("Upgrade Now")} 🚀
-                            </NavLink>
-                        </div>
-                    </div>
-                </div>
+                <UpgradBanner
+                    isPaid={true}
+                    orders={orders}
+                    toggleHeader={toggleHeader} />
             )}
 
             {/* --- User/Profile Footer --- */}

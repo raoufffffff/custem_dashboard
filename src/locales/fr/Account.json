@@ -95,5 +95,7 @@
     "Total_to_Pay": "Total à payer",
     "Price_frozen_for": "Prix bloqué pendant",
     "minutes": "minutes",
-    "Secure_Payment_&_Fast_Activation": "Paiement sécurisé et activation rapide"
+    "Secure_Payment_&_Fast_Activation": "Paiement sécurisé et activation rapide",
+    "api_access": "Accès API",
+    "everything_in_quarterly": "Tout ce qui est inclus dans le trimestriel"
 }

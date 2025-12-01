@@ -62,5 +62,10 @@
     "EditNote": "تعديل الملاحظة",
     "NewOrder": "اضافة طلب",
     "Grid": "شبكة",
-    "Table": "جدول"
+    "Table": "جدول",
+    "TrafficAnalytics": "تحليلات الحركة",
+    "TopProducts": "أفضل المنتجات",
+    "GeneralPages": "الصفحات العامة",
+    "totalviews": "إجمالي المشاهدات",
+    "Nodataavailable": "لا توجد بيانات متاحة"
 }

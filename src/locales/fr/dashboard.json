@@ -63,5 +63,10 @@
     "EditNote": "Modifier la note",
     "NewOrder": "new order",
     "Grid": "Grille",
-    "Table": "Tableau"
+    "Table": "Tableau",
+    "TrafficAnalytics": "Analyse du trafic",
+    "TopProducts": "Meilleurs produits",
+    "GeneralPages": "Pages générales",
+    "totalviews": "vues totales",
+    "Nodataavailable": "Aucune donnée disponible"
 }

@@ -63,5 +63,10 @@
     "EditNote": "Edit Note",
     "NewOrder": "New Order",
     "Grid": "Grid",
-    "Table": "Table"
+    "Table": "Table",
+    "TrafficAnalytics": "Traffic Analytics",
+    "TopProducts": "Top Products",
+    "GeneralPages": "General Pages",
+    "totalviews": "total views",
+    "Nodataavailable": "No data available"
 }
