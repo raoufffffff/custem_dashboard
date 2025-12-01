@@ -57,10 +57,6 @@ function App() {
             min-h-screen 
             pb-10 
             transition-all duration-300 ease-in-out
-            
-            ${/* Mobile: Full width (Sidebar is overlay) */ ""}
-            
-            ${/* Desktop Logic: Push content based on sidebar width & language */ ""}
             ${SemalHarder
             ? (currentLang === "ar" ? "md:mr-[80px]" : "md:ml-[80px]")   // Mini State (80px)
             : (currentLang === "ar" ? "md:mr-[280px]" : "md:ml-[280px]")  // Full State (280px)
@@ -72,9 +68,10 @@ function App() {
           openAccountPanel={openAccountPanel}
           toggleHeader={toggleHeader}
           isPaid={isPaid}
+          orders={orders}
         />
 
-        <div className="p-4 md:p-6 lg:p-8">
+        <div className="p-2 md:p-6 lg:p-8">
           <AnimatePresence mode="wait">
             <Outlet context={user} />
           </AnimatePresence>
@@ -88,6 +85,8 @@ function App() {
         open={openSidebar}
         toggleHeader={toggleHeader}
         SemalHarder={SemalHarder}
+        isPaid={isPaid}
+        orders={orders}
       />
     </div>
   )
