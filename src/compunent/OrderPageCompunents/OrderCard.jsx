@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import {
     Bell, XCircle, CheckCircle2, Package, Clock, PhoneOff, Ban,
     Pencil, Truck, Building2, StickyNote, HomeIcon, Trash, MapPin, User,
-    Phone
+    Phone, Tag // Used Tag for the Offer Badge
 } from "lucide-react";
 import ShowNoteC from "./OrderRow/showNote";
 import ShowdeleteC from "./OrderRow/ShowdeleteC";
@@ -60,17 +60,13 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
         const years = differenceInYears(now, past);
         return `${years}y`;
     };
+
     const showorder = (a) => {
-        if (myorder.show) {
-            return a;
-        }
-        if (!myorder.show && !isPaid) {
-            return "**********";
-        }
-        if (!myorder.show && isPaid) {
-            return a;
-        }
+        if (myorder.show) return a;
+        if (!myorder.show && !isPaid) return "**********";
+        if (!myorder.show && isPaid) return a;
     }
+
     const currentStatus = statuses.find((s) => s.key === myorder.status);
     const borderClass = currentStatus?.color.split(" ").find(c => c.startsWith("border-")) || "border-gray-200";
 
@@ -120,6 +116,14 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
             >
                 <div className={`absolute left-0 top-0 bottom-0 w-1 ${currentStatus?.color.replace('text-', 'bg-').split(' ')[0]}`} />
 
+                {/* 🟢 NEW: Absolute Offer Icon */}
+                {myorder.offer && (
+                    <div className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl shadow-sm z-10 flex items-center gap-1">
+                        <Tag size={10} className="fill-white" />
+                        OFFER
+                    </div>
+                )}
+
                 {/* 1. Header: ID & Time */}
                 <div className="flex justify-between items-start mb-4 pl-2">
                     <div className="flex flex-col">
@@ -160,7 +164,7 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                             {myorder.home ? <HomeIcon size={12} /> : <Building2 size={12} />}
                             <span className="truncate">{myorder.home ? t("HomeDelivery") : t("Office")}</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                        <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-0.5">
                             <Phone size={12} />
                             {showorder(myorder.phone)}
                         </div>
@@ -177,13 +181,16 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                                 <Package size={10} /> {myorder.price}
                             </span>
                             <span className="text-gray-300">|</span>
-                            <span className="flex items-center gap-1 text-teal-600 font-medium">
-                                <Truck size={10} /> {myorder.ride}
+
+                            {/* 🟢 NEW: Free Ride Logic */}
+                            <span className={`flex items-center gap-1 font-medium ${myorder.ride === 0 ? "text-green-600 font-bold" : "text-teal-600"}`}>
+                                <Truck size={10} />
+                                {myorder.ride === 0 ? "FREE" : myorder.ride}
                             </span>
                         </div>
 
                         <div className="text-lg font-bold text-teal-700 leading-none">
-                            {myorder.price + myorder.ride} <span className="text-xs font-normal text-teal-600">DZD</span>
+                            {myorder.total} <span className="text-xs font-normal text-teal-600">DZD</span>
                         </div>
                         <div className="text-[10px] text-gray-400 mt-0.5">{t("TotalAmount")}</div>
                     </div>

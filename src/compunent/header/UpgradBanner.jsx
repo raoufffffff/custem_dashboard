@@ -89,5 +89,4 @@ const UpgradBanner = ({ toggleHeader, isPaid, orders }) => {
     )
 }
 
-
 export default UpgradBanner

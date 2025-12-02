@@ -101,53 +101,85 @@ export default function Sidebar({ SemalHarder, toggleHeader, name, link, isPaid,
             <nav className={`flex-1 overflow-y-auto pb-4 space-y-1 scrollbar-hide ${SemalHarder ? "px-2" : "px-4"}`}>
 
                 <SectionLabel label={t("Dashboard")} collapsed={SemalHarder} />
-                <NavItem icon={<Home className="w-5 h-5" />} label={t("Home")} to="/" collapsed={SemalHarder} />
+                <NavItem
+                    onClick={toggleHeader}
+                    icon={<Home className="w-5 h-5" />} label={t("Home")} to="/" collapsed={SemalHarder} />
 
                 <SectionLabel label={t("Management")} collapsed={SemalHarder} />
 
                 <Dropdown label={t("Store")} icon={<Store className="w-5 h-5" />} open={show.store} toggle={() => handleToggle('store')} collapsed={SemalHarder} active={location.pathname.includes('/update')}>
-                    <NavItem side label={t("Logo")} to="/update/logo" />
-                    <NavItem side label={t("Theme")} to="/update/theme" />
-                    <NavItem side label={t("Contactinformation")} to="/update/Contact-information" />
-                    <NavItem side label={t("Faqspage")} to="/update/faqs" />
-                    <NavItem side label={t("Storesettings")} to="/update/settings" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("Logo")} to="/update/logo" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("Theme")} to="/update/theme" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("Contactinformation")} to="/update/Contact-information" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("Faqspage")} to="/update/faqs" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("Storesettings")} to="/update/settings" />
                 </Dropdown>
 
                 <Dropdown label={t("Orders")} icon={<Box className="w-5 h-5" />} open={show.orders} toggle={() => handleToggle('orders')} collapsed={SemalHarder} active={location.pathname.includes('/orders')}>
-                    <NavItem side label={t("AllOrders")} to="/orders" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("AllOrders")} to="/orders" />
                 </Dropdown>
 
                 <Dropdown label={t("Products")} icon={<Tag className="w-5 h-5" />} open={show.products} toggle={() => handleToggle('products')} collapsed={SemalHarder} active={location.pathname.includes('/items')}>
-                    <NavItem side label={t("Products")} to="/items" />
-                    <NavItem side label={t("AddProducts")} to="/additems" hot />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("Products")} to="/items" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("AddProducts")} to="/additems" hot />
                 </Dropdown>
 
                 <Dropdown label={t("Categories")} icon={<Layers className="w-5 h-5" />} open={show.categories} toggle={() => handleToggle('categories')} collapsed={SemalHarder} active={location.pathname.includes('/Categories')}>
-                    <NavItem side label={t("Categories")} to="/Categories" />
-                    <NavItem side label={t("AddCategories")} to="/AddCategories" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("Categories")} to="/Categories" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("AddCategories")} to="/AddCategories" />
                 </Dropdown>
 
                 <Dropdown label={t("Delivery")} icon={<Truck className="w-5 h-5" />} open={show.delivery} toggle={() => handleToggle('delivery')} collapsed={SemalHarder} active={location.pathname.includes('/Liv')}>
-                    <NavItem side label={t("DeliveryCompanies")} to="/LivCompany" />
-                    <NavItem side label={t("DeliveryPrices")} to="/LivrisionPrice" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("DeliveryCompanies")} to="/LivCompany" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side label={t("DeliveryPrices")} to="/LivrisionPrice" />
                 </Dropdown>
 
                 <SectionLabel label={t("Growth")} collapsed={SemalHarder} />
 
                 <Dropdown label={t("marketingTools")} icon={<Megaphone className="w-5 h-5" />} open={show.marketing} toggle={() => handleToggle('marketing')} collapsed={SemalHarder} active={location.pathname.includes('Pixel')}>
-                    <NavItem side icon={<FaFacebook className="w-4 h-4 text-blue-600" />} label={t("facebookPixals")} to="/AddFacebookPixel" />
-                    <NavItem side icon={<FaTiktok className="w-4 h-4 text-black" />} label={t("TiktokPixals")} to="/AddTiktokPixel" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side icon={<FaFacebook className="w-4 h-4 text-blue-600" />} label={t("facebookPixals")} to="/AddFacebookPixel" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side icon={<FaTiktok className="w-4 h-4 text-black" />} label={t("TiktokPixals")} to="/AddTiktokPixel" />
                 </Dropdown>
 
                 <Dropdown label={t("others")} icon={<IoIosMore className="w-5 h-5" />} open={show.more} toggle={() => handleToggle('more')} collapsed={SemalHarder}>
-                    <NavItem side icon={<FaSheetPlastic className="w-4 h-4 text-green-600" />} label={t("googlesheet")} to="/sheet" />
+                    <NavItem
+                        onClick={toggleHeader}
+                        side icon={<FaSheetPlastic className="w-4 h-4 text-green-600" />} label={t("googlesheet")} to="/sheet" />
                 </Dropdown>
 
             </nav>
             {/* upgrade banner */}
             {!SemalHarder && (
                 <UpgradBanner
-                    isPaid={true}
+                    isPaid={isPaid}
                     orders={orders}
                     toggleHeader={toggleHeader} />
             )}
