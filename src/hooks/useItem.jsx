@@ -17,13 +17,23 @@ const useItem = () => {
             setLoading(false);
         }
     };
+
+    const deleteItem = async (itemId) => {
+
+        try {
+            await axios.delete(`https://true-fit-dz-api.vercel.app/item/${itemId}`);
+            fetchItems(); // Refresh the list after deletion
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to delete item");
+        }
+    };
     useEffect(() => {
 
 
         fetchItems();
     }, []);
 
-    return { Items, loading, error, fetchItems };
+    return { Items, loading, error, fetchItems, deleteItem };
 }
 
-export default useItem
+export default useItem 

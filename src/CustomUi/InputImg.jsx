@@ -1,15 +1,11 @@
 import { motion } from 'framer-motion';
 import { Loader2, X, Upload } from 'lucide-react';
 
-const InputImg = ({ uploading, ImageUpload, label = "شعار الموقع", multiple = false }) => {
+const InputImg = ({ uploading, ImageUpload, label = "شعار الموقع", multiple = false, className }) => {
     return (
         <div
+            className={`  ${className}`}
         >
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-                {label}
-            </label>
-
-
             <div className="flex items-center space-x-4">
                 <motion.label
                     whileHover={{ scale: 1.02 }}
@@ -24,7 +20,7 @@ const InputImg = ({ uploading, ImageUpload, label = "شعار الموقع", mul
                             <>
                                 <Upload className="h-5 w-5 text-teal-400 mx-auto mb-1" />
                                 <p className="text-sm text-gray-600">
-                                    Choose an image
+                                    {label}
                                 </p>
                                 <p className="text-xs text-gray-500 mt-1">PNG, JPG (maximum 2MB)</p>
                             </>

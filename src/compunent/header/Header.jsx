@@ -46,7 +46,7 @@ export default function Header({ toggleHeader, openLanguagePanel,
             {/* Right side icons */}
             <div className="flex items-center gap-4 sm:gap-6">
                 <Link
-                    to={'/upgrade'}
+                    to={isPaid ? '/subscriptions' : '/upgrade'}
                     className=" items-center">
                     {isPaid ? (
                         <div className="flex items-center gap-1.5 px-3 py-1 bg-teal-50 text-teal-700 rounded-full border border-teal-200 shadow-sm">
