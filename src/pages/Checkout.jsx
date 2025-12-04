@@ -1,27 +1,94 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom'; // Assuming react-router-dom v6
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import PageContainer from '../CustomUi/PageContainer';
+import handleImageUpload from '../utility/UploadImages';
+import InputImg from '../CustomUi/InputImg';
+import UseOffer from '../hooks/useOffer';
 
 const Checkout = () => {
     const { t } = useTranslation("Account");
+    const { postOffer } = UseOffer()
     const navigate = useNavigate();
+    const [uploading, setUploading] = useState(false);
+    const [submitting, setSubmitting] = useState(false); // State for the final send button
+    const [showConfirmModal, setShowConfirmModal] = useState(false); // State for the popup
 
-    // 1. استرجاع البيانات من التخزين المحلي
+    // 1. Retrieve User Data
+    const user = useOutletContext();
+
+    const [userInpho, setUserInfo] = useState({
+        userId: user.id || "",
+        price: 0, // Will be updated from orderDetails
+        OfferTypeValue: "",
+        offerTitle: "",
+        PaymentImage: "",
+        userName: user?.name || "",
+        status: "pending", // Default status
+        date: new Date(),
+    });
+
     const [planOption, setPlanOption] = useState(null);
     const [orderDetails, setOrderDetails] = useState(null);
-    const [copiedField, setCopiedField] = useState(null); // لتتبع الحقل الذي تم نسخه
+    const [copiedField, setCopiedField] = useState(null);
 
-    // بيانات CCP الخاصة بك (استبدل هذه بالبيانات الحقيقية)
-    // بيانات الدفع الحقيقية (تم التحديث)
+    // Image Upload Logic
+    const ImageUpload = async (event) => {
+        setUploading(true);
+        try {
+            const res = await handleImageUpload(event);
+            // Update state with image
+            setUserInfo((prev) => ({ ...prev, PaymentImage: res }));
+            // Open the confirmation popup
+            setShowConfirmModal(true);
+        } catch (err) {
+            console.error('Upload error:', err);
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    // Final Send Action
+    const handleSendPayment = async () => {
+        setSubmitting(true);
+
+        // Construct the final payload ensuring data is accurate based on selection
+        const finalPayload = {
+            ...userInpho,
+            price: parseInt(orderDetails.price.replace(/,/g, '')), // Remove commas for number format
+            OfferTypeValue: orderDetails.term,
+            offerTitle: orderDetails.title,
+            // PaymentImage is already in userInpho
+        };
+
+        try {
+            console.log("Sending Payment Data:", finalPayload);
+
+            // TODO: Add your API call here
+            // await axios.post('/api/subscriptions', finalPayload);
+
+            // Simulate API delay for UX
+            const res = await postOffer(finalPayload);
+            if (res) {
+                navigate('/subscriptions');
+            }
+        } catch (error) {
+            console.error("Error sending payment:", error);
+        } finally {
+            setSubmitting(false);
+            setShowConfirmModal(false);
+        }
+    };
+
+    // Payment Info
     const paymentInfo = {
         ccp: "41545126 Clé 06",
         rip: "00799999004154512631",
         name: "Kerbadj Abdelbari",
-        phone: "213776966468"
+        phone: "213698320894"
     };
 
-    // 2. منطق إعادة بناء تفاصيل الخطة (نفس المنطق من المودال لضمان تطابق السعر)
+    // 2. Plan Details Logic
     const getPlanDetails = (plan, choiceType) => {
         const isOffer = choiceType === 'offer';
 
@@ -37,7 +104,7 @@ const Checkout = () => {
             case 'quarterly':
                 return {
                     title: isOffer ? t("Quarterly_Plus") : t("Standard_Quarterly"),
-                    price: "4,900", // السعر ثابت في الحالتين لكن المدة تزيد
+                    price: "4,900",
                     term: isOffer ? t("4_Months") : t("3_Months"),
                     savings: isOffer ? t("1_Month_Free") : null,
                     desc: isOffer ? t("Limited_Time_Upgrade") : t("Regular_Quarterly_Plan")
@@ -55,48 +122,44 @@ const Checkout = () => {
         }
     };
 
-    // 3. التحقق من البيانات عند التحميل
+    // 3. Check Data on Load
     useEffect(() => {
         try {
             const savedData = JSON.parse(localStorage.getItem('selectedPlanOption'));
             if (!savedData || !savedData.plan) {
-                // إذا لم توجد بيانات، أعده لصفحة العروض
                 navigate('/upgrade');
                 return;
             }
             setPlanOption(savedData);
-
-            // توليد التفاصيل النهائية للعرض
+            setUserInfo((prev) => ({ ...prev, price: savedData.price || 0, offerTitle: savedData.plan || "", OfferTypeValue: savedData.choiceType || "" }));
             const details = getPlanDetails(savedData.plan, savedData.choiceType);
             setOrderDetails(details);
-
         } catch (error) {
             console.error("Error parsing plan data", error);
             navigate('/upgrade');
         }
     }, [navigate, t]);
 
-    // دالة النسخ
     const handleCopy = (text, field) => {
         navigator.clipboard.writeText(text);
         setCopiedField(field);
-        setTimeout(() => setCopiedField(null), 2000); // إعادة تعيين بعد ثانيتين
+        setTimeout(() => setCopiedField(null), 2000);
     };
 
-    if (!orderDetails) return null; // أو عرض Loading spinner
+    if (!orderDetails) return null;
 
     return (
         <PageContainer
             titel={t('checkout')}
             about={t("Secure_your_plan_via_CCP_or_Baridimob_transfer")}
         >
-            <div className="max-w-6xl mx-auto px-4 py-8">
+            <div className="max-w-6xl mx-auto px-4 py-8 relative">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                    {/* ---------------- LEFT COLUMN: PAYMENT INSTRUCTIONS (2/3 width) ---------------- */}
+                    {/* ---------------- LEFT COLUMN ---------------- */}
                     <div className="lg:col-span-2 space-y-6">
 
-                        {/* 1. CCP Details Card */}
+                        {/* CCP Details Card */}
                         <div className="bg-white rounded-2xl shadow-sm border border-purple-100 overflow-hidden">
                             <div className="bg-purple-50 px-6 py-4 border-b border-purple-100 flex justify-between items-center">
                                 <h3 className="font-bold text-purple-900 flex items-center gap-2">
@@ -105,7 +168,6 @@ const Checkout = () => {
                                     </svg>
                                     {t("Payment_Information_(CCP / Baridimob)")}
                                 </h3>
-                                {/* Trust Badge */}
                                 <span className="px-3 py-1 bg-white text-teal-600 text-xs font-bold rounded-full border border-teal-100 shadow-sm">
                                     {t("Manual_Verification")}
                                 </span>
@@ -116,7 +178,6 @@ const Checkout = () => {
                                     {t("Please_transfer_the_total_amount_to_the_account_below_using_Algérie_Poste_or_Baridimob_app")}
                                 </p>
 
-                                {/* CCP & RIP Boxes */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {/* CCP Box */}
                                     <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 relative group hover:border-purple-300 transition-colors">
@@ -157,7 +218,6 @@ const Checkout = () => {
                                     </div>
                                 </div>
 
-                                {/* Account Name */}
                                 <div className="text-center">
                                     <span className="text-xs text-gray-400">{t("Account_Holder_Name")}: </span>
                                     <span className="font-bold text-gray-700">{paymentInfo.name}</span>
@@ -165,7 +225,7 @@ const Checkout = () => {
                             </div>
                         </div>
 
-                        {/* 2. Proof of Payment Section */}
+                        {/* Proof of Payment Section */}
                         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                             <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
                                 <svg className="w-5 h-5 text-teal-500" fill="none" viewBox="0 24 24" stroke="currentColor">
@@ -175,7 +235,7 @@ const Checkout = () => {
                             </h3>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {/* Option A: WhatsApp (Preferred in DZ) */}
+                                {/* Option A: WhatsApp */}
                                 <a
                                     href={`https://wa.me/${paymentInfo.phone}?text=${encodeURIComponent(`Hello, I paid ${orderDetails.price} DZD for the ${orderDetails.title}. Here is the receipt.`)}`}
                                     target="_blank"
@@ -189,30 +249,24 @@ const Checkout = () => {
                                     <span className="text-xs text-gray-500 mt-1 text-center">{t("Fastest_activation_(Recommended)")}</span>
                                 </a>
 
-                                {/* Option B: Upload File (Traditional) */}
-                                <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-purple-400 hover:bg-purple-50 transition-all cursor-pointer">
-                                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mb-3">
-                                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                                    </div>
-                                    <span className="font-bold text-gray-700">{t("Upload_Screenshot")}</span>
-                                    <span className="text-xs text-gray-400 mt-1">{t("JPG, PNG or PDF")}</span>
+                                {/* Option B: Upload File (Triggers Modal) */}
+                                <div className="flex flex-col items-center justify-center border-gray-300 rounded-xl hover:border-purple-400 hover:bg-purple-50 transition-all cursor-pointer">
+                                    <InputImg className={"w-full min-h-full"} label={t("Upload_Screenshot")} uploading={uploading} ImageUpload={ImageUpload} />
                                     <input type="file" className="hidden" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* ---------------- RIGHT COLUMN: ORDER SUMMARY (1/3 width) ---------------- */}
+                    {/* ---------------- RIGHT COLUMN ---------------- */}
                     <div className="lg:col-span-1">
                         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 sticky top-8 overflow-hidden">
-                            {/* Header */}
                             <div className="bg-gray-900 text-white p-5 text-center">
                                 <h4 className="text-lg font-bold">{t("Order_Summary")}</h4>
                                 <p className="text-xs text-gray-400 mt-1">{t("ID")}: #{Math.floor(Math.random() * 100000)}</p>
                             </div>
 
                             <div className="p-6">
-                                {/* Plan Title */}
                                 <div className="mb-6 text-center">
                                     <p className="text-sm text-gray-500 mb-1">{t("SelectedPlan")}</p>
                                     <h2 className="text-xl font-extrabold text-purple-700 leading-tight">
@@ -225,10 +279,8 @@ const Checkout = () => {
                                     )}
                                 </div>
 
-                                {/* Divider */}
                                 <div className="border-t border-dashed border-gray-200 my-4"></div>
 
-                                {/* Price Details */}
                                 <div className="space-y-3">
                                     <div className="flex justify-between text-sm text-gray-600">
                                         <span>{t("Billing_Cycle")}</span>
@@ -240,17 +292,12 @@ const Checkout = () => {
                                     </div>
                                 </div>
 
-                                {/* Total Price */}
                                 <div className="mt-6 bg-purple-50 rounded-xl p-4 flex justify-between items-center border border-purple-100">
                                     <span className="text-sm font-bold text-purple-900">{t("Total_to_Pay")}</span>
                                     <span className="text-2xl font-black text-purple-700">{orderDetails.price} <span className="text-xs font-normal text-gray-500">DZD</span></span>
                                 </div>
-
-                                {/* Urgency Timer (Fake) */}
-
                             </div>
 
-                            {/* Footer / Guarantee */}
                             <div className="bg-gray-50 p-4 text-center border-t border-gray-100">
                                 <p className="text-xs text-gray-400 flex items-center justify-center gap-1">
                                     <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
@@ -259,9 +306,71 @@ const Checkout = () => {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
+
+            {/* --- Confirmation Modal --- */}
+            {showConfirmModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all animate-scale-in">
+                        <div className="p-6 text-center">
+                            <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
+                                <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+
+                            <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                {t("Receipt Uploaded Successfully!")}
+                            </h3>
+                            <p className="text-sm text-gray-500 mb-6">
+                                {t("We have received your payment proof. Click send to finalize your subscription request.")}
+                            </p>
+
+                            {/* Image Preview (Optional) */}
+                            {userInpho.PaymentImage && (
+                                <div className="mb-6 rounded-lg overflow-hidden border border-gray-100 bg-gray-50">
+                                    <img
+                                        src={userInpho.PaymentImage}
+                                        alt="Receipt Preview"
+                                        className="w-full h-32 object-contain py-2"
+                                    />
+                                </div>
+                            )}
+
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setShowConfirmModal(false)}
+                                    className="flex-1 px-4 py-2.5 bg-white text-gray-700 font-medium border border-gray-300 rounded-xl hover:bg-gray-50 focus:outline-none transition-colors"
+                                    disabled={submitting}
+                                >
+                                    {t("Cancel")}
+                                </button>
+                                <button
+                                    onClick={handleSendPayment}
+                                    disabled={submitting}
+                                    className="flex-1 px-4 py-2.5 bg-purple-600 text-white font-bold rounded-xl hover:bg-purple-700 shadow-lg shadow-purple-200 focus:outline-none transition-all flex items-center justify-center gap-2"
+                                >
+                                    {submitting ? (
+                                        <>
+                                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            {t("Sending...")}
+                                        </>
+                                    ) : (
+                                        <>
+                                            {t("Send & Finish")}
+                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </PageContainer>
     );
 }

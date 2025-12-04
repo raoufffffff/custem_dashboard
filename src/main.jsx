@@ -44,6 +44,7 @@ import ForgotPassword from './pages/ForgotPassword.jsx';
 import Terms from './pages/Terms.jsx';
 import Upgrade from './pages/Upgrade.jsx';
 import Checkout from './pages/Checkout.jsx';
+import Subscriptions from './pages/subscriptions.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -62,6 +63,9 @@ const router = createBrowserRouter(
         } />
         <Route path="checkout" element={
           <ProtectedRoute><Checkout /></ProtectedRoute>
+        } />
+        <Route path="subscriptions" element={
+          <ProtectedRoute><Subscriptions /></ProtectedRoute>
         } />
         <Route path="TruckOrder" element={
           <ProtectedRoute><TruckOrder /></ProtectedRoute>
