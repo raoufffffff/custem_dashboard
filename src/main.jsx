@@ -44,7 +44,7 @@ import ForgotPassword from './pages/ForgotPassword.jsx';
 import Terms from './pages/Terms.jsx';
 import Upgrade from './pages/Upgrade.jsx';
 import Checkout from './pages/Checkout.jsx';
-import Subscriptions from './pages/Subscriptions.jsx';
+import Subscriptions from './pages/subscriptions.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

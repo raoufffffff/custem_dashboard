@@ -33,7 +33,7 @@ const EdeteItem = () => {
     const [Variants, setVariants] = useState([]);
     const [err, seterr] = useState(false);
     const [Offers, setOffers] = useState([]);
-    const [lanImg, setlanImg] = useState([]);
+    const [LadingPages, setLadingPages] = useState([]);
     const [images, setImages] = useState([]);
     const [uploading, setUploading] = useState(false);
 
@@ -43,7 +43,8 @@ const EdeteItem = () => {
                 const res = await axios.get(`https://true-fit-dz-api.vercel.app/item/${id}`);
                 setFormData(res.data.result)
                 setVariants(res.data.result.Variants)
-                setlanImg(res.data.result.lanImg)
+                setLadingPages(res.data.result.LadingPages)
+                setOffers(res.data.result.Offers)
                 setImages(res.data.result.images)
             } catch {
                 toast.error("something went wrong")
@@ -92,7 +93,7 @@ const EdeteItem = () => {
         setUploading(true);
         try {
             const res = await handleImageUpload(event)
-            setlanImg((prev) => [...prev, res])
+            setLadingPages((prev) => [...prev, res])
         } catch (err) {
             console.error('Upload error:', err);
 
@@ -135,7 +136,7 @@ const EdeteItem = () => {
         setImages((prev) => prev.filter((img) => img !== url));
     };
     const removelanImg = (url) => {
-        setlanImg((prev) => prev.filter((img) => img !== url));
+        setLadingPages((prev) => prev.filter((img) => img !== url));
     };
 
     const handleSubmit = async () => {
@@ -168,7 +169,7 @@ const EdeteItem = () => {
             ...formData,
             Variants,
             Offers,
-            lanImg,
+            LadingPages: LadingPages,
             images,
             userId: _id
         }
@@ -218,9 +219,9 @@ const EdeteItem = () => {
                     <label className="block mb-2 font-medium text-gray-600">{t("ProductShort")}</label>
                     <textarea
                         type="text"
-                        name={t("Description")}
+                        name={t("ShortDescription")}
                         placeholder="Product Description"
-                        value={formData.Description}
+                        value={formData.ShortDescription}
                         onChange={handleChange}
                         rows={3}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
@@ -264,7 +265,7 @@ const EdeteItem = () => {
                     layout
                     className="flex flex-wrap gap-3 mt-3"
                 >
-                    <CustomImg big logo={lanImg} removeImage={removelanImg} />
+                    <CustomImg big logo={LadingPages} removeImage={removelanImg} />
 
 
 

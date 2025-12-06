@@ -5,7 +5,7 @@ import { useState } from "react";
 import PageContainer from '../CustomUi/PageContainer';
 import FilterPanel from "../compunent/OrderPageCompunents/FilterPanel";
 import OrdersTable from "../compunent/OrderPageCompunents/OrdersTable";
-import { useOutletContext, useSearchParams } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import UseLivOrder from "../hooks/UseLivOrder";
 import OrdersSummary from "../compunent/orders/OrdersSummary";
 import { FaFilter } from "react-icons/fa";
@@ -15,12 +15,13 @@ import { LayoutGrid, List } from 'lucide-react'; // Added Icons
 import OrdersGrid from '../compunent/OrderPageCompunents/OrdersGrid';
 import UpgradeYourPlan from '../compunent/OrderPageCompunents/UpgradeYourPlan';
 import Tutorial from '../CustomUi/Tutorial';
+import AddOder from '../compunent/OrderPageCompunents/AddOder';
 
 const OrderPage = () => {
     // State for UI controls
     const [viewType, setViewType] = useState("grid"); // Renamed for clarity
+    const [showAddOrder, setShowAddOrder] = useState(false)
     const [showFillters, setShowFillters] = useState(false);
-    const [searchParams, setsearchParams] = useSearchParams();
     const [showTutorial, setShowTutorial] = useState(false);
     // Data hooks
     const { sendtoLiv } = UseLivOrder();
@@ -29,7 +30,7 @@ const OrderPage = () => {
 
     const user = useOutletContext();
     const { isPaid, userOrderLemet } = user;
-    const { orders, loading, edite, fetchOrders, deleteOrder } = useOrders();
+    const { orders, loading, edite, fetchOrders, deleteOrder, postOrder } = useOrders();
     const {
         filteredOrders,
         filters,
@@ -50,7 +51,7 @@ const OrderPage = () => {
                 seen.add(item._id);
                 uniqueItems.push({
                     id: item._id,
-                    name: item.name
+                    ...item
                 });
             }
         }
@@ -70,12 +71,7 @@ const OrderPage = () => {
         return uniqueItems;
     };
 
-    const EdetAllOrder = (id) => {
-        setsearchParams((searchParams) => {
-            searchParams.set("edite", id);
-            return searchParams;
-        });
-    };
+
 
     const ordersUsed = userOrderLemet;
 
@@ -84,6 +80,13 @@ const OrderPage = () => {
     };
     const hideTutorial = () => {
         setShowTutorial(false);
+    }
+
+    const ShowAddOrder = () => {
+        setShowAddOrder(true);
+    };
+    const hideAddOrder = () => {
+        setShowAddOrder(false);
     }
     return (
         <PageContainer
@@ -100,6 +103,16 @@ const OrderPage = () => {
 
                     onclose={hideTutorial}>
                     <Tutorial about={"https://firebasestorage.googleapis.com/v0/b/tawssilatrest.appspot.com/o/%D8%AA%D8%A3%D9%83%D9%8A%D8%AF%20%D8%A7%D9%84%D8%B7%D9%84%D8%A8%D9%8A%D8%A7%D8%AA%20%D9%81%D9%8A%20%D9%85%D9%86%D8%B5%D8%A9%20next%20comerce.mp4?alt=media&token=1e03cbc7-3d5c-4c80-8ae5-8f6ce26ce449"} />
+                </Model>
+            )}
+            {showAddOrder && (
+                <Model
+                    onclose={hideAddOrder}>
+                    <AddOder
+                        uniqueItems={getUniqueItems()}
+                        postOrder={postOrder}
+                        onclose={hideAddOrder}
+                    />
                 </Model>
             )}
             {/* --- SUMMARY SECTION --- */}
@@ -158,8 +171,8 @@ const OrderPage = () => {
                 <div className="pt-2 md:pt-0"> {/* Added padding top on mobile to prevent overlap */}
                     {viewType === "table" ? (
                         <OrdersTable
+                            ShowAddOrder={ShowAddOrder}
                             deleteOrder={deleteOrder}
-                            EdetAllOrder={EdetAllOrder}
                             edite={edite}
                             filters={filters}
                             setFilters={setFilters}
@@ -174,8 +187,8 @@ const OrderPage = () => {
                         />
                     ) : (
                         <OrdersGrid
+                            ShowAddOrder={ShowAddOrder}
                             deleteOrder={deleteOrder}
-                            EdetAllOrder={EdetAllOrder}
                             edite={edite}
                             filters={filters}
                             setFilters={setFilters}

@@ -8,6 +8,7 @@ import EnStore from "./locales/en/store.json";
 import EnProductsAndCategories from "./locales/en/ProductsAndCategories.json";
 import EnDelevryComapnesAndPixals from "./locales/en/DelevryComapnesAndPixals.json";
 import EnAuth from "./locales/en/auth.json";
+import EnSubscriptions from "./locales/en/Subscriptions.json";
 
 // arabic
 import ArConstanst from "./locales/ar/constanst.json";
@@ -17,6 +18,7 @@ import ArStore from "./locales/ar/store.json";
 import ArProductsAndCategories from "./locales/ar/ProductsAndCategories.json";
 import ArDelevryComapnesAndPixals from "./locales/ar/DelevryComapnesAndPixals.json";
 import ArAuth from "./locales/ar/auth.json";
+import ArSubscriptions from "./locales/ar/Subscriptions.json";
 
 
 // france
@@ -27,6 +29,7 @@ import FrStore from "./locales/fr/store.json";
 import FrProductsAndCategories from "./locales/fr/ProductsAndCategories.json";
 import FrDelevryComapnesAndPixals from "./locales/fr/DelevryComapnesAndPixals.json";
 import FrAuth from "./locales/fr/Auth.json";
+import FrSubscriptions from "./locales/fr/Subscriptions.json";
 
 
 
@@ -43,7 +46,8 @@ i18n
                 store: EnStore,
                 ProductsAndCategories: EnProductsAndCategories,
                 DelevryComapnesAndPixals: EnDelevryComapnesAndPixals,
-                auth: EnAuth
+                auth: EnAuth,
+                Subscriptions: EnSubscriptions
             },
             ar: {
                 constanst: ArConstanst,
@@ -52,7 +56,8 @@ i18n
                 store: ArStore,
                 ProductsAndCategories: ArProductsAndCategories,
                 DelevryComapnesAndPixals: ArDelevryComapnesAndPixals,
-                auth: ArAuth
+                auth: ArAuth,
+                Subscriptions: ArSubscriptions
             },
             fr: {
                 constanst: FrConstanst,
@@ -61,7 +66,8 @@ i18n
                 store: FrStore,
                 ProductsAndCategories: FrProductsAndCategories,
                 DelevryComapnesAndPixals: FrDelevryComapnesAndPixals,
-                auth: FrAuth
+                auth: FrAuth,
+                Subscriptions: FrSubscriptions
             }
         },
         fallbackLng: "en", // default language
