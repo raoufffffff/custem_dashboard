@@ -14,6 +14,7 @@ const UpsellModal = ({ plan, onClose }) => {
                         title: t("Double_Starter_Pack"),
                         price: "2,500",
                         term: t("2_Months"),
+                        value: "2 m",
                         save: "1,300 DZD",
                         desc: t("Save_35%_by_grabbing_the_seasonal double_pack"),
                         tag: t("Recommended")
@@ -21,6 +22,7 @@ const UpsellModal = ({ plan, onClose }) => {
                     regular: {
                         title: t("Standard_Monthly"),
                         price: "1,900",
+                        value: "1 m",
                         term: t("1_Month"),
                         desc: t("Pay_full_price_for_a_single_month")
                     },
@@ -30,7 +32,8 @@ const UpsellModal = ({ plan, onClose }) => {
                 return {
                     offer: {
                         title: t("Quarterly_Plus"),
-                        price: "4,900",
+                        price: "5,700",
+                        value: "4 m",
                         term: t("4_Months"),
                         save: t("1_Month_Free"),
                         desc: t("Get_1_extra_month_completely_free"),
@@ -39,6 +42,7 @@ const UpsellModal = ({ plan, onClose }) => {
                     regular: {
                         title: t("Standard_Quarterly"),
                         price: "4,900",
+                        value: "3 m",
                         term: t("3_Months"),
                         desc: t("Standard_3_months_access")
                     },
@@ -48,8 +52,9 @@ const UpsellModal = ({ plan, onClose }) => {
                 return {
                     offer: {
                         title: t("Yearly_Pro_Access"),
-                        price: "9,000",
+                        price: "9,900",
                         term: t("7_Months"),
+                        value: "7 m",
                         save: t("Best_Value"),
                         desc: t("Get_7_months_for_the_price_of_6"),
                         tag: t("Rare_Deal")
@@ -57,6 +62,7 @@ const UpsellModal = ({ plan, onClose }) => {
                     regular: {
                         title: t("Standard_Semi-Annual"),
                         price: "9,000",
+                        value: "6 m",
                         term: t("6_Months"),
                         desc: t("Standard_6_months_access")
                     },
@@ -72,6 +78,8 @@ const UpsellModal = ({ plan, onClose }) => {
 
     // Handler for selection
     const handleSelect = (choiceType) => {
+        console.log(plan.value);
+
         localStorage.setItem('selectedPlanOption', JSON.stringify({ plan, choiceType }));
         router('/checkout');
 

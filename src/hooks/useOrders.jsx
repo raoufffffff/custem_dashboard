@@ -16,8 +16,30 @@ const useOrders = () => {
             // Newest first
             setAllOrders(res.data.result.reverse())
             setOrders(sortedOrders);
-        } catch (err) {
-            setError(err.response?.data?.message || "Failed to fetch orders");
+        } catch {
+            toast.error("يرجى ملء جميع الحقول", {
+                style: { border: "1px solid #ef4444" }, // red-500
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const postOrder = async (body) => {
+        try {
+            const userId = JSON.parse(localStorage.getItem("user"))._id;
+            const res = await axios.post(`https://true-fit-dz-api.vercel.app/order`, {
+                ...body,
+                userId: userId
+            });
+            if (res.data.good) {
+                toast.success("تم   بنجاح ✅");
+                fetchOrders()
+            }
+        } catch {
+            toast.error("يرجى ملء جميع الحقول", {
+                style: { border: "1px solid #ef4444" }, // red-500
+            });
         } finally {
             setLoading(false);
         }
@@ -69,7 +91,7 @@ const useOrders = () => {
     const CancelledOrder = orders.filter(e => (["cancelled", "failed"].includes(e.status)))
     const ConfirmedOrder = Allorders.filter(e => (["confirmed", "ready"].includes(e.status)))
     const panddingOrder = orders.filter(e => (["pending", "Connection failed 1", "Connection failed 2", "Connection failed 3", "Postponed"].includes(e.status)))
-    return { orders, loading, error, panddingOrder, CancelledOrder, ConfirmedOrder, fetchOrders, edite, editefull, Allorders, deleteOrder };
+    return { orders, loading, error, panddingOrder, CancelledOrder, ConfirmedOrder, fetchOrders, edite, editefull, Allorders, deleteOrder, postOrder };
 };
 
 export default useOrders;

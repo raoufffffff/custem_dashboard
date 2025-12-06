@@ -1,0 +1,31 @@
+{
+    "subscriptions": {
+        "title": "Subscriptions",
+        "sub_title": "Manage your subscriptions and view offer details here.",
+        "current_status": {
+            "title": "Current Plan Status",
+            "active": "Active Premium",
+            "free": "Free Plan",
+            "all_set": "You are all set!",
+            "upgrade_text": "Unlock exclusive features and higher limits by upgrading your account today.",
+            "upgrade_btn": "Upgrade Now"
+        },
+        "history": {
+            "title": "Billing History",
+            "table": {
+                "details": "Plan Details",
+                "duration": "Duration",
+                "date": "Date",
+                "amount": "Amount",
+                "status": "Status",
+                "id_label": "ID:",
+                "empty": "No subscription history found."
+            }
+        },
+        "status": {
+            "approved": "Approved",
+            "rejected": "Rejected",
+            "pending": "Pending"
+        }
+    }
+}

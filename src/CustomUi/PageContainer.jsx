@@ -16,7 +16,7 @@ const PageContainer = ({ className, children, titel, about, back = false, learn 
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className={`
                 flex  flex-col items-center gap-6 md:gap-8
-                p-4 md:p-8 rounded-2xl shadow-lg
+                p-4 md:p-8 rounded-2xl  shadow-lg
                 bg-white mx-auto w-full md:w-[90%] mt-2.5
                 ${className}
             `}

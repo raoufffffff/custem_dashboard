@@ -11,7 +11,7 @@ const Model = ({ children, onclose, classname }) => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.7, type: "spring" }}
-                className={`bg-white w-11/12 md:w-5/12  rounded-lg shadow-lg ${classname}`} onClick={(e) => e.stopPropagation()}>
+                className={`bg-white w-11/12 md:w-5/12   rounded-lg shadow-lg ${classname}`} onClick={(e) => e.stopPropagation()}>
                 {children}
             </motion.div>
         </div>

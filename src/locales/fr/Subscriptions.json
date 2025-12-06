@@ -1,0 +1,31 @@
+{
+    "subscriptions": {
+        "title": "Abonnements",
+        "sub_title": "Gérez vos abonnements et consultez les détails de l'offre ici.",
+        "current_status": {
+            "title": "Statut du plan actuel",
+            "active": "Premium Actif",
+            "free": "Plan Gratuit",
+            "all_set": "Tout est en ordre !",
+            "upgrade_text": "Débloquez des fonctionnalités exclusives et des limites plus élevées en mettant à niveau votre compte dès aujourd'hui.",
+            "upgrade_btn": "Mettre à niveau"
+        },
+        "history": {
+            "title": "Historique de facturation",
+            "table": {
+                "details": "Détails du plan",
+                "duration": "Durée",
+                "date": "Date",
+                "amount": "Montant",
+                "status": "Statut",
+                "id_label": "ID :",
+                "empty": "Aucun historique d'abonnement trouvé."
+            }
+        },
+        "status": {
+            "approved": "Approuvé",
+            "rejected": "Rejeté",
+            "pending": "En attente"
+        }
+    }
+}

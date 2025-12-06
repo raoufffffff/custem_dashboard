@@ -11,7 +11,6 @@ const OrdersGrid = ({
     loading,
     edite,
     ucan,
-    EdetAllOrder,
     sendtoLiv,
     fetchOrders,
     deleteOrder,
@@ -19,7 +18,8 @@ const OrdersGrid = ({
     filters,
     hasMore,
     loadMore,
-    isPaid
+    isPaid,
+    ShowAddOrder
 }) => {
     const { t } = useTranslation("dashboard");
 
@@ -52,13 +52,13 @@ const OrdersGrid = ({
                         </button>
                     )}
 
-                    <Link
-                        to={'/'}
+                    <button
+                        onClick={ShowAddOrder}
                         className="flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white shadow-sm transition-all transform active:scale-95 cursor-pointer py-2.5 px-5 rounded-xl font-medium gap-2"
                     >
                         <Plus size={18} />
                         <span className="hidden sm:inline">{t("NewOrder")}</span>
-                    </Link>
+                    </button>
                 </div>
             </div>
 
@@ -93,7 +93,6 @@ const OrdersGrid = ({
                                 deleteOrder={deleteOrder}
                                 fetchOrders={fetchOrders}
                                 sendtoLiv={sendtoLiv}
-                                EdetAllOrder={EdetAllOrder}
                                 edite={edite}
                                 ucan={ucan}
                                 order={item}
