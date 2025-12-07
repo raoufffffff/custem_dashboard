@@ -32,7 +32,7 @@ const UpsellModal = ({ plan, onClose }) => {
                 return {
                     offer: {
                         title: t("Quarterly_Plus"),
-                        price: "5,700",
+                        price: "4,900",
                         value: "4 m",
                         term: t("4_Months"),
                         save: t("1_Month_Free"),
@@ -52,7 +52,7 @@ const UpsellModal = ({ plan, onClose }) => {
                 return {
                     offer: {
                         title: t("Yearly_Pro_Access"),
-                        price: "9,900",
+                        price: "9,000",
                         term: t("7_Months"),
                         value: "7 m",
                         save: t("Best_Value"),
@@ -185,5 +185,6 @@ const UpsellModal = ({ plan, onClose }) => {
         </div>
     );
 };
+
 
 export default UpsellModal;
