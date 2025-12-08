@@ -39,7 +39,6 @@ export default function Header({ toggleHeader, openLanguagePanel,
 
                         />
                     </div>
-                    <span className="text-xl font-bold text-gray-900 hidden sm:block">Next Commerce</span>
                 </Link>
             </div>
 
@@ -82,3 +81,4 @@ export default function Header({ toggleHeader, openLanguagePanel,
         </motion.header>
     );
 }
+
