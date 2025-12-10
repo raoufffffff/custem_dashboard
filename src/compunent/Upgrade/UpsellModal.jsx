@@ -42,7 +42,7 @@ const UpsellModal = ({ plan, onClose }) => {
                     regular: {
                         title: t("Standard_Quarterly"),
                         price: "4,900",
-                        value: "3 m",
+                        value: "4 m",
                         term: t("3_Months"),
                         desc: t("Standard_3_months_access")
                     },
@@ -185,6 +185,5 @@ const UpsellModal = ({ plan, onClose }) => {
         </div>
     );
 };
-
 
 export default UpsellModal;
