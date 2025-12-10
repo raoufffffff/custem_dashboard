@@ -20,10 +20,10 @@ const Upgrade = () => {
                     {/* 1. Monthly Plan */}
                     <PlanCard
                         name={t('plan_monthly_name')}
-                        price="1,900"
+                        price="2,500"
                         currency="DZD"
-                        value="1 m"
-                        term={t('per_month')}
+                        value="2 m"
+                        term={t('2_Months')}
                         features={[
                             t('unlimited_leads'),
                             t('basic_support'),
@@ -38,8 +38,8 @@ const Upgrade = () => {
                         name={t('plan_quarterly_name')}
                         price="4,900"
                         currency="DZD"
-                        value="3 m"
-                        term={t('for_3_months')}
+                        value="4 m"
+                        term={t('4_Months')}
                         badge={t('save_700_dzd')}
                         isPopular={true} // تمييز هذه الخطة
                         features={[
@@ -56,8 +56,8 @@ const Upgrade = () => {
                         name={t('plan_semi_annual_name')}
                         price="9,000"
                         currency="DZD"
-                        value="6 m"
-                        term={t('for_6_months')}
+                        value="7 m"
+                        term={t('7_Months')}
                         badge={t('best_value') || "Best Value"}
                         features={[
                             t('vip_support'),
