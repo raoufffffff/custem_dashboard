@@ -45,7 +45,7 @@ const UpdateSettingsForm = ({ store, repoName }) => {
             className={`py-1`}
         >
             <p className='text-sm text-gray-600'>
-                {t("Controlsettings.")}
+                {t("Controlsettings")}
             </p>
 
             <div className='border-t border-[#ddd] py-5 mt-4 space-y-5'>

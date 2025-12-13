@@ -74,7 +74,7 @@ const App = () => {
             return;
         }
         try {
-            const response = await axios.put(`https://true-fit-dz-api.vercel.app/user/check/domain`, { name: `${domain}-nc` });
+            const response = await axios.put(`https://true-fit-dz-api.vercel.app/user/check/domain`, { name: domain });
             setDomainAvailable(response.data.available);
             if (response.data.available) {
                 toast.success(t("Domainisavailable"), { style: { border: "1px solid #10b981" } });
@@ -113,7 +113,7 @@ const App = () => {
         };
         setLoading(true)
         try {
-            const res = await axios.post("https://next-website-server.vercel.app", body);
+            const res = await axios.post("https://true-fit-dz-api.vercel.app/user", body);
             // NOTE: The API endpoint must be updated on the server to handle the new fields (domain, storeName, language).
             if (res.data?.success || res.data?._id) {
                 toast.success(t("Accountcreatedsuccessfully"));
@@ -327,7 +327,7 @@ const App = () => {
                         <p className="text-sm text-gray-400 mb-3 mt-1">
                             {t("Yourfuturedomain")}:{" "}
                             <span className="font-mono text-purple-600">
-                                {domain ? `${domain}-nc` : "your-domain-name-nc"}
+                                {domain ? `${domain}.next-commerce.shop` : "your-domain-name-next-commerce.shop"}
                             </span>
                         </p>
                         <motion.input

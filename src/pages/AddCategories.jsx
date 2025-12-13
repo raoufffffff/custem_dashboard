@@ -45,7 +45,6 @@ const AddCategories = () => {
         const result = await UpdateCategories({
             Categories: [...Categories, { ...Categori, id: Categories.length + 1 }],
             repoName: user.repoName,
-            id: user.id
         })
         if (result) {
             setCategori({ image: null, name: "", show: true })

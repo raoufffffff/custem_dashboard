@@ -58,12 +58,16 @@ const LivrisionPrice = () => {
         setLoading(true);
         setUcan(false);
         try {
+            const localUser = localStorage.getItem("user");
+            if (!localUser) throw new Error(t("UserNotFound"));
+
+            const userId = JSON.parse(localUser)._id;
             const res = await axios.put(
-                `https://next-website-server.vercel.app/update-livprice`,
+                `https://true-fit-dz-api.vercel.app/liv/${userId}`,
                 {
                     id: _id,
                     repoName: website.repoName,
-                    livprice: liv,
+                    livPrice: liv,
                 }
             );
             if (res.data.success) {
