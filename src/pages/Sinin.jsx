@@ -113,13 +113,13 @@ const App = () => {
         };
         setLoading(true)
         try {
-            const res = await axios.post("https://true-fit-dz-api.vercel.app/user", body);
-            // NOTE: The API endpoint must be updated on the server to handle the new fields (domain, storeName, language).
-            if (res.data?.success || res.data?._id) {
+            const res = await axios.post("https://true-fit-dz-api.vercel.app/user/", body);
+
+            if (res.data?.good || res.data?._id) {
                 toast.success(t("Accountcreatedsuccessfully"));
                 window.location.replace("/login");
             } else {
-                toast.error(t("Anerroroccurredpleasechecktheinformation"), {
+                toast.error(t("zbi"), {
                     style: { border: "1px solid #ef4444" },
                 });
             }
