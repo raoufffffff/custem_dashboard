@@ -165,7 +165,7 @@ const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
                                             <div className="flex gap-3">
                                                 <a
                                                     target="_blank"
-                                                    href={`https://${link}/Product/${p._id}`}
+                                                    href={`https://${link}/products/${p._id}`}
                                                 >
                                                     <ExternalLink className="w-4 h-4 cursor-pointer text-gray-600 hover:text-gray-900" />
                                                 </a>
@@ -199,3 +199,4 @@ const ProductTable = ({ products = [], changeStatus, deleteItem, link }) => {
 };
 
 export default ProductTable;
+
