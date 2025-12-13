@@ -120,7 +120,7 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                 {myorder.offer && (
                     <div className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl shadow-sm z-10 flex items-center gap-1">
                         <Tag size={10} className="fill-white" />
-                        OFFER
+                        {myorder.offerNmae || "offer"}
                     </div>
                 )}
 

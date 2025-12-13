@@ -25,8 +25,16 @@ const UseUpdateStore = () => {
     }, []);
     const UpdateStore = async (data) => {
         setLoading(true)
+        const localUser = localStorage.getItem("user");
+        if (!localUser) throw new Error("User not found in localStorage");
+
+        const userId = JSON.parse(localUser)._id;
         try {
-            await axios.put(`https://next-website-server.vercel.app/update-template`, data)
+            await axios.put(`https://true-fit-dz-api.vercel.app/user/${userId}`, {
+                data: { website: data },
+                repoName: repoName
+
+            })
             fetchUser()
             toast.success("your website updated successfuly")
         } catch {
@@ -37,8 +45,16 @@ const UseUpdateStore = () => {
 
     const UpdateCategories = async (data) => {
         setLoading(true)
+
         try {
-            await axios.put(`https://next-website-server.vercel.app/update-Category`, data)
+            const localUser = localStorage.getItem("user");
+            if (!localUser) throw new Error("User not found in localStorage");
+            const userId = JSON.parse(localUser)._id;
+
+            await axios.put(`https://true-fit-dz-api.vercel.app/user/${userId}`, {
+                data: { Categories: data.Categories },
+                repoName: repoName
+            })
             toast.success("your website updated successfuly")
             fetchUser()
             return true

@@ -24,24 +24,6 @@ const useUser = () => {
     useEffect(() => {
         fetchUser();
     }, []);
-    const setNotificationsToDefult = async () => {
-        try {
-            const localUser = localStorage.getItem("user");
-            if (!localUser) throw new Error("User not found in localStorage");
-
-            const userId = JSON.parse(localUser)._id;
-            await axios.put(`https://true-fit-dz-api.vercel.app/user/${userId}`,
-                {
-                    AlartNotification: false,
-                    NotificationsCurrentNumber: 0
-                }
-            ).then(() => {
-                fetchUser()
-            })
-        } catch (error) {
-            setError(error.response?.data?.message || error.message || "Failed to fetch user");
-        }
-    }
 
     const handleUpdateCategory = async (nerCategories, repo) => {
         setLoading(true)
@@ -50,10 +32,9 @@ const useUser = () => {
             if (!localUser) throw new Error("User not found in localStorage");
 
             const userId = JSON.parse(localUser)._id;
-            await axios.put(`https://next-website-server.vercel.app/update-Category`,
+            await axios.put(`https://true-fit-dz-api.vercel.app/user/${userId}`,
                 {
-                    id: userId,
-                    Categories: nerCategories,
+                    data: { Categories: nerCategories },
                     repoName: repo
                 }
             ).then(() => {
@@ -65,17 +46,21 @@ const useUser = () => {
             setLoading(false)
         }
     }
-    const updateUser = async (body) => {
+    const updateUser = async (body, repo) => {
         setLoading(true)
         try {
             const localUser = localStorage.getItem("user");
             if (!localUser) throw new Error("User not found in localStorage");
 
             const userId = JSON.parse(localUser)._id;
-            await axios.put(`https://true-fit-dz-api.vercel.app/user/${userId}`, body).then(() => {
+            await axios.put(`https://true-fit-dz-api.vercel.app/user/${userId}`,
+                {
+                    data: body,
+                    repoName: repo
+                }
+            ).then(() => {
                 fetchUser()
                 toast.success("your website updated successfuly")
-
             })
         } catch (error) {
             setError(error.response?.data?.message || error.message || "Failed to fetch user");
@@ -92,9 +77,6 @@ const useUser = () => {
         phone = '',
         type = '',
         password = '',
-        Notifications = [],
-        AlartNotification = false,
-        NotificationsCurrentNumber = 0,
         companyLiv = {},
         repoName = "",
         link = "",
@@ -114,12 +96,9 @@ const useUser = () => {
         email,
         phone,
         type,
-        Notifications,
-        AlartNotification,
-        NotificationsCurrentNumber,
+
         loading,
         error,
-        setNotificationsToDefult,
         handleUpdateCategory,
         website,
         fetchUser,
