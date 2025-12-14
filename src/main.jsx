@@ -45,6 +45,7 @@ import Terms from './pages/Terms.jsx';
 import Upgrade from './pages/Upgrade.jsx';
 import Checkout from './pages/Checkout.jsx';
 import Subscriptions from './pages/Subscriptions.jsx';
+import ProtectedAuth from './layout/ProtectedAuth.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -158,9 +159,15 @@ const router = createBrowserRouter(
           <ProtectedRoute><Sheet /></ProtectedRoute>
         } />
       </Route>
-      <Route path="login" element={<Login />} />
-      <Route path="sinin" element={<Sinin />} />
-      <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="login" element={
+        <ProtectedAuth><Login /></ProtectedAuth>
+      } />
+      <Route path="sinin" element={
+        <ProtectedAuth><Sinin /></ProtectedAuth>
+      } />
+      <Route path="forgot-password" element={
+        <ProtectedAuth><ForgotPassword /></ProtectedAuth>
+      } />
       <Route path="terms" element={<Terms />} />
     </>
   )

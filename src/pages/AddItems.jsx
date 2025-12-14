@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Plus, X } from 'lucide-react';
 import handleImageUpload from '../utility/UploadImages';
 // import { submitNewItem } from '../utility/itemHelper';
 import InputImg from '../CustomUi/InputImg';
@@ -29,14 +29,17 @@ const AddItems = () => {
     const [formData, setFormData] = useState({
         name: '',
         price: 0,
-        oldPrice: 0,
+        Oldprice: 0,
         ShortDescription: '',
         Description: '',
         type: "",
+        note: ""
     });
 
 
     const [Variants, setVariants] = useState([]);
+    const [Tags, setTags] = useState([]);
+    const [inputValue, setInputValue] = useState("");
     const [err, seterr] = useState(false);
     const [Offers, setOffers] = useState([]);
     const addOffers = () => {
@@ -65,6 +68,34 @@ const AddItems = () => {
     // Tiptap Editor Setup
     if (loading) return <LoadingBar />;
 
+    // Pre-defined suggestions
+    const suggestions = [
+        "fast_delivery",
+        "guarantee_1week",
+        "return_policy",
+        "Limited_quantity"
+    ];
+
+    // Function to add a tag
+    const handleAddTag = (tagToAdd) => {
+        if (tagToAdd && !Tags.includes(tagToAdd)) {
+            setTags([...Tags, tagToAdd]);
+        }
+        setInputValue(""); // Clear input
+    };
+
+    // Function to remove a tag
+    const handleRemoveTag = (tagToRemove) => {
+        setTags(Tags.filter((tag) => tag !== tagToRemove));
+    };
+
+    // Handle Enter key in input
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleAddTag(inputValue);
+        }
+    };
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -151,6 +182,7 @@ const AddItems = () => {
             ...formData,
             Variants,
             Offers,
+            tags: Tags,
             LadingPages: LadingPages,
             images,
             userId: _id
@@ -225,7 +257,20 @@ const AddItems = () => {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
                     />
                 </div>
-
+                <div
+                    className='my-2'
+                >
+                    <label className="block mb-2 font-medium text-gray-600">{t("Productname")}</label>
+                    <input
+                        type="text"
+                        name="note"
+                        placeholder={t("Productnote")}
+                        value={formData.note}
+                        onChange={handleChange}
+                        required
+                        className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all ${err && !formData.name ? "border-red-500 focus:ring-red-500" : ""}`}
+                    />
+                </div>
             </BoxCard>
             <BoxCard
                 small={true}
@@ -308,10 +353,10 @@ const AddItems = () => {
                     >
                         <label className="block mb-2 font-medium text-gray-600">{t("Comparisonprice")}</label>
                         <input
-                            type="text"
-                            name="oldPrice"
+                            type="number"
+                            name="Oldprice"
                             placeholder={t("Comparisonprice")}
-                            value={formData.oldPrice}
+                            value={formData.Oldprice}
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
@@ -323,7 +368,7 @@ const AddItems = () => {
                 className={'relative'}
                 small={true}
                 about={t("Variants")}
-                button={t("Add Variants")}
+                button={t("AddVariants")}
                 buttonicon={<IoMdAdd className='size-6 md:size-8' />}
                 onclick={addVariant}
             >
@@ -355,7 +400,7 @@ const AddItems = () => {
             >
                 {Categories.length === 0 ? (<p
                     className={'text-sm text-center mt-10 text-teal-500'}>
-                    {("YouCategoriesyet")}
+                    {t("YouCategoriesyet")}
                 </p>) : (
 
                     <select
@@ -374,12 +419,85 @@ const AddItems = () => {
                     </select>
                 )}
             </BoxCard>
+            <BoxCard small={true} about={t("tags")}>
+                <div className="flex flex-col gap-4">
+
+                    {/* 1. SELECTED TAGS AREA (Top) */}
+                    <div className="min-h-[40px] flex flex-wrap gap-2">
+                        {Tags.length === 0 && (
+                            <p className="text-sm text-gray-400 italic">{t("Notagsselected")}</p>
+                        )}
+
+                        {Tags.map((tag, index) => (
+                            <span
+                                key={index}
+                                className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-teal-100 text-teal-700 border border-teal-200"
+                            >
+                                {tag}
+                                <button
+                                    onClick={() => handleRemoveTag(tag)}
+                                    className="hover:text-teal-900 focus:outline-none"
+                                >
+                                    <X size={14} />
+                                </button>
+                            </span>
+                        ))}
+                    </div>
+
+                    {/* 2. SUGGESTIONS AREA (Middle) */}
+                    <div className="border-t border-gray-100 pt-3">
+                        <p className="text-xs text-gray-500 mb-2 font-medium">{t("QuickAdd")}:</p>
+                        <div className="flex flex-wrap gap-2">
+                            {suggestions.map((suggestion, index) => {
+                                const isSelected = Tags.includes(suggestion);
+                                return (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleAddTag(t(suggestion))}
+                                        disabled={isSelected}
+                                        className={`px-3 py-1 text-xs rounded-md border transition-colors
+                    ${isSelected
+                                                ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+                                                : "bg-white text-gray-600 border-gray-300 hover:border-purple-500 hover:text-purple-600"
+                                            }`}
+                                    >
+                                        {t(suggestion)}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* 3. INPUT AREA (Bottom) */}
+                    <div className="relative mt-2">
+                        <div className="flex gap-2">
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                placeholder={t("Addcustomtag")}
+                                className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500"
+                            />
+                            <button
+                                onClick={() => handleAddTag(inputValue)}
+                                disabled={!inputValue.trim()}
+                                className="bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            >
+                                <Plus size={20} />
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </BoxCard>
+
             <button
                 onClick={() => {
                     handleSubmit()
                 }}
                 className='bg-teal-600 ml-auto hover:bg-teal-700 text-white px-6 py-2 rounded-lg mt-6 mb-10 transition-all shadow-md shadow-teal-300 flex items-center'
-            >{submiting ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("Save")}</button>
+            >{submiting ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("save")}</button>
         </PageContainer>
     );
 };
