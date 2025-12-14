@@ -1,6 +1,7 @@
+import Clarity from '@microsoft/clarity';
 import { Outlet } from "react-router-dom"
 import Header from "./compunent/header/Header"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Sidebar from "./compunent/header/Sidebar"
 import { AnimatePresence } from 'framer-motion';
 import Model from "./CustomUi/Model";
@@ -13,6 +14,7 @@ import LoadingBar from "./CustomUi/LoadingBar";
 function App() {
   const { i18n } = useTranslation("constanst");
   const currentLang = i18n.language; // detect active language
+  const projectId = import.meta.env.VITE_CLARITY_ID
 
   const { loading, website, name, email, phone, password, link, repoName, Categories, _id, visit, isPaid, orders } = useUser()
 
@@ -33,7 +35,24 @@ function App() {
     AccountPanel: false,
     LanguagePanel: false
   })
+  useEffect(() => {
+    // 1. Check if ID exists to avoid errors
+    if (projectId) {
+      Clarity.init(projectId);
 
+      // 2. 🔥 PRO TIP: Identify the user if they are logged in
+      // This lets you see specific recordings for specific users in the Clarity Dashboard
+      if (!loading && _id) {
+        console.log('Clarity is doing there job');
+
+        Clarity.identify(_id, { // User ID
+          name: name,         // Custom Tag
+          email: email,       // Custom Tag
+          plan: isPaid ? "Paid" : "Free" // Custom Tag (Very useful for SaaS!)
+        });
+      }
+    }
+  }, [projectId, loading, _id, name, email, isPaid]); // Add dependencies so it updates when user loads
   if (loading) return <LoadingBar />
 
   let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link, visit, isPaid, userOrderLemet: orders }

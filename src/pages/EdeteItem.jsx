@@ -200,6 +200,7 @@ const EdeteItem = () => {
             Variants,
             Offers,
             LadingPages: LadingPages,
+            tags: Tags,
             images,
             userId: _id
         }

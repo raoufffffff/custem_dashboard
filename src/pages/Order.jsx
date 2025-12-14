@@ -47,10 +47,10 @@ const OrderPage = () => {
         const seen = new Set();
         for (const orderItem of orders) {
             const item = orderItem.item;
-            if (!seen.has(item._id)) {
-                seen.add(item._id);
+            if (!seen.has(item?._id)) {
+                seen.add(item?._id);
                 uniqueItems.push({
-                    id: item._id,
+                    id: item?._id,
                     ...item
                 });
             }
