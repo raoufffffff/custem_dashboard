@@ -16,6 +16,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@lexical/react": "^0.34.0",
+    "@microsoft/clarity": "^1.0.2",
     "@mui/icons-material": "^7.1.1",
     "@mui/material": "^7.1.1",
     "@mui/x-charts": "^8.5.2",
@@ -35,6 +36,8 @@
     "framer-motion": "^12.18.1",
     "i18next": "^25.5.2",
     "i18next-browser-languagedetector": "^8.2.0",
+    "jspdf": "^3.0.4",
+    "jspdf-autotable": "^5.0.2",
     "leaflet": "^1.9.4",
     "lexical": "^0.34.0",
     "lottie-react": "^2.4.1",
@@ -51,7 +54,8 @@
     "react-router-dom": "^7.6.2",
     "recharts": "^2.15.3",
     "tailwindcss": "^4.1.10",
-    "topojson-client": "^3.1.0"
+    "topojson-client": "^3.1.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
