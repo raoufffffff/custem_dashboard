@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import {
     Bell, XCircle, CheckCircle2, Package, Clock, PhoneOff, Ban,
     Pencil, Truck, Building2, StickyNote, HomeIcon, Trash, MapPin, User,
-    Phone, Tag // Used Tag for the Offer Badge
+    Phone, Tag, Palette, Ruler // 🔥 Imported Palette & Ruler icons
 } from "lucide-react";
 import ShowNoteC from "./OrderRow/showNote";
 import ShowdeleteC from "./OrderRow/ShowdeleteC";
@@ -116,7 +116,6 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
             >
                 <div className={`absolute left-0 top-0 bottom-0 w-1 ${currentStatus?.color.replace('text-', 'bg-').split(' ')[0]}`} />
 
-                {/* 🟢 NEW: Absolute Offer Icon */}
                 {myorder.offer && (
                     <div className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl shadow-sm z-10 flex items-center gap-1">
                         <Tag size={10} className="fill-white" />
@@ -152,6 +151,30 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                     <div className="flex-1 min-w-0">
                         <h4 className="text-sm font-bold text-gray-900 truncate mb-1">{myorder.item.name}</h4>
 
+                        {/* 🔥🔥🔥🔥 NEW: SIZE AND COLOR VARIANTS 🔥🔥🔥🔥 */}
+                        {(myorder.size || myorder.color) && (
+                            <div className="flex flex-wrap gap-2 mb-2">
+                                {myorder.size && (
+                                    <div className="flex items-center gap-1 text-[10px] font-medium text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">
+                                        <Ruler size={10} className="text-gray-400" />
+                                        <span>{myorder.size}</span>
+                                    </div>
+                                )}
+                                {myorder.color && (
+                                    <div className="flex items-center gap-1 text-[10px] font-medium text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">
+                                        <Palette size={10} className="text-gray-400" />
+                                        {/* Try to show the color dot if possible */}
+                                        <span
+                                            className="w-2 h-2 rounded-full border border-gray-300 shadow-sm"
+                                            style={{ backgroundColor: myorder.color }}
+                                        />
+                                        <span>{myorder.color}</span>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        {/* 🔥🔥🔥🔥 END VARIANTS 🔥🔥🔥🔥 */}
+
                         <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-0.5">
                             <User size={12} />
                             <span className="truncate">{myorder.name}</span>
@@ -181,8 +204,6 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                                 <Package size={10} /> {myorder.price}
                             </span>
                             <span className="text-gray-300">|</span>
-
-                            {/* 🟢 NEW: Free Ride Logic */}
                             <span className={`flex items-center gap-1 font-medium ${myorder.ride === 0 ? "text-green-600 font-bold" : "text-teal-600"}`}>
                                 <Truck size={10} />
                                 {myorder.ride === 0 ? "FREE" : myorder.ride}
@@ -204,7 +225,7 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                     </button>
                 </div>
 
-                {/* --- DISPLAY NOTE HERE (Below Status, Above Footer) --- */}
+                {/* --- DISPLAY NOTE HERE --- */}
                 {myorder.not && (
                     <div className="mb-4 pl-2 px-1">
                         <div className="bg-amber-50 border border-amber-100 rounded-lg p-2.5 text-xs text-gray-700 flex items-start gap-2">
@@ -218,7 +239,6 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
 
                 {/* 4. Footer Actions */}
                 <div className="bg-gray-50 -mx-4 -mb-4 px-4 py-3 rounded-b-2xl border-t border-gray-100 flex justify-between items-center mt-auto pl-6">
-                    {/* Note Button (Acts as Edit now) */}
                     <div
                         className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 px-2 py-1 rounded-lg transition-colors"
                         onClick={() => setShowNote({ show: true, status: myorder.status })}

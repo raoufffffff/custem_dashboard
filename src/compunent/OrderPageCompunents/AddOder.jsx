@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import states from '../../constanst/states.json';
 import citie from '../../constanst/etat';
+import toast from 'react-hot-toast';
+import useItem from '../../hooks/useItem';
+import LoadingBar from '../../CustomUi/LoadingBar';
 
-const AddOrder = ({ postOrder, uniqueItems, onclose }) => {
+const AddOrder = ({ postOrder, onclose }) => {
     // 1. Initialize State
+    const { Items, loading } = useItem()
     const [formData, setFormData] = useState({
         name: "",
         phone: "",
@@ -29,8 +33,9 @@ const AddOrder = ({ postOrder, uniqueItems, onclose }) => {
     const calculateTotal = (price, qty, ride) => {
         return (Number(price) * Number(qty)) + Number(ride);
     };
-
+    if (loading) return <LoadingBar />
     // --- Handlers ---
+    console.log(Items);
 
     // 1. Generic Change Handler
     const handleChange = (e) => {
@@ -77,7 +82,7 @@ const AddOrder = ({ postOrder, uniqueItems, onclose }) => {
     // 3. Special Handler for Product Selection
     const handleItemChange = (e) => {
         const selectedId = e.target.value;
-        const selectedProduct = uniqueItems.find(item => item._id === selectedId);
+        const selectedProduct = Items.find(item => item._id === selectedId);
 
         if (selectedProduct) {
             setFormData(prev => ({
@@ -107,6 +112,10 @@ const AddOrder = ({ postOrder, uniqueItems, onclose }) => {
         if (!formData.name || !formData.phone || !formData.state) {
             alert("Please fill in the required fields");
             return;
+        }
+        if (!formData.item) {
+            toast.error("u must have an item")
+            return
         }
         postOrder(formData);
         onclose()
@@ -194,7 +203,7 @@ const AddOrder = ({ postOrder, uniqueItems, onclose }) => {
                         className="w-full border border-gray-200 bg-gray-50 rounded-lg px-4 py-2.5 focus:bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
                     >
                         <option value="">Choose a product...</option>
-                        {uniqueItems && uniqueItems.map((item) => (
+                        {Items && Items.map((item) => (
                             <option key={item._id} value={item._id}>{item.name}</option>
                         ))}
                     </select>
