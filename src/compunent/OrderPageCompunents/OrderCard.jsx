@@ -16,7 +16,7 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
     const [showStatusDropdown, setShowStatusDropdown] = useState(false);
     const [showdelete, setshowdelete] = useState(false);
     const [showNote, setShowNote] = useState({ show: false, status: "" });
-    const [note, setNote] = useState(order?.note || "");
+    const [note, setNote] = useState(order?.not || "");
     const changenote = (e) => setNote(e);
 
     const statuses = [
@@ -267,5 +267,6 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
         </>
     );
 };
+
 
 export default OrderCard;
