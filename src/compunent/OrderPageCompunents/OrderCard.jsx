@@ -1,25 +1,34 @@
 import { motion } from "framer-motion";
 import { format, differenceInMinutes, differenceInHours, differenceInDays, differenceInWeeks, differenceInMonths, differenceInYears } from "date-fns";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Bell, XCircle, CheckCircle2, Package, Clock, PhoneOff, Ban,
     Pencil, Truck, Building2, StickyNote, HomeIcon, Trash, MapPin, User,
-    Phone, Tag, Palette, Ruler // 🔥 Imported Palette & Ruler icons
+    Phone, Tag, Palette, Ruler 
 } from "lucide-react";
 import ShowNoteC from "./OrderRow/showNote";
 import ShowdeleteC from "./OrderRow/ShowdeleteC";
 
 const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, isPaid }) => {
     const { t } = useTranslation("dashboard");
+    
+    // Local state for immediate UI updates
     const [myorder, setMyOrder] = useState(order);
     const [showStatusDropdown, setShowStatusDropdown] = useState(false);
     const [showdelete, setshowdelete] = useState(false);
     const [showNote, setShowNote] = useState({ show: false, status: "" });
     const [note, setNote] = useState(order?.not || "");
+
+    // Sync local state if the server data (props) changes
+    useEffect(() => {
+        setMyOrder(order);
+        setNote(order?.not || "");
+    }, [order]);
+
     const changenote = (e) => setNote(e);
 
-    const statuses = [
+    const statuses = useMemo(() => [
         { key: "pending", label: t("pending"), color: "bg-blue-50 text-blue-600 border-blue-200", icon: <Bell className="w-3.5 h-3.5" /> },
         { key: "Connection failed 1", label: t("Connectionfailed1"), color: "bg-yellow-50 text-yellow-600 border-yellow-200", icon: <PhoneOff className="w-3.5 h-3.5" /> },
         { key: "Connection failed 2", label: t("Connectionfailed2"), color: "bg-yellow-50 text-yellow-600 border-yellow-200", icon: <PhoneOff className="w-3.5 h-3.5" /> },
@@ -29,7 +38,7 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
         { key: "Postponed", label: t("Postponed"), color: "bg-purple-50 text-purple-600 border-purple-200", icon: <Clock className="w-3.5 h-3.5" /> },
         { key: "cancelled", label: t("cancelled"), color: "bg-gray-50 text-gray-500 border-gray-200", icon: <XCircle className="w-3.5 h-3.5" /> },
         { key: "failed", label: t("failed"), color: "bg-red-50 text-red-600 border-red-200", icon: <Ban className="w-3.5 h-3.5" /> },
-    ];
+    ], [t]);
 
     const hide = () => {
         setshowdelete(false);
@@ -42,6 +51,16 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
         setMyOrder(updatedOrder);
         setShowStatusDropdown(false);
         edite(order._id, newStatus, note);
+    };
+
+    // Wrapper to update Note immediately in UI + Backend
+    const handleSaveNote = (id, status, newNote) => {
+        // 1. Update Server
+        edite(id, status, newNote);
+        // 2. Update Local UI immediately
+        setMyOrder(prev => ({ ...prev, not: newNote }));
+        // 3. Close Modal
+        hide();
     };
 
     const getSocialTime = (date) => {
@@ -151,7 +170,7 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                     <div className="flex-1 min-w-0">
                         <h4 className="text-sm font-bold text-gray-900 truncate mb-1">{myorder.item.name}</h4>
 
-                        {/* 🔥🔥🔥🔥 NEW: SIZE AND COLOR VARIANTS 🔥🔥🔥🔥 */}
+                        {/* Variants Logic */}
                         {(myorder.size || myorder.color) && (
                             <div className="flex flex-wrap gap-2 mb-2">
                                 {myorder.size && (
@@ -163,7 +182,6 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                                 {myorder.color && (
                                     <div className="flex items-center gap-1 text-[10px] font-medium text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">
                                         <Palette size={10} className="text-gray-400" />
-                                        {/* Try to show the color dot if possible */}
                                         <span
                                             className="w-2 h-2 rounded-full border border-gray-300 shadow-sm"
                                             style={{ backgroundColor: myorder.color }}
@@ -173,7 +191,6 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                                 )}
                             </div>
                         )}
-                        {/* 🔥🔥🔥🔥 END VARIANTS 🔥🔥🔥🔥 */}
 
                         <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-0.5">
                             <User size={12} />
@@ -262,11 +279,19 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
 
                 {/* Modals */}
                 {showdelete && <ShowdeleteC deleteOrder={deleteOrder} hide={hide} myorder={myorder} />}
-                {showNote.show && <ShowNoteC note={note} changenote={changenote} edite={edite} myorder={myorder} showNote={showNote} hide={hide} />}
+                {showNote.show && (
+                    <ShowNoteC 
+                        note={note} 
+                        changenote={changenote} 
+                        edite={handleSaveNote} 
+                        myorder={myorder} 
+                        showNote={showNote} 
+                        hide={hide} 
+                    />
+                )}
             </motion.div>
         </>
     );
 };
-
 
 export default OrderCard;
