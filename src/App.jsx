@@ -1,4 +1,5 @@
 import Clarity from '@microsoft/clarity';
+import { Analytics } from '@vercel/analytics/react';
 import { Outlet } from "react-router-dom"
 import Header from "./compunent/header/Header"
 import { useEffect, useState } from "react"
@@ -62,6 +63,7 @@ function App() {
       dir={currentLang === "ar" ? "rtl" : "ltr"}
       className="min-h-screen w-full flex bg-gray-50" // Added bg-gray-50 for better contrast
     >
+      <Analytics />
       {showPanels.LanguagePanel && <Model onclose={hide}><LanguagePanel hide={hide} /></Model>}
       {showPanels.AccountPanel && <Model onclose={hide}><AccountPanel user={user} hide={hide} /></Model>}
 
