@@ -118,8 +118,8 @@ const AnalyticsHeader = ({ orders }) => {
 };
 
 // --- 3. الصفحة الرئيسية التي تجمع كل شيء ---
-const AlgeriaMap = ({ companyLiv }) => {
-    const { loading, orders } = UseLivOrder(companyLiv);
+const AlgeriaMap = () => {
+    const { loading, orders } = UseLivOrder();
 
     if (loading) {
         return (
@@ -134,9 +134,9 @@ const AlgeriaMap = ({ companyLiv }) => {
         <PageContainer
             titel={"متابعة الشحن"}
             about={"لوحة تحكم حية لأداء التوصيل"}
-            className={"bg-slate-50 min-h-screen "}
+            className={"bg-slate-50 min-h-screen"}
         >
-            <div className="p-4 max-w-7xl mx-auto w-full">
+            <div className="p-4 max-w-7xl mx-auto">
                 {/* 1. قسم التحليل */}
                 <AnalyticsHeader orders={orders} />
 

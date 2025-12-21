@@ -5,22 +5,22 @@ import { useTranslation } from "react-i18next";
 import {
     Bell, XCircle, CheckCircle2, Package, Clock, PhoneOff, Ban,
     Pencil, Truck, Building2, StickyNote, HomeIcon, Trash, MapPin, User,
-    Phone, Tag, Palette, Ruler 
+    Phone, Tag, Palette, Ruler, AlertTriangle
 } from "lucide-react";
 import ShowNoteC from "./OrderRow/showNote";
 import ShowdeleteC from "./OrderRow/ShowdeleteC";
 
-const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, isPaid }) => {
+const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, isPaid, companyLiv }) => {
     const { t } = useTranslation("dashboard");
-    
-    // Local state for immediate UI updates
+
+    // Local state
     const [myorder, setMyOrder] = useState(order);
     const [showStatusDropdown, setShowStatusDropdown] = useState(false);
     const [showdelete, setshowdelete] = useState(false);
+    const [showSendConfirm, setShowSendConfirm] = useState(false); // NEW: State for send confirmation
     const [showNote, setShowNote] = useState({ show: false, status: "" });
     const [note, setNote] = useState(order?.not || "");
 
-    // Sync local state if the server data (props) changes
     useEffect(() => {
         setMyOrder(order);
         setNote(order?.not || "");
@@ -38,10 +38,13 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
         { key: "Postponed", label: t("Postponed"), color: "bg-purple-50 text-purple-600 border-purple-200", icon: <Clock className="w-3.5 h-3.5" /> },
         { key: "cancelled", label: t("cancelled"), color: "bg-gray-50 text-gray-500 border-gray-200", icon: <XCircle className="w-3.5 h-3.5" /> },
         { key: "failed", label: t("failed"), color: "bg-red-50 text-red-600 border-red-200", icon: <Ban className="w-3.5 h-3.5" /> },
+        // Added 'in company' to list so it renders correctly
+        { key: "in company", label: t("InDelivery"), color: "bg-indigo-50 text-indigo-600 border-indigo-200", icon: <Truck className="w-3.5 h-3.5" /> },
     ], [t]);
 
     const hide = () => {
         setshowdelete(false);
+        setShowSendConfirm(false); // Hide send confirm
         setShowStatusDropdown(false);
         setShowNote({ show: false, status: "" });
     };
@@ -53,13 +56,9 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
         edite(order._id, newStatus, note);
     };
 
-    // Wrapper to update Note immediately in UI + Backend
     const handleSaveNote = (id, status, newNote) => {
-        // 1. Update Server
         edite(id, status, newNote);
-        // 2. Update Local UI immediately
         setMyOrder(prev => ({ ...prev, not: newNote }));
-        // 3. Close Modal
         hide();
     };
 
@@ -86,13 +85,43 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
         if (!myorder.show && isPaid) return a;
     }
 
-    const currentStatus = statuses.find((s) => s.key === myorder.status);
+    const currentStatus = statuses.find((s) => s.key === myorder.status) || statuses[0];
     const borderClass = currentStatus?.color.split(" ").find(c => c.startsWith("border-")) || "border-gray-200";
+
+    // NEW: Check if status is locked
+    const isLocked = myorder.status === 'in company';
+
+    // NEW: Function to open the confirmation modal
+    const handleSendClick = (e) => {
+        e?.stopPropagation();
+        if (isLocked) return; // Optional: disable sending again if already sent
+        setShowSendConfirm(true);
+    };
+
+    // NEW: The actual send logic (triggered by the modal)
+    const performSend = async () => {
+        // Close modal immediately or keep it open with loading state (closing for now)
+        setShowSendConfirm(false);
+
+        if (!order || !order._id) {
+            alert("Error: Order data is incomplete.");
+            return;
+        }
+
+        const result = await sendtoLiv(myorder);
+
+        if (result && result.success) {
+            handleStatusChange('in company');
+        } else {
+            console.error("❌ Send Failed:", result?.message);
+            alert("Failed to send: " + (result?.message || "Unknown error"));
+        }
+    }
 
     return (
         <>
             {/* --- Status Modal --- */}
-            {showStatusDropdown && (
+            {showStatusDropdown && !isLocked && (
                 <>
                     <div className="fixed inset-0 bg-black/40 z-50 backdrop-blur-[2px]" onClick={() => setShowStatusDropdown(false)} />
                     <div className="fixed inset-0 flex items-center justify-center z-[51] pointer-events-none">
@@ -135,13 +164,7 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
             >
                 <div className={`absolute left-0 top-0 bottom-0 w-1 ${currentStatus?.color.replace('text-', 'bg-').split(' ')[0]}`} />
 
-                {myorder.offer && (
-                    <div className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl shadow-sm z-10 flex items-center gap-1">
-                        <Tag size={10} className="fill-white" />
-                        {myorder.offerNmae || "offer"}
-                    </div>
-                )}
-
+                {/* ... (Existing Header and Image Content remains same) ... */}
                 {/* 1. Header: ID & Time */}
                 <div className="flex justify-between items-start mb-4 pl-2">
                     <div className="flex flex-col">
@@ -226,16 +249,21 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                                 {myorder.ride === 0 ? "FREE" : myorder.ride}
                             </span>
                         </div>
-
                         <div className="text-lg font-bold text-teal-700 leading-none">
                             {myorder.total} <span className="text-xs font-normal text-teal-600">DZD</span>
                         </div>
                         <div className="text-[10px] text-gray-400 mt-0.5">{t("TotalAmount")}</div>
                     </div>
 
+                    {/* STATUS BUTTON: Modified with isLocked check */}
                     <button
-                        onClick={() => setShowStatusDropdown(true)}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all ${currentStatus?.color || "bg-gray-100 text-gray-800 border-gray-200"}`}
+                        onClick={() => {
+                            if (!isLocked) setShowStatusDropdown(true);
+                        }}
+                        disabled={isLocked}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all 
+                        ${currentStatus?.color || "bg-gray-100 text-gray-800 border-gray-200"}
+                        ${isLocked ? "opacity-75 cursor-not-allowed" : "cursor-pointer hover:shadow-sm"}`}
                     >
                         {currentStatus?.icon}
                         {currentStatus?.label}
@@ -253,6 +281,7 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                         </div>
                     </div>
                 )}
+
 
                 {/* 4. Footer Actions */}
                 <div className="bg-gray-50 -mx-4 -mb-4 px-4 py-3 rounded-b-2xl border-t border-gray-100 flex justify-between items-center mt-auto pl-6">
@@ -274,22 +303,85 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                         >
                             <Trash size={16} />
                         </button>
+
+                        {/* TRUCK BUTTON: Triggers modal instead of send directly */}
+                        {companyLiv?.name && myorder.status == "ready" && <button
+                            onClick={handleSendClick}
+                            disabled={isLocked}
+                            className={`p-2 rounded-full transition-colors ${isLocked ? "text-green-300 cursor-not-allowed" : "hover:bg-green-100 text-gray-400 hover:text-green-600"}`}
+                            title={isLocked ? "Already sent" : "Send to Delivery"}
+                        >
+                            <Truck size={16} />
+                        </button>}
                     </div>
                 </div>
 
                 {/* Modals */}
                 {showdelete && <ShowdeleteC deleteOrder={deleteOrder} hide={hide} myorder={myorder} />}
+
+                {/* Send Confirmation Modal */}
+                {showSendConfirm && (
+                    <ShowSendConfirmC
+                        onConfirm={performSend}
+                        onCancel={() => setShowSendConfirm(false)}
+                        t={t} // passing t for translations if needed
+                    />
+                )}
+
                 {showNote.show && (
-                    <ShowNoteC 
-                        note={note} 
-                        changenote={changenote} 
-                        edite={handleSaveNote} 
-                        myorder={myorder} 
-                        showNote={showNote} 
-                        hide={hide} 
+                    <ShowNoteC
+                        note={note}
+                        changenote={changenote}
+                        edite={handleSaveNote}
+                        myorder={myorder}
+                        showNote={showNote}
+                        hide={hide}
                     />
                 )}
             </motion.div>
+        </>
+    );
+};
+
+// Simple Internal Component for Send Confirmation
+// You can move this to a separate file if you prefer
+const ShowSendConfirmC = ({ onConfirm, onCancel, t }) => {
+    return (
+        <>
+            <div className="fixed inset-0 bg-black/40 z-[60] backdrop-blur-[2px]" onClick={onCancel} />
+            <div className="fixed inset-0 flex items-center justify-center z-[61] pointer-events-none">
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="bg-white rounded-2xl shadow-xl w-full max-w-sm mx-4 overflow-hidden pointer-events-auto border border-gray-100 p-6"
+                >
+                    <div className="flex flex-col items-center text-center">
+                        <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-4">
+                            <Truck className="w-6 h-6 text-green-600" />
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">
+                            {t ? t("SendDelivery") : "Send to Delivery"}
+                        </h3>
+                        <p className="text-sm text-gray-500 mb-6">
+                            Are you sure you want to send this order to the delivery service? This action cannot be undone.
+                        </p>
+                        <div className="flex gap-3 w-full">
+                            <button
+                                onClick={onCancel}
+                                className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-200 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={onConfirm}
+                                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-xl text-sm font-semibold hover:bg-green-700 transition-colors shadow-sm shadow-green-200"
+                            >
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
         </>
     );
 };

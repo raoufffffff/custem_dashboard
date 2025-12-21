@@ -19,7 +19,8 @@ const OrdersGrid = ({
     hasMore,
     loadMore,
     isPaid,
-    ShowAddOrder
+    ShowAddOrder,
+    companyLiv
 }) => {
     const { t } = useTranslation("dashboard");
 
@@ -88,6 +89,7 @@ const OrdersGrid = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                         {orders.map((item, index) => (
                             <OrderCard
+                                companyLiv={companyLiv}
                                 isPaid={isPaid}
                                 key={item._id}
                                 deleteOrder={deleteOrder}

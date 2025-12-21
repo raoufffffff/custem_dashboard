@@ -2,7 +2,10 @@ import { useTranslation } from "react-i18next";
 
 const companies = [
 
-    { name: "ZR Express", logo: "https://eco-oran.com/wp-content/uploads/2023/08/logo-200x200-05-1.jpg" },
+    { name: "ZR Express", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpdTp4dC0C9skkf3Ptw9L9CK3pxiFzvrLhvQ&s" },
+    {
+        name: "ecom_delivery", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2HqE3EoSJb6xl1sRm29x6BRI6iwWp2Pf8ag&s"
+    }
 
 ];
 

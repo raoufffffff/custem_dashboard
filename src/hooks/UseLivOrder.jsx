@@ -1,58 +1,87 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 
-const UseLivOrder = () => {
+const UseLivOrder = (companyLiv) => {
     const [orders, setOrders] = useState([]);
-    const [Livloading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Fetch orders from backend
-    const fetchOrders = async () => {
+    // استخدام useCallback لضمان عدم إنشاء الدالة مع كل render
+    const fetchOrders = useCallback(async () => {
+        // إذا لم تتوفر بيانات الشركة، لا تقم بالطلب
+        if (!companyLiv?.token || !companyLiv?.key) {
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
+        setError(null);
+
         try {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user?._id) throw new Error("User not found");
+            const response = await axios.post(`https://next-delvry.vercel.app/listen`, {
+                company: {
+                    name: companyLiv?.name,
+                    Token: companyLiv?.token,
+                    Key: companyLiv?.key
+                }
+            });
 
-            const res = await axios.get(`https://true-fit-dz-api.vercel.app/order/my/liv/${user._id}`);
+            // التحقق من صحة البيانات بناءً على رد الباك إند الخاص بك
+            if (response.data && response.data.result?.Colis) {
+                // عكس المصفوفة لعرض الأحدث أولاً
+                setOrders(response.data.result.Colis.reverse());
+            } else {
+                setOrders([]); // مصفوفة فارغة في حالة عدم وجود طلبات
+            }
 
-            // Only show orders that haven't been sent (SendTo === false)
-            const sortedOrders = res.data.result
-                ?.filter(order => !order.SendTo)
-                .reverse();
-
-            setOrders(sortedOrders);
         } catch (err) {
-            setError(err.response?.data?.message || "فشل في تحميل الطلبات");
+            console.error("Fetch Error:", err);
+            setError(err.response?.data?.message || "فشل في جلب بيانات الشحن");
         } finally {
             setLoading(false);
         }
-    };
+    }, [companyLiv]); // إعادة الإنشاء فقط عند تغير بيانات الشركة
 
-    // Send orders to delivery service
-    const sendtoLiv = async (order) => {
-        try {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user?._id) throw new Error("User not found");
-
-            const res = await axios.post(`https://true-fit-dz-api.vercel.app/order/add_colis`, {
-                orders: order, // make sure it's an array
-                userId: user._id
-            });
-
-            console.log("SendToLiv result:", res.data);
-
-            // Refresh orders after successful send
-            fetchOrders();
-        } catch (err) {
-            console.error("SendToLiv error:", err.response?.data || err.message);
-        }
-    };
-
+    // جلب البيانات عند تحميل الصفحة أو تغير الشركة
     useEffect(() => {
         fetchOrders();
-    }, []);
+    }, [fetchOrders]);
 
-    return { orders, Livloading, error, sendtoLiv };
+    // دالة إرسال الطلب
+    const sendToliv = async (orderrrrrr) => {
+        const order = orderrrrrr
+        console.log(order);
+
+        try {
+            const response = await axios.post(`https://next-delvry.vercel.app/send-order`, {
+                company: {
+                    name: companyLiv?.name,
+                    Token: companyLiv?.token,
+                    Key: companyLiv?.key
+                },
+                order: orderrrrrr
+            });
+
+            console.log("Send Response:", response.data);
+
+            if (response.data) {
+                // تحديث القائمة فوراً بعد الإرسال الناجح
+                fetchOrders();
+                return { success: true, data: response.data };
+            } else {
+                return { success: false, message: "لم يتم استلام رد صحيح" };
+            }
+
+        } catch (err) {
+            console.error("Send Error:", err);
+            return {
+                success: false,
+                message: err.response?.data?.message || err.message
+            };
+        }
+    }
+
+    return { orders, error, loading, sendToliv, refetch: fetchOrders };
 };
 
 export default UseLivOrder;

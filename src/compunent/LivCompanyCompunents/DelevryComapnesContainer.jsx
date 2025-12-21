@@ -2,9 +2,11 @@ import { useState } from "react";
 import DeliveryCompanySelector from "./DeliveryCompanySelector";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { Loader2 } from "lucide-react";
 
-const DelevryComapnesContainer = ({ fetchUser }) => {
+const DelevryComapnesContainer = ({ updateUser, repoName }) => {
     const { t } = useTranslation("DelevryComapnesAndPixals");
+    const [loading, setloading] = useState(false)
     const [selectedCompany, setSelectedCompany] = useState({
         name: "",
         img: "",
@@ -19,21 +21,28 @@ const DelevryComapnesContainer = ({ fetchUser }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setloading(true)
         try {
             const res = await axios.post(
-                `https://true-fit-dz-api.vercel.app/user/liv/check`,
+                `https://next-delvry.vercel.app/test`,
                 {
-                    ...selectedCompany,
-                    id: JSON.parse(localStorage.getItem("user"))._id,
+                    company: {
+                        name: selectedCompany.name,
+                        Token: selectedCompany.token,
+                        Key: selectedCompany.key
+                    }
                 }
             );
             if (res.data.good) {
-                fetchUser();
+                let data = { companyLiv: { ...selectedCompany } }
+                updateUser(data, repoName);
+                setError("good")
             }
-            setError(t("InvalidKeyOrToken"));
         } catch (error) {
             setError(t("InvalidKeyOrToken"));
             console.log(error.message);
+        } finally {
+            setloading(false)
         }
     };
 
@@ -107,7 +116,7 @@ const DelevryComapnesContainer = ({ fetchUser }) => {
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        {t("Token")}
+                                        {t("token")}
                                     </label>
                                     <input
                                         type="text"
@@ -136,7 +145,7 @@ const DelevryComapnesContainer = ({ fetchUser }) => {
                                         type="submit"
                                         className="flex-1 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition"
                                     >
-                                        {t("ConfirmConnection")}
+                                        {loading ? <Loader2 className="animate-spin mx-auto h-8 w-8 " /> : t("ConfirmConnection")}
                                     </button>
                                 </div>
                             </form>
