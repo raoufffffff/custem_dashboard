@@ -3,7 +3,8 @@ import useUser from "../hooks/useUser";
 import DelevryComapnesContainer from "../compunent/LivCompanyCompunents/DelevryComapnesContainer";
 import AlgeriaMap from '../compunent/LivCompanyCompunents/AlgeriaMap '
 const LivCompany = () => {
-    const { fetchUser, loading, companyLiv } = useUser()
+    const { repoName, loading, companyLiv, updateUser } = useUser()
+
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-[200px]">
@@ -14,8 +15,11 @@ const LivCompany = () => {
     return (
         <div
             className="w-full"
-        >
-            {companyLiv.name ? <AlgeriaMap /> : <DelevryComapnesContainer fetchUser={fetchUser} />}
+        >{companyLiv.name ?
+            <AlgeriaMap companyLiv={companyLiv} />
+            :
+            <DelevryComapnesContainer repoName={repoName} updateUser={updateUser} />
+            }
         </div>
     );
 };

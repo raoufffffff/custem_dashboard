@@ -17,7 +17,7 @@ function App() {
   const currentLang = i18n.language; // detect active language
   const projectId = import.meta.env.VITE_CLARITY_ID
 
-  const { loading, website, name, email, phone, password, link, repoName, Categories, _id, visit, isPaid, orders } = useUser()
+  const { loading, website, name, email, phone, password, link, repoName, Categories, _id, visit, isPaid, orders, companyLiv } = useUser()
 
   // SemalHarder = true (Mini Sidebar), false (Full Sidebar)
   const [SemalHarder, setSemalHarder] = useState(true)
@@ -56,7 +56,7 @@ function App() {
   }, [projectId, loading, _id, name, email, isPaid]); // Add dependencies so it updates when user loads
   if (loading) return <LoadingBar />
 
-  let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link, visit, isPaid, userOrderLemet: orders }
+  let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link, visit, isPaid, userOrderLemet: orders, companyLiv: companyLiv }
 
   return (
     <div

@@ -24,11 +24,12 @@ const OrderPage = () => {
     const [showFillters, setShowFillters] = useState(false);
     const [showTutorial, setShowTutorial] = useState(false);
     // Data hooks
-    const { sendtoLiv } = UseLivOrder();
     const { t, i18n } = useTranslation("dashboard");
     const currentLang = i18n.language; // detect active language
 
     const user = useOutletContext();
+    const { sendToliv } = UseLivOrder(user.companyLiv)
+
     const { isPaid, userOrderLemet } = user;
     const { orders, loading, edite, fetchOrders, deleteOrder, postOrder } = useOrders();
     const {
@@ -179,7 +180,7 @@ const OrderPage = () => {
                             orders={visibleItems}
                             loading={loading}
                             isPaid={isPaid}
-                            sendtoLiv={sendtoLiv}
+                            sendtoLiv={sendToliv}
                             fetchOrders={fetchOrders}
                             hasMore={hasMore}
                             loadMore={loadMore}
@@ -195,10 +196,11 @@ const OrderPage = () => {
                             orders={visibleItems}
                             loading={loading}
                             isPaid={isPaid}
-                            sendtoLiv={sendtoLiv}
+                            sendtoLiv={sendToliv}
                             fetchOrders={fetchOrders}
                             hasMore={hasMore}
                             loadMore={loadMore}
+                            companyLiv={user.companyLiv}
                             emptyMessage="No orders found matching your criteria"
                         />
                     )}
