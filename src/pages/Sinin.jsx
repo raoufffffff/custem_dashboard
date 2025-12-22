@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from "react-router-dom";
 import Model from "../CustomUi/Model";
 import LanguagePanel from "../compunent/App/LanguagePanel";
-
+import ReactPixel from 'react-facebook-pixel';
 // This is the main component for the two-step sign-up page
 const App = () => {
     const { t, i18n } = useTranslation("auth");
@@ -118,8 +118,9 @@ const App = () => {
             if (res.data?.good || res.data?._id) {
                 toast.success(t("Accountcreatedsuccessfully"));
                 window.location.replace("/login");
+                handlePixalClick()
             } else {
-                toast.error(t("zbi"), {
+                toast.error(t("somthing went wrong"), {
                     style: { border: "1px solid #ef4444" },
                 });
             }
@@ -135,7 +136,12 @@ const App = () => {
     // Dynamic class for the domain input field
     const domainInputClass = `w-full rounded-xl border px-6 py-3 text-gray-800 placeholder-gray-400 shadow-sm transition duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500
     ${domainAvailable === false ? 'border-red-500 text-red-500 focus:ring-red-500' : 'border-gray-300 bg-white'}`;
-
+    const handlePixalClick = () => {
+        ReactPixel.track('SubmitApplication', {
+            content_name: 'SaaS Partner Program', // Optional: Name of what they applied for
+            content_category: 'Partnership'       // Optional: Category
+        });
+    };
 
     return (
         <div

@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from "react-router-dom";
 import Model from "../CustomUi/Model";
 import LanguagePanel from "../compunent/App/LanguagePanel";
-
+import ReactPixel from 'react-facebook-pixel';
 // This is the main component for the login page
 const App = () => {
     const [loading, setLoading] = useState(false)
@@ -37,6 +37,7 @@ const App = () => {
                 localStorage.setItem("user", JSON.stringify(res.data.result));
                 toast.success(t("Loginmessage"));
                 window.location.replace("/");
+                handlePixalClick()
             } else {
                 // Handle incorrect credentials
                 toast.error(t("Incorrect"), {
@@ -52,6 +53,14 @@ const App = () => {
         } finally {
             setLoading(false)
         }
+    };
+
+    const handlePixalClick = () => {
+        ReactPixel.track('StartTrial', {
+            value: '0.00',
+            currency: 'USD',
+            predicted_ltv: '29.99' // Optional: Predicted Lifetime Value
+        });
     };
     return (
         // The main container now uses flexbox.

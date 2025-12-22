@@ -11,11 +11,13 @@ import AccountPanel from "./compunent/App/AccountPanel";
 import useUser from "./hooks/useUser";
 import { useTranslation } from "react-i18next";
 import LoadingBar from "./CustomUi/LoadingBar";
+import ReactPixel from 'react-facebook-pixel';
 
 function App() {
   const { i18n } = useTranslation("constanst");
   const currentLang = i18n.language; // detect active language
   const projectId = import.meta.env.VITE_CLARITY_ID
+  const FacebookPixalId = import.meta.env.VITE_FACEBOOK_PIXAL_ID
 
   const { loading, website, name, email, phone, password, link, repoName, Categories, _id, visit, isPaid, orders, companyLiv } = useUser()
 
@@ -36,15 +38,28 @@ function App() {
     AccountPanel: false,
     LanguagePanel: false
   })
+
   useEffect(() => {
-    // 1. Check if ID exists to avoid errors
+    if (FacebookPixalId) {
+      const options = {
+        autoConfig: true,
+        debug: false,
+      };
+
+      // Initialize
+      ReactPixel.init(FacebookPixalId, null, options);
+
+      // Track PageView
+      ReactPixel.pageView();
+    }
+  }, [FacebookPixalId]);
+  useEffect(() => {
     if (projectId) {
       Clarity.init(projectId);
 
       // 2. 🔥 PRO TIP: Identify the user if they are logged in
       // This lets you see specific recordings for specific users in the Clarity Dashboard
       if (!loading && _id) {
-        console.log('Clarity is doing there job');
 
         Clarity.identify(_id, { // User ID
           name: name,         // Custom Tag
@@ -53,7 +68,7 @@ function App() {
         });
       }
     }
-  }, [projectId, loading, _id, name, email, isPaid]); // Add dependencies so it updates when user loads
+  }, [projectId, loading, _id, name, email, isPaid, FacebookPixalId]); // Add dependencies so it updates when user loads
   if (loading) return <LoadingBar />
 
   let user = { name: name, email: email, website: website, phone: phone, password: password, repoName: repoName, Categories: Categories, id: _id, link: link, visit, isPaid, userOrderLemet: orders, companyLiv: companyLiv }
