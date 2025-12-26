@@ -77,10 +77,9 @@ const EdeteItem = () => {
     // }
 
     const suggestions = [
-        "fast_delivery",
-        "guarantee_1week",
-        "return_policy",
-        "Limited_quantity"
+        "توصيل سريع",
+        "ضمان لمدة أسبوع واحد",
+        "كمية محدودة"
     ];
 
     // Function to add a tag
@@ -462,7 +461,7 @@ const EdeteItem = () => {
                                                 : "bg-white text-gray-600 border-gray-300 hover:border-purple-500 hover:text-purple-600"
                                             }`}
                                     >
-                                        {t(suggestion)}
+                                        {suggestion}
                                     </button>
                                 );
                             })}
