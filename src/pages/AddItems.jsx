@@ -43,8 +43,8 @@ const AddItems = () => {
     const [err, seterr] = useState(false);
     const [Offers, setOffers] = useState([]);
     const addOffers = () => {
-        if (Offers.length >= 5) {
-            toast.error("You can add up to 5 Offers only.");
+        if (Offers.length >= 15) {
+            toast.error("You can add up to 15 Offers only.");
             return;
         }
         setOffers((prev) => [...prev, { id: Offers.length, name: '', Quantity: "", price: "", freedelevry: false, topOffer: false }]);
@@ -500,5 +500,6 @@ const AddItems = () => {
         </PageContainer>
     );
 };
+
 
 export default AddItems;
