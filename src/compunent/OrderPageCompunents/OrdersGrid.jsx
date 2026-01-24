@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import Empty from "../../CustomUi/Empty";
 
 const OrdersGrid = ({
+    openEdit,
     orders,
     loading,
     edite,
@@ -89,6 +90,7 @@ const OrdersGrid = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                         {orders.map((item, index) => (
                             <OrderCard
+                                openEdit={openEdit}
                                 companyLiv={companyLiv}
                                 isPaid={isPaid}
                                 key={item._id}

@@ -5,21 +5,21 @@ import toast from 'react-hot-toast';
 import useItem from '../../hooks/useItem';
 import LoadingBar from '../../CustomUi/LoadingBar';
 
-const AddOrder = ({ postOrder, onclose }) => {
+const AddOrder = ({ postOrder, editefull, onclose, order }) => {
     // 1. Initialize State
     const { Items, loading } = useItem()
     const [formData, setFormData] = useState({
-        name: "",
-        phone: "",
-        state: "",
-        city: "",
-        home: true, // true = Home delivery, false = Desk/Stop desk
-        quantity: 1,
-        item: null,
-        userId: "",
-        price: 0,
-        ride: 0,
-        total: 0,
+        name: order.name || "",
+        phone: order.phone || "",
+        state: order.state || "",
+        city: order.city || "",
+        home: order.home || true, // true = Home delivery, false = Desk/Stop desk
+        quantity: order.quantity || 1,
+        item: order.item || null,
+        userId: order.userId || "",
+        price: order.price || 0,
+        ride: order.ride || 0,
+        total: order.total || 0,
     });
 
     const [availableCities, setAvailableCities] = useState([]);
@@ -117,8 +117,14 @@ const AddOrder = ({ postOrder, onclose }) => {
             toast.error("u must have an item")
             return
         }
-        postOrder(formData);
-        onclose()
+        if (order) {
+            editefull(order._id, formData);
+            onclose()
+
+        } else {
+            postOrder(formData);
+            onclose()
+        }
     };
 
     return (

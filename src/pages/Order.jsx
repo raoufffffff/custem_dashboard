@@ -21,6 +21,7 @@ const OrderPage = () => {
     // State for UI controls
     const [viewType, setViewType] = useState("grid"); // Renamed for clarity
     const [showAddOrder, setShowAddOrder] = useState(false)
+    const [selectedOrder, setSelectedOrder] = useState(null);
     const [showFillters, setShowFillters] = useState(false);
     const [showTutorial, setShowTutorial] = useState(false);
     // Data hooks
@@ -31,7 +32,7 @@ const OrderPage = () => {
     const { sendToliv } = UseLivOrder(user.companyLiv)
 
     const { isPaid, userOrderLemet } = user;
-    const { orders, loading, edite, fetchOrders, deleteOrder, postOrder } = useOrders();
+    const { orders, loading, edite, fetchOrders, deleteOrder, postOrder, editefull } = useOrders();
     const {
         filteredOrders,
         filters,
@@ -82,7 +83,10 @@ const OrderPage = () => {
     const hideTutorial = () => {
         setShowTutorial(false);
     }
-
+    const openEdit = (order) => {
+        setSelectedOrder(order);
+        setShowAddOrder(true);
+    }
     const ShowAddOrder = () => {
         setShowAddOrder(true);
     };
@@ -110,6 +114,8 @@ const OrderPage = () => {
                 <Model
                     onclose={hideAddOrder}>
                     <AddOder
+                        editefull={editefull}
+                        order={selectedOrder}
                         uniqueItems={getUniqueItems()}
                         postOrder={postOrder}
                         onclose={hideAddOrder}
@@ -196,6 +202,7 @@ const OrderPage = () => {
                             orders={visibleItems}
                             loading={loading}
                             isPaid={isPaid}
+                            openEdit={openEdit}
                             sendtoLiv={sendToliv}
                             fetchOrders={fetchOrders}
                             hasMore={hasMore}

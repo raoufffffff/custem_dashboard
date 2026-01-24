@@ -1,16 +1,16 @@
 import { motion } from "framer-motion";
-import { format, differenceInMinutes, differenceInHours, differenceInDays, differenceInWeeks, differenceInMonths, differenceInYears } from "date-fns";
+import { differenceInMinutes, differenceInHours, differenceInDays, differenceInWeeks, differenceInMonths, differenceInYears } from "date-fns";
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Bell, XCircle, CheckCircle2, Package, Clock, PhoneOff, Ban,
     Pencil, Truck, Building2, StickyNote, HomeIcon, Trash, MapPin, User,
-    Phone, Tag, Palette, Ruler, AlertTriangle
+    Phone, Tag, Palette, Ruler, AlertTriangle, Edit
 } from "lucide-react";
 import ShowNoteC from "./OrderRow/showNote";
 import ShowdeleteC from "./OrderRow/ShowdeleteC";
 
-const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, isPaid, companyLiv }) => {
+const OrderCard = ({ order, index, edite, sendtoLiv, deleteOrder, isPaid, companyLiv, openEdit }) => {
     const { t } = useTranslation("dashboard");
 
     // Local state
@@ -164,7 +164,6 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
             >
                 <div className={`absolute left-0 top-0 bottom-0 w-1 ${currentStatus?.color.replace('text-', 'bg-').split(' ')[0]}`} />
 
-                {/* ... (Existing Header and Image Content remains same) ... */}
                 {/* 1. Header: ID & Time */}
                 <div className="flex justify-between items-start mb-4 pl-2">
                     <div className="flex flex-col">
@@ -192,6 +191,16 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
 
                     <div className="flex-1 min-w-0">
                         <h4 className="text-sm font-bold text-gray-900 truncate mb-1">{myorder.item.name}</h4>
+
+                        {/* --- OFFER DISPLAY SECTION (ADDED) --- */}
+                        {myorder.offer && (
+                            <div className="mb-2">
+                                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-rose-50 text-rose-600 border border-rose-100 shadow-sm">
+                                    <Tag size={10} className="stroke-[2.5px]" />
+                                    <span className="truncate max-w-[150px]">{myorder.offerNmae}</span>
+                                </div>
+                            </div>
+                        )}
 
                         {/* Variants Logic */}
                         {(myorder.size || myorder.color) && (
@@ -296,6 +305,15 @@ const OrderCard = ({ order, index, edite, sendtoLiv, fetchOrders, deleteOrder, i
                     </div>
 
                     <div className="flex items-center gap-1">
+                        {/* --- NEW EDIT BUTTON --- */}
+                        <button
+                            onClick={() => openEdit && openEdit(myorder)}
+                            className="p-2 rounded-full hover:bg-blue-100 text-gray-400 hover:text-blue-600 transition-colors"
+                            title="Edit Order"
+                        >
+                            <Edit size={16} />
+                        </button>
+
                         <button
                             onClick={() => setshowdelete(true)}
                             className="p-2 rounded-full hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors"

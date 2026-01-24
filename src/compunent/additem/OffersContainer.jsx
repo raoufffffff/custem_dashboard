@@ -31,7 +31,7 @@ const OffersContainer = ({ Offers, setOffers, err }) => {
                                 className={`flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${err && !offer.name ? "border-red-500 focus:ring-red-500" : ""}`}
                             />
                             <input
-                                type="text"
+                                type="number"
                                 placeholder={t("OfferQuantity")}
                                 value={offer.Quantity}
                                 onChange={(e) => {
@@ -42,7 +42,7 @@ const OffersContainer = ({ Offers, setOffers, err }) => {
                                 className={`sm:w-40 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${err && !offer.Quantity ? "border-red-500 focus:ring-red-500" : ""}`}
                             />
                             <input
-                                type="text"
+                                type="number"
                                 placeholder={t("OfferPrice")}
                                 value={offer.price}
                                 onChange={(e) => {

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 
-const DelevryComapnesContainer = ({ updateUser, repoName }) => {
+const DelevryComapnesContainer = ({ updateUser, repoName, start }) => {
     const { t } = useTranslation("DelevryComapnesAndPixals");
     const [loading, setloading] = useState(false)
     const [selectedCompany, setSelectedCompany] = useState({
@@ -24,7 +24,7 @@ const DelevryComapnesContainer = ({ updateUser, repoName }) => {
         setloading(true)
         try {
             const res = await axios.post(
-                `https://next-delvry.vercel.app/test`,
+                `http://localhost:3010/test`,
                 {
                     company: {
                         name: selectedCompany.name,
@@ -37,6 +37,7 @@ const DelevryComapnesContainer = ({ updateUser, repoName }) => {
                 let data = { companyLiv: { ...selectedCompany } }
                 updateUser(data, repoName);
                 setError("good")
+                start()
             }
         } catch (error) {
             setError(t("InvalidKeyOrToken"));
@@ -110,7 +111,7 @@ const DelevryComapnesContainer = ({ updateUser, repoName }) => {
                                         }
                                         className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
                                         placeholder={t("EnterApiKey")}
-                                        required
+
                                     />
                                 </div>
 
