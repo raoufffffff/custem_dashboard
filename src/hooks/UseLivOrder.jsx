@@ -49,8 +49,6 @@ const UseLivOrder = (companyLiv) => {
 
     // دالة إرسال الطلب
     const sendToliv = async (orderrrrrr) => {
-        const order = orderrrrrr
-        console.log(order);
 
         try {
             const response = await axios.post(`https://next-delvry.vercel.app/send-order`, {

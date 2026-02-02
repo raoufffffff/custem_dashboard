@@ -24,7 +24,7 @@ const DelevryComapnesContainer = ({ updateUser, repoName, start }) => {
         setloading(true)
         try {
             const res = await axios.post(
-                `http://localhost:3010/test`,
+                `https://next-delvry.vercel.app/test`,
                 {
                     company: {
                         name: selectedCompany.name,

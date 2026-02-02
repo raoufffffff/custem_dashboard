@@ -7,7 +7,6 @@ const useOrders = () => {
     const [Allorders, setAllOrders] = useState([]);
 
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const fetchOrders = async () => {
         try {
             const userId = JSON.parse(localStorage.getItem("user"))._id;
@@ -91,7 +90,7 @@ const useOrders = () => {
     const CancelledOrder = orders.filter(e => (["cancelled", "failed"].includes(e.status)))
     const ConfirmedOrder = Allorders.filter(e => (["confirmed", "ready", "in company"].includes(e.status)))
     const panddingOrder = orders.filter(e => (["pending", "Connection failed 1", "Connection failed 2", "Connection failed 3", "Postponed"].includes(e.status)))
-    return { orders, loading, error, panddingOrder, CancelledOrder, ConfirmedOrder, fetchOrders, edite, editefull, Allorders, deleteOrder, postOrder };
+    return { orders, loading, panddingOrder, CancelledOrder, ConfirmedOrder, fetchOrders, edite, editefull, Allorders, deleteOrder, postOrder };
 };
 
 export default useOrders;

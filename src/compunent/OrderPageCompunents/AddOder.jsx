@@ -9,17 +9,17 @@ const AddOrder = ({ postOrder, editefull, onclose, order }) => {
     // 1. Initialize State
     const { Items, loading } = useItem()
     const [formData, setFormData] = useState({
-        name: order.name || "",
-        phone: order.phone || "",
-        state: order.state || "",
-        city: order.city || "",
-        home: order.home || true, // true = Home delivery, false = Desk/Stop desk
-        quantity: order.quantity || 1,
-        item: order.item || null,
-        userId: order.userId || "",
-        price: order.price || 0,
-        ride: order.ride || 0,
-        total: order.total || 0,
+        name: order?.name || "",
+        phone: order?.phone || "",
+        state: order?.state || "",
+        city: order?.city || "",
+        home: order?.home || true, // true = Home delivery, false = Desk/Stop desk
+        quantity: order?.quantity || 1,
+        item: order?.item || null,
+        userId: order?.userId || "",
+        price: order?.price || 0,
+        ride: order?.ride || 0,
+        total: order?.total || 0,
     });
 
     const [availableCities, setAvailableCities] = useState([]);
@@ -72,7 +72,7 @@ const AddOrder = ({ postOrder, editefull, onclose, order }) => {
 
         setFormData((prev) => ({
             ...prev,
-            state: stateObj?.name || "",
+            state: stateObj?.ar_name || "",
             city: "",
             ride: newRidePrice, // Set standard shipping
             total: calculateTotal(prev.price, prev.quantity, newRidePrice) // Update total
@@ -193,7 +193,7 @@ const AddOrder = ({ postOrder, editefull, onclose, order }) => {
                         >
                             <option value="">Select City</option>
                             {availableCities.map((c, index) => (
-                                <option key={index} value={c.name}>{c.name}</option>
+                                <option key={index} value={c.ar_name}>{c.name}</option>
                             ))}
                         </select>
                     </div>
