@@ -37,6 +37,7 @@ const UpdateSettingsForm = ({ store, repoName }) => {
         }));
     };
 
+    console.log(storeSetting.EnableBerue);
 
     return (
         <BoxCard
@@ -86,9 +87,9 @@ const UpdateSettingsForm = ({ store, repoName }) => {
                         </span>
                         <input
                             type="checkbox"
+                            name='EnableBerue'
                             checked={storeSetting.EnableBerue}
-                            onChange={(e) => handleChange("EnableBerue", e.target.EnableBerue)}
-                            className="toggle toggle-primary"
+                            onChange={(e) => handleChange("EnableBerue", e.target.checked)}
                         />
                     </label>
                 </div>
@@ -104,6 +105,7 @@ const UpdateSettingsForm = ({ store, repoName }) => {
                                 repoName: repoName,
                                 store_name: storeSetting.name,
                                 language: storeSetting.language, // default
+                                raouf: "raouf",
                                 EnableBerue: storeSetting.EnableBerue
                             })
                             return
